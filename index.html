@@ -19,11 +19,69 @@
   .screen.active { display: flex; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* === HOME === */
-  .home-hero { text-align: center; padding: 32px 0 24px; }
-  .home-hero h1 { font-size: 32px; font-weight: 700; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .home-hero p { font-size: 14px; color: #555; margin-top: 6px; }
+  /* === LIBRARY HOME === */
+  .lib-hero { text-align: center; padding: 32px 0 20px; width: 100%; max-width: 900px; }
+  .lib-hero h1 { font-size: 32px; font-weight: 700; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .lib-hero p { font-size: 14px; color: #555; margin-top: 6px; }
 
+  /* Search & Filters */
+  .search-bar { width: 100%; max-width: 560px; position: relative; margin-bottom: 16px; }
+  .search-bar input { width: 100%; padding: 14px 20px 14px 44px; background: #111118; border: 1px solid #1e1e2e; border-radius: 14px; color: #e0e0e0; font-size: 15px; outline: none; transition: border-color 0.2s; }
+  .search-bar input:focus { border-color: #667eea; }
+  .search-bar input::placeholder { color: #444; }
+  .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 18px; color: #444; pointer-events: none; }
+
+  .filter-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 20px; max-width: 700px; }
+  .filter-tag { padding: 7px 16px; background: #111118; border: 1px solid #1e1e2e; border-radius: 20px; font-size: 12px; font-weight: 500; color: #777; cursor: pointer; transition: all 0.2s; }
+  .filter-tag:hover { border-color: #667eea; color: #bbb; }
+  .filter-tag.active { background: #1a1a3a; border-color: #667eea; color: #667eea; }
+
+  /* Style Grid */
+  .style-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; width: 100%; max-width: 900px; padding-bottom: 20px; }
+
+  .style-card { background: #111118; border: 1px solid #1e1e2e; border-radius: 16px; overflow: hidden; cursor: pointer; transition: all 0.3s; }
+  .style-card:hover { border-color: #2a2a4a; transform: translateY(-4px); box-shadow: 0 12px 40px rgba(102,126,234,0.12); }
+  .style-samples { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+  .style-samples img { width: 100%; height: 120px; object-fit: cover; display: block; background: #0a0a0f; }
+  .style-meta { padding: 14px 16px; }
+  .style-name { font-size: 15px; font-weight: 600; color: #e0e0e0; margin-bottom: 4px; }
+  .style-code { font-family: 'SF Mono', Menlo, monospace; font-size: 12px; color: #667eea; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .style-code .copy-code { padding: 2px 8px; background: #1a1a2a; border: 1px solid #252538; border-radius: 6px; font-size: 10px; color: #888; cursor: pointer; transition: all 0.2s; }
+  .style-code .copy-code:hover { background: #252540; color: #fff; border-color: #667eea; }
+  .style-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .style-tags span { padding: 3px 8px; background: #1a1a28; border-radius: 6px; font-size: 10px; color: #666; }
+  .style-engines { margin-top: 8px; display: flex; gap: 6px; }
+  .engine-badge { padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; }
+  .engine-mj { background: #1a1a2f; color: #667eea; }
+  .engine-sd { background: #1a2a1a; color: #4ade80; }
+  .engine-flux { background: #2a1a1a; color: #f87171; }
+  .engine-dalle { background: #2a2a1a; color: #facc15; }
+
+  /* Style Detail Modal */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 200; justify-content: center; align-items: center; padding: 20px; }
+  .modal-overlay.active { display: flex; }
+  .modal { background: #111118; border: 1px solid #1e1e2e; border-radius: 20px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto; animation: fadeIn 0.2s ease; }
+  .modal-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+  .modal-gallery img { width: 100%; height: 200px; object-fit: cover; display: block; }
+  .modal-body { padding: 24px; }
+  .modal-body h2 { font-size: 22px; font-weight: 700; color: #e0e0e0; margin-bottom: 4px; }
+  .modal-code { font-family: 'SF Mono', Menlo, monospace; font-size: 16px; color: #667eea; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
+  .modal-code button { padding: 6px 16px; background: linear-gradient(135deg, #667eea, #5a67d8); color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .modal-code button:hover { transform: scale(1.05); }
+  .modal-desc { font-size: 14px; color: #888; line-height: 1.6; margin-bottom: 16px; }
+  .modal-section { margin-bottom: 16px; }
+  .modal-section h4 { font-size: 12px; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .modal-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .modal-tags span { padding: 5px 12px; background: #1a1a28; border: 1px solid #252538; border-radius: 8px; font-size: 12px; color: #999; }
+  .modal-prompt { background: #0a0a0f; border: 1px solid #1e1e2e; border-radius: 10px; padding: 14px; font-family: 'SF Mono', Menlo, monospace; font-size: 12px; color: #888; line-height: 1.6; position: relative; }
+  .modal-prompt .copy-prompt { position: absolute; top: 8px; right: 8px; padding: 4px 10px; background: #1a1a2a; border: 1px solid #252538; border-radius: 6px; font-size: 10px; color: #888; cursor: pointer; font-family: -apple-system, sans-serif; }
+  .modal-prompt .copy-prompt:hover { background: #252540; color: #fff; }
+  .modal-close { position: absolute; top: 16px; right: 16px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.6); border: none; color: #999; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); z-index: 10; }
+  .modal-close:hover { color: #fff; background: rgba(0,0,0,0.8); }
+  .empty-state { text-align: center; padding: 60px 20px; color: #333; font-size: 16px; }
+  .empty-state .emoji { font-size: 48px; margin-bottom: 12px; display: block; }
+
+  /* === A/B TEST SCREEN (departments) === */
   .dept-card { width: 100%; max-width: 560px; background: #111118; border: 1px solid #1e1e2e; border-radius: 20px; padding: 24px; margin-bottom: 16px; transition: all 0.3s; }
   .dept-card:hover { border-color: #2a2a4a; }
   .dept-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
@@ -34,8 +92,6 @@
   .chip { display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px; background: #1a1a28; border: 1px solid #252538; border-radius: 12px; font-size: 13px; font-weight: 500; color: #bbb; cursor: pointer; transition: all 0.2s; }
   .chip:hover { background: #222240; border-color: #667eea; color: #fff; transform: translateY(-2px); box-shadow: 0 4px 16px rgba(102,126,234,0.15); }
   .chip-icon { font-size: 16px; }
-  .chip-done { position: relative; }
-  .chip-done::after { content: '✓'; position: absolute; top: -4px; right: -4px; background: #22c55e; color: #000; font-size: 9px; font-weight: 800; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 
   /* === ARENA === */
   .arena-header { text-align: center; padding: 16px 0 8px; width: 100%; max-width: 900px; }
@@ -90,16 +146,31 @@
   .history-item p { font-size: 12px; color: #555; margin-top: 4px; }
   .history-empty { text-align: center; color: #333; font-size: 14px; margin-top: 40px; }
 
+  /* Stats bar */
+  .stats-bar { display: flex; gap: 20px; justify-content: center; margin-bottom: 20px; }
+  .stat { text-align: center; }
+  .stat-num { font-size: 24px; font-weight: 700; color: #667eea; }
+  .stat-label { font-size: 11px; color: #555; margin-top: 2px; }
+
   @media(max-width:640px){
+    .style-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 0 4px; }
+    .style-samples img { height: 80px; }
+    .style-meta { padding: 10px 12px; }
+    .style-name { font-size: 13px; }
+    .style-code { font-size: 11px; }
+    .style-tags { display: none; }
+    .style-engines { margin-top: 4px; }
+    .modal-gallery img { height: 140px; }
     .arena { gap: 8px; padding: 12px 8px; }
     .card img { height: 180px; }
     .card-label { font-size: 13px; padding: 4px 10px; top: 8px; left: 8px; }
-    .card-footer { padding: 8px; font-size: 11px; }
     .vs { font-size: 14px; }
     .actions { flex-wrap: wrap; justify-content: center; }
     .actions button { padding: 8px 18px; font-size: 13px; }
     .dept-card { padding: 18px; }
     .arena-header h2 { font-size: 18px; }
+    .lib-hero h1 { font-size: 26px; }
+    .search-bar input { font-size: 14px; padding: 12px 16px 12px 40px; }
   }
 </style>
 </head>
@@ -107,19 +178,50 @@
 
 <!-- === BOTTOM NAV === -->
 <nav class="navbar">
-  <div class="nav-item active" onclick="showScreen('home')" id="nav-home">
-    <span class="nav-icon">🏠</span>Home
+  <div class="nav-item active" onclick="showScreen('library')" id="nav-library">
+    <span class="nav-icon">📚</span>Library
+  </div>
+  <div class="nav-item" onclick="showScreen('test')" id="nav-test">
+    <span class="nav-icon">⚔️</span>A/B Test
   </div>
   <div class="nav-item" onclick="showScreen('history')" id="nav-history">
     <span class="nav-icon">📊</span>History
   </div>
 </nav>
 
-<!-- === HOME SCREEN === -->
-<div class="screen active" id="screen-home">
-  <div class="home-hero">
+<!-- === STYLE DETAIL MODAL === -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modalContent">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-gallery" id="modalGallery"></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- === LIBRARY SCREEN (HOME) === -->
+<div class="screen active" id="screen-library">
+  <div class="lib-hero">
     <h1>✨ Style Curator</h1>
-    <p>Train visual taste · Curate Pinterest boards</p>
+    <p>Find your style. Copy the code. Generate.</p>
+  </div>
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-num" id="statStyles">0</div><div class="stat-label">Styles</div></div>
+    <div class="stat"><div class="stat-num" id="statEngines">4</div><div class="stat-label">Engines</div></div>
+    <div class="stat"><div class="stat-num" id="statTags">0</div><div class="stat-label">Tags</div></div>
+  </div>
+  <div class="search-bar">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Search styles... (e.g. cinematic, noir, watercolor)" oninput="filterLibrary()">
+  </div>
+  <div class="filter-row" id="filterRow"></div>
+  <div class="style-grid" id="styleGrid"></div>
+</div>
+
+<!-- === A/B TEST SCREEN === -->
+<div class="screen" id="screen-test">
+  <div class="lib-hero">
+    <h1>⚔️ A/B Style Test</h1>
+    <p>Can't describe your style? Find it through comparison.</p>
   </div>
   <div id="deptCards"></div>
 </div>
@@ -168,7 +270,7 @@
       <button onclick="submitToLux()" style="padding:14px 48px;border:none;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;transition:all 0.2s;box-shadow:0 4px 20px rgba(34,197,94,0.3);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">✅ Done — Send to Lux</button>
     </div>
     <div class="result-actions" style="margin-top:12px;">
-      <button class="btn-back" onclick="showScreen('home')">🏠 Home</button>
+      <button class="btn-back" onclick="showScreen('test')">🏠 Home</button>
       <button class="btn-copy" onclick="copyResults()">📋 Copy</button>
       <button class="btn-redo" onclick="startBoard(currentDept, currentBoard)">🔄 Redo</button>
     </div>
@@ -177,7 +279,7 @@
 
 <!-- === HISTORY SCREEN === -->
 <div class="screen" id="screen-history">
-  <div class="home-hero">
+  <div class="lib-hero">
     <h1>📊 Rating History</h1>
     <p>Your past sessions</p>
   </div>
@@ -185,7 +287,315 @@
 </div>
 
 <script>
-// ===== DATA =====
+// ============================================================
+//  STYLE LIBRARY DATA
+// ============================================================
+const STYLES = [
+  {
+    id: 'noir-cinema',
+    name: 'Noir Cinema',
+    sref: '--sref 2847193',
+    desc: 'Deep shadows, high contrast, moody film stills. Think Blade Runner meets classic noir.',
+    tags: ['cinematic', 'dark', 'noir', 'shadows', 'moody', 'film'],
+    engines: ['midjourney', 'flux'],
+    prompt: 'a lone figure walking through rain-soaked streets at night --sref 2847193 --ar 16:9',
+    images: [
+      'https://i.pinimg.com/736x/ae/31/59/ae3159f93d0c33dbdddb3e58e6a977b1.jpg',
+      'https://i.pinimg.com/736x/9d/ee/1a/9dee1a4d0a68d7c2cc74f573aa45fdce.jpg',
+      'https://i.pinimg.com/736x/76/7e/0d/767e0dbb34035007ee569b11337c799e.jpg',
+      'https://i.pinimg.com/736x/52/8e/ea/528eeaea0ff139612dc9aeb14cf3ff9b.jpg',
+    ]
+  },
+  {
+    id: 'surreal-portal',
+    name: 'Surreal Portals',
+    sref: '--sref 4019285',
+    desc: 'Glowing gateways, otherworldly passages, cosmic doorways. Scale meets mystery.',
+    tags: ['surreal', 'portal', 'glowing', 'cosmic', 'dark', 'fine-art'],
+    engines: ['midjourney'],
+    prompt: 'a massive glowing portal in a dark landscape, tiny figure for scale --sref 4019285 --ar 16:9',
+    images: [
+      'https://i.pinimg.com/736x/36/33/b3/3633b3be93191eca00a2363bfd93a5c7.jpg',
+      'https://i.pinimg.com/736x/1d/74/1a/1d741ad5318548b0b1b87eac4e23eb69.jpg',
+      'https://i.pinimg.com/736x/05/b7/04/05b70401244b8b7a8cb94710e974913a.jpg',
+      'https://i.pinimg.com/736x/86/15/6c/86156c3fce80f3c8eac07ebddabf7d1a.jpg',
+    ]
+  },
+  {
+    id: 'fog-atmospheric',
+    name: 'Fog & Atmosphere',
+    sref: '--sref 1738462',
+    desc: 'Dense fog, silhouettes, depth and mystery. Gregory Crewdson-inspired atmospheric scenes.',
+    tags: ['fog', 'atmospheric', 'moody', 'silhouette', 'dark', 'cinematic'],
+    engines: ['midjourney', 'flux', 'sd'],
+    prompt: 'silhouette of a person standing on a foggy bridge at dawn --sref 1738462 --ar 16:9',
+    images: [
+      'https://i.pinimg.com/736x/c8/ec/5d/c8ec5dcd900ef889290b9a6a3d05a268.jpg',
+      'https://i.pinimg.com/736x/19/31/ea/1931ea6e2f8dbaa4d20d2c8e5f5a2c4e.jpg',
+      'https://i.pinimg.com/736x/e8/c8/6f/e8c86f236bcd1b9f3da87d53683d0317.jpg',
+      'https://i.pinimg.com/736x/81/8a/c7/818ac70a79d7750696e03def3481edd2.jpg',
+    ]
+  },
+  {
+    id: 'chrome-liquid',
+    name: 'Chrome Liquid',
+    sref: '--sref 5827461',
+    desc: 'Metallic mercury, chrome reflections, liquid metal surfaces. Y2K futurism meets fluid art.',
+    tags: ['chrome', 'metallic', 'liquid', '3d', 'futuristic', 'abstract'],
+    engines: ['midjourney', 'flux'],
+    prompt: 'abstract chrome liquid sculpture floating in dark void --sref 5827461 --ar 1:1',
+    images: [
+      'https://i.pinimg.com/736x/7a/ce/ef/7aceefeda4518eeda909cc0c5167d61c.jpg',
+      'https://i.pinimg.com/736x/fa/1b/df/fa1bdf8e34678d6f76d4b6901281484b.jpg',
+      'https://i.pinimg.com/736x/f8/5b/66/f85b66be1399e782b960edcfeea647f5.jpg',
+      'https://i.pinimg.com/736x/c5/3c/4f/c53c4ff0404ea2a74b5cf041da975707.jpg',
+    ]
+  },
+  {
+    id: 'dark-dreamscape',
+    name: 'Dark Dreamscape',
+    sref: '--sref 3291047',
+    desc: 'Surreal landscapes, dreamlike scenes, vast and solitary. Between sleep and waking.',
+    tags: ['surreal', 'dreamlike', 'dark', 'landscape', 'vast', 'ethereal'],
+    engines: ['midjourney', 'dalle'],
+    prompt: 'a surreal dark dreamscape with floating islands and distant light --sref 3291047 --ar 16:9',
+    images: [
+      'https://i.pinimg.com/736x/88/a0/bf/88a0bfbd0945888bc181f7ab02e8e641.jpg',
+      'https://i.pinimg.com/736x/28/1a/34/281a34a2e88babdc2e054e8ae7cfdad8.jpg',
+      'https://i.pinimg.com/736x/34/df/c5/34dfc5994e366bade1394e9f2338d34a.jpg',
+      'https://i.pinimg.com/736x/41/ba/9a/41ba9a9236303fad87a0d18607663613.jpg',
+    ]
+  },
+  {
+    id: 'bold-typography',
+    name: 'Bold Typography',
+    sref: '--sref 6194837',
+    desc: 'Heavy type, grunge textures, editorial poster design. Swiss-inspired with raw energy.',
+    tags: ['typography', 'poster', 'bold', 'editorial', 'grunge', 'design'],
+    engines: ['midjourney'],
+    prompt: 'experimental typography poster, bold serif font, dark background --sref 6194837 --ar 3:4',
+    images: [
+      'https://i.pinimg.com/736x/bd/af/a9/bdafa9bb7b48ebe6d7b02ade3dcfb110.jpg',
+      'https://i.pinimg.com/736x/81/02/86/8102865fd078549ecf6f7c6323f41d79.jpg',
+      'https://i.pinimg.com/736x/eb/fc/42/ebfc42ac15176c8dfaa9563e5658bf5f.jpg',
+      'https://i.pinimg.com/736x/27/27/36/2727366439f6d9fc3fe7df5cd5f7e3a1.jpg',
+    ]
+  },
+  {
+    id: 'neon-rain',
+    name: 'Neon Rain',
+    sref: '--sref 8472916',
+    desc: 'Rain-soaked neon streets, cyberpunk reflections, wet asphalt glowing with color.',
+    tags: ['neon', 'rain', 'cyberpunk', 'urban', 'night', 'reflection'],
+    engines: ['midjourney', 'flux', 'sd'],
+    prompt: 'neon-lit alley in heavy rain, reflections on wet ground --sref 8472916 --ar 9:16',
+    images: [
+      'https://i.pinimg.com/736x/52/8e/ea/528eeaea0ff139612dc9aeb14cf3ff9b.jpg',
+      'https://i.pinimg.com/736x/ff/d1/e5/ffd1e5e9e21d9a3d0ff058990fb6690b.jpg',
+      'https://i.pinimg.com/736x/c7/4e/ba/c74ebab77ad3b1b44246ffb354823e19.jpg',
+      'https://i.pinimg.com/736x/22/af/d4/22afd4b5e0a4b2a759effc243f64a315.jpg',
+    ]
+  },
+  {
+    id: 'cosmic-void',
+    name: 'Cosmic Void',
+    sref: '--sref 7361528',
+    desc: 'Infinite space, cosmic scale, tiny figures against the universe. Existential awe.',
+    tags: ['cosmic', 'space', 'dark', 'scale', 'minimal', 'vast'],
+    engines: ['midjourney', 'dalle'],
+    prompt: 'a tiny astronaut floating in an endless cosmic void, stars in distance --sref 7361528 --ar 16:9',
+    images: [
+      'https://i.pinimg.com/736x/c2/4d/e6/c24de626ed123e5cc90781a68a707141.jpg',
+      'https://i.pinimg.com/736x/d0/10/61/d01061073f51ad72a262c1ade1b4cef3.jpg',
+      'https://i.pinimg.com/736x/90/0d/06/900d06cd57a30dc72cb7ce949cce6344.jpg',
+      'https://i.pinimg.com/736x/c4/8c/a1/c48ca116ff069c4f451aa464c2ac2c9d.jpg',
+    ]
+  },
+  {
+    id: 'dark-fluid',
+    name: 'Dark Fluid',
+    sref: '--sref 9150374',
+    desc: 'Organic flowing shapes, silk-like motion, abstract dark fluid dynamics.',
+    tags: ['abstract', 'fluid', 'organic', 'motion', 'dark', 'silk'],
+    engines: ['midjourney', 'flux'],
+    prompt: 'abstract dark fluid silk flowing through void, organic shapes --sref 9150374 --ar 1:1',
+    images: [
+      'https://i.pinimg.com/736x/c3/8a/86/c38a867f53cef698117da479bfc21267.jpg',
+      'https://i.pinimg.com/736x/35/20/d7/3520d7903b366c3e3d3f8301ff66b76a.jpg',
+      'https://i.pinimg.com/736x/97/cb/fe/97cbfe29f57ecb11c77c2007026c4317.jpg',
+      'https://i.pinimg.com/736x/e5/7c/38/e57c38f692880054419de217e298ca67.jpg',
+    ]
+  },
+  {
+    id: 'glassmorphism',
+    name: 'Glassmorphism UI',
+    sref: '--sref 2058174',
+    desc: 'Frosted glass panels, blur effects, translucent interfaces. Modern UI design language.',
+    tags: ['glassmorphism', 'ui', 'dark', 'blur', 'modern', 'interface'],
+    engines: ['midjourney'],
+    prompt: 'dark glassmorphism dashboard UI with frosted panels and subtle gradients --sref 2058174 --ar 16:9',
+    images: [
+      'https://i.pinimg.com/736x/c1/4a/a2/c14aa2a22044644ba4d94f30d0703306.jpg',
+      'https://i.pinimg.com/736x/fb/63/74/fb637424ade0ef69b992a34f940d1bac.jpg',
+      'https://i.pinimg.com/736x/0e/f3/fc/0ef3fccbe2a842757b9b42613e23ac56.jpg',
+      'https://i.pinimg.com/736x/d6/fe/58/d6fe58460ee240f40d5843cf7be2c5bd.jpg',
+    ]
+  },
+  {
+    id: 'abstract-monochrome',
+    name: 'Abstract Monochrome',
+    sref: '--sref 4628193',
+    desc: 'Black and white abstraction, expressive mark-making, fine art photography meets painting.',
+    tags: ['abstract', 'monochrome', 'fine-art', 'expressive', 'dark', 'texture'],
+    engines: ['midjourney', 'sd'],
+    prompt: 'abstract monochrome fine art, expressive brushstrokes on dark background --sref 4628193 --ar 1:1',
+    images: [
+      'https://i.pinimg.com/736x/9b/a8/d1/9ba8d1887b5ce0d5ee03aa576bd8a8f4.jpg',
+      'https://i.pinimg.com/736x/a3/24/57/a32457971d0f38148dd087fbc1d2f463.jpg',
+      'https://i.pinimg.com/736x/9a/c5/99/9ac599f5ce259ee4367e804cca1c3b14.jpg',
+      'https://i.pinimg.com/736x/b0/70/43/b070439e8935c508c5c9fa6aec8fe57b.jpg',
+    ]
+  },
+  {
+    id: 'warm-noir-interior',
+    name: 'Warm Noir Interior',
+    sref: '--sref 3847291',
+    desc: 'Moody interior spaces, warm tungsten lighting, cinematic room compositions.',
+    tags: ['interior', 'warm', 'noir', 'moody', 'cinematic', 'cozy'],
+    engines: ['midjourney', 'flux'],
+    prompt: 'dark moody interior with warm tungsten light streaming through blinds --sref 3847291 --ar 16:9',
+    images: [
+      'https://i.pinimg.com/736x/2c/38/ae/2c38ae4c04189ac43f5e9f560e8d7088.jpg',
+      'https://i.pinimg.com/736x/94/89/40/948940f3bd2ee0b73dea0087f9efac6a.jpg',
+      'https://i.pinimg.com/736x/15/3b/1a/153b1a437eeee4a9167d9822ad7a2043.jpg',
+      'https://i.pinimg.com/736x/21/97/74/2197746ff1b74a0dec2ff2e4169da706.jpg',
+    ]
+  },
+  {
+    id: 'geometric-depth',
+    name: 'Geometric Depth',
+    sref: '--sref 5039281',
+    desc: '3D geometric forms, impossible architecture, depth and perspective illusions.',
+    tags: ['geometric', '3d', 'abstract', 'depth', 'architecture', 'minimal'],
+    engines: ['midjourney', 'flux'],
+    prompt: 'impossible geometric architecture in dark void, dramatic perspective --sref 5039281 --ar 3:4',
+    images: [
+      'https://i.pinimg.com/736x/f2/d2/fc/f2d2fc1beef7a7145eca88248934aa1c.jpg',
+      'https://i.pinimg.com/736x/5e/49/63/5e49632c7f0ba2e610bab2fa25566c23.jpg',
+      'https://i.pinimg.com/736x/59/7d/4f/597d4f641f457507be606f3653afb3e7.jpg',
+      'https://i.pinimg.com/736x/2c/32/26/2c3226d16e1c2d9420a5fb904b24d2b1.jpg',
+    ]
+  },
+  {
+    id: 'psychedelic-dark',
+    name: 'Psychedelic Dark',
+    sref: '--sref 6829175',
+    desc: 'Vivid colors erupting from darkness, trippy patterns, controlled chaos.',
+    tags: ['psychedelic', 'colorful', 'dark', 'abstract', 'trippy', 'wild'],
+    engines: ['midjourney'],
+    prompt: 'psychedelic dark art, vivid neon colors erupting from black void --sref 6829175 --ar 1:1',
+    images: [
+      'https://i.pinimg.com/736x/95/6d/ae/956dae1d20364dca9a851f55f6e6334e.jpg',
+      'https://i.pinimg.com/736x/eb/fc/42/ebfc42ac15176c8dfaa9563e5658bf5f.jpg',
+      'https://i.pinimg.com/736x/71/2c/bc/712cbcb4b834c6ef805048473ab58bb2.jpg',
+      'https://i.pinimg.com/736x/73/9d/81/739d8102019c5c176673f9d6547b12df.jpg',
+    ]
+  },
+  {
+    id: 'retro-poster',
+    name: 'Retro Dark Poster',
+    sref: '--sref 1947362',
+    desc: 'Vintage print aesthetics with dark palettes, distressed textures, old-school cool.',
+    tags: ['retro', 'vintage', 'poster', 'texture', 'grunge', 'warm'],
+    engines: ['midjourney', 'sd'],
+    prompt: 'retro dark movie poster style, distressed texture, warm muted colors --sref 1947362 --ar 3:4',
+    images: [
+      'https://i.pinimg.com/736x/47/68/3b/47683b99b1fbc65e2c3d7a37cde3710b.jpg',
+      'https://i.pinimg.com/736x/e2/5e/5b/e25e5be75a7201f5087700789945a9f7.jpg',
+      'https://i.pinimg.com/736x/72/d6/1c/72d61ce88f2a0aeaeb7f235fc9260308.jpg',
+      'https://i.pinimg.com/736x/24/04/cf/2404cfc2953f270ae5a707ef589aff29.jpg',
+    ]
+  },
+  {
+    id: 'particle-light',
+    name: 'Particle Light',
+    sref: '--sref 8261539',
+    desc: 'Scattered light particles, cosmic dust, bioluminescent points in darkness.',
+    tags: ['particles', 'light', 'cosmic', 'scatter', 'dark', 'bioluminescent'],
+    engines: ['midjourney', 'flux'],
+    prompt: 'millions of light particles scattering through dark space --sref 8261539 --ar 16:9',
+    images: [
+      'https://i.pinimg.com/736x/16/08/18/160818fd9f0f3d4647a0fcb1c2a7fb8e.jpg',
+      'https://i.pinimg.com/736x/81/c0/8c/81c08c15d39ae6a7fa15464bff703838.jpg',
+      'https://i.pinimg.com/736x/57/55/4e/57554e0784c121525230a54844f5e812.jpg',
+      'https://i.pinimg.com/736x/d1/33/80/d13380fd7492fdea0f4857d4e8a460fa.jpg',
+    ]
+  },
+  {
+    id: 'underwater-ethereal',
+    name: 'Underwater Ethereal',
+    sref: '--sref 3074926',
+    desc: 'Submerged scenes, floating figures, blue-green depths, weightless beauty.',
+    tags: ['underwater', 'ethereal', 'blue', 'dreamy', 'surreal', 'figure'],
+    engines: ['midjourney', 'dalle'],
+    prompt: 'ethereal figure floating underwater in deep blue, light rays from surface --sref 3074926 --ar 9:16',
+    images: [
+      'https://i.pinimg.com/736x/63/b9/ea/63b9ea659e3e0334a64d1863bbda0b61.jpg',
+      'https://i.pinimg.com/736x/d8/16/91/d8169147b98e6c8cbbd74e8062bccfdb.jpg',
+      'https://i.pinimg.com/736x/dd/23/b6/dd23b6699b055ca927a76380a63e1323.jpg',
+      'https://i.pinimg.com/736x/fb/7e/62/fb7e62c7e1a66d8f2cae99911b957fd2.jpg',
+    ]
+  },
+  {
+    id: 'eerie-forest',
+    name: 'Eerie Forest',
+    sref: '--sref 4592817',
+    desc: 'Dark enchanted woods, mysterious paths, Blair Witch atmosphere.',
+    tags: ['forest', 'eerie', 'dark', 'nature', 'mysterious', 'atmospheric'],
+    engines: ['midjourney', 'flux', 'sd'],
+    prompt: 'eerie dark forest path with faint light in the distance --sref 4592817 --ar 16:9',
+    images: [
+      'https://i.pinimg.com/736x/1e/01/10/1e0110e304b745656f23ccaa9a5fa9a1.jpg',
+      'https://i.pinimg.com/736x/f2/33/7b/f2337b3086acbcd7b2d0c42ea9dbe186.jpg',
+      'https://i.pinimg.com/736x/18/87/da/1887da16269e58bc6b1f5f7834fe3bcb.jpg',
+      'https://i.pinimg.com/736x/cf/18/67/cf1867982188b45dfcfad26d85efef5a.jpg',
+    ]
+  },
+  {
+    id: 'golden-hour',
+    name: 'Golden Hour Drama',
+    sref: '--sref 2581946',
+    desc: 'Last light of day, warm silhouettes, cinematic golden tones against dark skies.',
+    tags: ['golden-hour', 'warm', 'silhouette', 'dramatic', 'cinematic', 'sunset'],
+    engines: ['midjourney', 'flux'],
+    prompt: 'dramatic golden hour silhouette against stormy sky --sref 2581946 --ar 16:9',
+    images: [
+      'https://i.pinimg.com/736x/aa/6d/ef/aa6defdb20bb6e76d8a9c8d9d7c7eb0a.jpg',
+      'https://i.pinimg.com/736x/06/ba/3a/06ba3a54d08d80a13b1a0b6e2a8ff591.jpg',
+      'https://i.pinimg.com/736x/e5/d0/32/e5d032787216c076db1457b27df857ec.jpg',
+      'https://i.pinimg.com/736x/42/78/75/42787558e3ce78ff17f6aedfb90e1c79.jpg',
+    ]
+  },
+  {
+    id: 'swiss-minimal',
+    name: 'Swiss Minimal',
+    sref: '--sref 7194038',
+    desc: 'Clean grid systems, Helvetica DNA, international typographic style on dark.',
+    tags: ['swiss', 'minimal', 'grid', 'clean', 'typography', 'design'],
+    engines: ['midjourney'],
+    prompt: 'swiss style minimalist poster, clean grid layout, dark background --sref 7194038 --ar 3:4',
+    images: [
+      'https://i.pinimg.com/736x/95/a9/90/95a9900c177496693549f8322289217d.jpg',
+      'https://i.pinimg.com/736x/40/f5/fb/40f5fb13c6abc7c607ee9d0b4f6c2338.jpg',
+      'https://i.pinimg.com/736x/e7/b8/77/e7b877cd024e1949e387bbd25206f85d.jpg',
+      'https://i.pinimg.com/736x/c1/43/8e/c1438ef19ebcb2b0866d33b65c72b93c.jpg',
+    ]
+  },
+];
+
+// ============================================================
+//  A/B TEST DATA (unchanged from before)
+// ============================================================
 const DEPARTMENTS = {
   edward: {
     icon: '👤', name: 'Edward', desc: 'Art-first · Cinematic · Dark moody aesthetic',
@@ -199,20 +609,6 @@ const DEPARTMENTS = {
         { file: 'https://i.pinimg.com/736x/76/7e/0d/767e0dbb34035007ee569b11337c799e.jpg', tags: ['fog','figure','backlit','dark','atmospheric','depth'], label: 'Backlit Figure in Fog' },
         { file: 'https://i.pinimg.com/736x/52/8e/ea/528eeaea0ff139612dc9aeb14cf3ff9b.jpg', tags: ['rain','night','reflection','dark','urban','neon'], label: 'Rain Reflections' },
         { file: 'https://i.pinimg.com/736x/2c/38/ae/2c38ae4c04189ac43f5e9f560e8d7088.jpg', tags: ['dark','moody','interior','shadow','atmospheric','noir'], label: 'Moody Dark Interior' },
-        { file: 'https://i.pinimg.com/736x/21/97/74/2197746ff1b74a0dec2ff2e4169da706.jpg', tags: ['fog','moody','dark','cinematic','depth','film'], label: 'Deep Fog Atmosphere' },
-        { file: 'https://i.pinimg.com/736x/a6/67/c4/a667c48e77c86e004ec2ec38a5a1726a.jpg', tags: ['noir','shadow','dark','contrast','cinematic','drama'], label: 'Noir Drama' },
-        { file: 'https://i.pinimg.com/736x/22/af/d4/22afd4b5e0a4b2a759effc243f64a315.jpg', tags: ['night','urban','dark','lights','cinematic','lonely'], label: 'Urban Night Lights' },
-        { file: 'https://i.pinimg.com/736x/19/31/ea/1931ea6e2f8dbaa4d20d2c8e5f5a2c4e.jpg', tags: ['fog','dark','figure','street','moody','atmospheric'], label: 'Figure in Fog Street' },
-        { file: 'https://i.pinimg.com/736x/15/3b/1a/153b1a437eeee4a9167d9822ad7a2043.jpg', tags: ['dark','cinematic','mood','shadow','interior','film'], label: 'Cinematic Shadow' },
-        { file: 'https://i.pinimg.com/736x/c7/4e/ba/c74ebab77ad3b1b44246ffb354823e19.jpg', tags: ['rain','dark','reflection','night','urban','wet'], label: 'Rain-Soaked Street' },
-        { file: 'https://i.pinimg.com/736x/18/87/da/1887da16269e58bc6b1f5f7834fe3bcb.jpg', tags: ['dark','moody','atmospheric','mist','landscape','vast'], label: 'Misty Landscape' },
-        { file: 'https://i.pinimg.com/736x/ff/d1/e5/ffd1e5e9e21d9a3d0ff058990fb6690b.jpg', tags: ['night','dark','neon','glow','urban','cinematic'], label: 'Neon Night Glow' },
-        { file: 'https://i.pinimg.com/736x/e8/c8/6f/e8c86f236bcd1b9f3da87d53683d0317.jpg', tags: ['dark','silhouette','backlit','atmospheric','dramatic','fog'], label: 'Backlit Silhouette' },
-        { file: 'https://i.pinimg.com/736x/81/8a/c7/818ac70a79d7750696e03def3481edd2.jpg', tags: ['fog','dark','bridge','atmospheric','depth','mystery'], label: 'Fog Bridge Mystery' },
-        { file: 'https://i.pinimg.com/736x/94/89/40/948940f3bd2ee0b73dea0087f9efac6a.jpg', tags: ['dark','moody','cinematic','warm','interior','noir'], label: 'Warm Noir Interior' },
-        { file: 'https://i.pinimg.com/736x/06/ba/3a/06ba3a54d08d80a13b1a0b6e2a8ff591.jpg', tags: ['dark','dramatic','sky','clouds','landscape','vast'], label: 'Dramatic Dark Sky' },
-        { file: 'https://i.pinimg.com/736x/1e/01/10/1e0110e304b745656f23ccaa9a5fa9a1.jpg', tags: ['night','forest','dark','eerie','atmospheric','nature'], label: 'Eerie Dark Forest' },
-        { file: 'https://i.pinimg.com/736x/aa/6d/ef/aa6defdb20bb6e76d8a9c8d9d7c7eb0a.jpg', tags: ['sunset','dark','silhouette','warm','golden','cinematic'], label: 'Golden Hour Silhouette' },
       ]},
       conceptual: { icon: '🎨', name: 'Conceptual', boardId: '1121607550888730157', images: [
         { file: 'https://i.pinimg.com/736x/21/0d/8d/210d8d2761e6b134a7a0f27fd2569623.jpg', tags: ['surreal','dark','figure','abstract','fine-art','mysterious'], label: 'Surreal Dark Figure' },
@@ -223,60 +619,18 @@ const DEPARTMENTS = {
         { file: 'https://i.pinimg.com/736x/28/1a/34/281a34a2e88babdc2e054e8ae7cfdad8.jpg', tags: ['surreal','landscape','dark','vast','solitary','scale'], label: 'Vast Dark Landscape' },
         { file: 'https://i.pinimg.com/736x/1d/74/1a/1d741ad5318548b0b1b87eac4e23eb69.jpg', tags: ['portal','surreal','dark','glowing','figure','mystical'], label: 'Dark Portal Gateway' },
         { file: 'https://i.pinimg.com/736x/34/df/c5/34dfc5994e366bade1394e9f2338d34a.jpg', tags: ['fog','surreal','landscape','dark','atmospheric','vast'], label: 'Surreal Fog Landscape' },
-        { file: 'https://i.pinimg.com/736x/d8/16/91/d8169147b98e6c8cbbd74e8062bccfdb.jpg', tags: ['dark','figure','light','contrast','dramatic','mystery'], label: 'Figure in Light' },
-        { file: 'https://i.pinimg.com/736x/63/b9/ea/63b9ea659e3e0334a64d1863bbda0b61.jpg', tags: ['surreal','underwater','dark','ethereal','dream','blue'], label: 'Surreal Underwater' },
-        { file: 'https://i.pinimg.com/736x/05/b7/04/05b70401244b8b7a8cb94710e974913a.jpg', tags: ['portal','circle','dark','glowing','cosmic','minimal'], label: 'Cosmic Portal' },
-        { file: 'https://i.pinimg.com/736x/d2/54/10/d2541072ed091395d57bcfc0d15f5dd2.jpg', tags: ['surreal','dark','abstract','figure','void','fine-art'], label: 'Figure in Void' },
-        { file: 'https://i.pinimg.com/736x/e5/d0/32/e5d032787216c076db1457b27df857ec.jpg', tags: ['fog','dark','horizon','solitary','atmospheric','vast'], label: 'Solitary Fog Horizon' },
-        { file: 'https://i.pinimg.com/736x/86/15/6c/86156c3fce80f3c8eac07ebddabf7d1a.jpg', tags: ['surreal','dark','portal','light','otherworldly','scale'], label: 'Otherworldly Light' },
-        { file: 'https://i.pinimg.com/736x/cf/18/67/cf1867982188b45dfcfad26d85efef5a.jpg', tags: ['dark','silhouette','fog','moody','cinematic','atmospheric'], label: 'Silhouette in Fog' },
-        { file: 'https://i.pinimg.com/736x/c2/4d/e6/c24de626ed123e5cc90781a68a707141.jpg', tags: ['surreal','cosmic','dark','galaxy','figure','scale'], label: 'Cosmic Scale' },
-        { file: 'https://i.pinimg.com/736x/2c/32/26/2c3226d16e1c2d9420a5fb904b24d2b1.jpg', tags: ['surreal','dark','geometric','abstract','portal','depth'], label: 'Geometric Dark Portal' },
-        { file: 'https://i.pinimg.com/736x/dd/23/b6/dd23b6699b055ca927a76380a63e1323.jpg', tags: ['dark','dreamlike','figure','light','ethereal','surreal'], label: 'Ethereal Light Figure' },
-        { file: 'https://i.pinimg.com/736x/41/ba/9a/41ba9a9236303fad87a0d18607663613.jpg', tags: ['surreal','dark','landscape','otherworldly','vast','dream'], label: 'Otherworldly Terrain' },
-        { file: 'https://i.pinimg.com/736x/9a/c5/99/9ac599f5ce259ee4367e804cca1c3b14.jpg', tags: ['dark','abstract','surreal','organic','fine-art','texture'], label: 'Dark Organic Abstract' },
-        { file: 'https://i.pinimg.com/736x/7e/d6/0a/7ed60a7cf0742c1b19ee5af6638bed9e.jpg', tags: ['portal','light','dark','surreal','cosmic','minimal'], label: 'Light Portal Minimal' },
-        { file: 'https://i.pinimg.com/736x/fb/7e/62/fb7e62c7e1a66d8f2cae99911b957fd2.jpg', tags: ['surreal','dark','fog','figure','mysterious','vast'], label: 'Mysterious Fog Figure' },
-        { file: 'https://i.pinimg.com/736x/a3/24/57/a32457971d0f38148dd087fbc1d2f463.jpg', tags: ['dark','abstract','surreal','void','fine-art','monochrome'], label: 'Void Abstract' },
-        { file: 'https://i.pinimg.com/736x/95/6d/ae/956dae1d20364dca9a851f55f6e6334e.jpg', tags: ['surreal','colorful','dark','psychedelic','abstract','wild'], label: 'Psychedelic Dark Art' },
       ]},
       poster: { icon: '📐', name: 'Poster', boardId: '1121607550888730161', images: [
-        { file: 'https://i.pinimg.com/736x/d0/10/61/d01061073f51ad72a262c1ade1b4cef3.jpg', tags: ['dark','textured','abstract','lines','blue','design'], label: 'Blue Abstract Lines' },
-        { file: 'https://i.pinimg.com/736x/90/0d/06/900d06cd57a30dc72cb7ce949cce6344.jpg', tags: ['dark','cosmic','light','dramatic','space','atmospheric'], label: 'Cosmic Light Burst' },
-        { file: 'https://i.pinimg.com/736x/c4/8c/a1/c48ca116ff069c4f451aa464c2ac2c9d.jpg', tags: ['planets','space','dark','infographic','cosmic','design'], label: 'Space Infographic' },
-        { file: 'https://i.pinimg.com/736x/eb/fc/42/ebfc42ac15176c8dfaa9563e5658bf5f.jpg', tags: ['neon','colorful','dark','typography','bold','vibrant'], label: 'Neon Typography' },
         { file: 'https://i.pinimg.com/736x/bd/af/a9/bdafa9bb7b48ebe6d7b02ade3dcfb110.jpg', tags: ['dark','bold','typography','poster','editorial','graphic'], label: 'Bold Typography Poster' },
         { file: 'https://i.pinimg.com/736x/5e/49/63/5e49632c7f0ba2e610bab2fa25566c23.jpg', tags: ['abstract','dark','lines','geometric','minimal','design'], label: 'Geometric Line Art' },
         { file: 'https://i.pinimg.com/736x/81/02/86/8102865fd078549ecf6f7c6323f41d79.jpg', tags: ['dark','poster','texture','grunge','bold','raw'], label: 'Grunge Texture Poster' },
         { file: 'https://i.pinimg.com/736x/40/f5/fb/40f5fb13c6abc7c607ee9d0b4f6c2338.jpg', tags: ['dark','editorial','layout','clean','modern','design'], label: 'Clean Editorial Layout' },
-        { file: 'https://i.pinimg.com/736x/71/2c/bc/712cbcb4b834c6ef805048473ab58bb2.jpg', tags: ['dark','abstract','bold','contrast','art','poster'], label: 'Bold Contrast Art' },
-        { file: 'https://i.pinimg.com/736x/27/27/36/2727366439f6d9fc3fe7df5cd5f7e3a1.jpg', tags: ['dark','typography','minimal','serif','elegant','design'], label: 'Elegant Serif Type' },
-        { file: 'https://i.pinimg.com/736x/c1/43/8e/c1438ef19ebcb2b0866d33b65c72b93c.jpg', tags: ['dark','poster','gradient','abstract','modern','vibrant'], label: 'Gradient Abstract Poster' },
-        { file: 'https://i.pinimg.com/736x/e2/5e/5b/e25e5be75a7201f5087700789945a9f7.jpg', tags: ['dark','composition','layout','editorial','texture','art'], label: 'Textured Composition' },
-        { file: 'https://i.pinimg.com/736x/72/d6/1c/72d61ce88f2a0aeaeb7f235fc9260308.jpg', tags: ['dark','collage','experimental','bold','mixed-media','raw'], label: 'Experimental Collage' },
-        { file: 'https://i.pinimg.com/736x/47/68/3b/47683b99b1fbc65e2c3d7a37cde3710b.jpg', tags: ['dark','retro','poster','vintage','typography','warm'], label: 'Retro Dark Poster' },
-        { file: 'https://i.pinimg.com/736x/b0/70/43/b070439e8935c508c5c9fa6aec8fe57b.jpg', tags: ['dark','abstract','paint','expressive','art','brush'], label: 'Expressive Paint Art' },
-        { file: 'https://i.pinimg.com/736x/24/04/cf/2404cfc2953f270ae5a707ef589aff29.jpg', tags: ['dark','poster','photography','duotone','bold','contrast'], label: 'Duotone Photo Poster' },
-        { file: 'https://i.pinimg.com/736x/f2/d2/fc/f2d2fc1beef7a7145eca88248934aa1c.jpg', tags: ['dark','geometric','3d','abstract','depth','modern'], label: '3D Geometric Depth' },
-        { file: 'https://i.pinimg.com/736x/e7/b8/77/e7b877cd024e1949e387bbd25206f85d.jpg', tags: ['dark','kinetic','typography','motion','dynamic','bold'], label: 'Kinetic Typography' },
-        { file: 'https://i.pinimg.com/736x/95/a9/90/95a9900c177496693549f8322289217d.jpg', tags: ['dark','swiss','grid','clean','minimal','poster'], label: 'Swiss Grid Poster' },
       ]},
       motion: { icon: '🌀', name: 'Motion', boardId: '1121607550888730163', images: [
         { file: 'https://i.pinimg.com/736x/c3/8a/86/c38a867f53cef698117da479bfc21267.jpg', tags: ['abstract','dark','fluid','organic','3d','movement'], label: 'Dark Fluid Motion' },
         { file: 'https://i.pinimg.com/736x/7a/ce/ef/7aceefeda4518eeda909cc0c5167d61c.jpg', tags: ['abstract','dark','metallic','chrome','3d','liquid'], label: 'Chrome Liquid' },
         { file: 'https://i.pinimg.com/736x/16/08/18/160818fd9f0f3d4647a0fcb1c2a7fb8e.jpg', tags: ['abstract','dark','particles','light','motion','cosmic'], label: 'Particle Motion' },
         { file: 'https://i.pinimg.com/736x/82/cd/16/82cd162535b0d7546f8ba20d62292882.jpg', tags: ['abstract','dark','organic','texture','3d','movement'], label: 'Organic Dark Texture' },
-        { file: 'https://i.pinimg.com/736x/fa/1b/df/fa1bdf8e34678d6f76d4b6901281484b.jpg', tags: ['3d','dark','chrome','metallic','fluid','render'], label: 'Chrome 3D Render' },
-        { file: 'https://i.pinimg.com/736x/35/20/d7/3520d7903b366c3e3d3f8301ff66b76a.jpg', tags: ['abstract','dark','swirl','fluid','organic','motion'], label: 'Dark Swirl Motion' },
-        { file: 'https://i.pinimg.com/736x/59/7d/4f/597d4f641f457507be606f3653afb3e7.jpg', tags: ['3d','dark','abstract','geometric','render','depth'], label: 'Abstract 3D Geometry' },
-        { file: 'https://i.pinimg.com/736x/f8/5b/66/f85b66be1399e782b960edcfeea647f5.jpg', tags: ['dark','liquid','chrome','metallic','3d','reflective'], label: 'Liquid Chrome' },
-        { file: 'https://i.pinimg.com/736x/e5/7c/38/e57c38f692880054419de217e298ca67.jpg', tags: ['abstract','dark','wave','fluid','motion','blue'], label: 'Dark Wave Motion' },
-        { file: 'https://i.pinimg.com/736x/73/9d/81/739d8102019c5c176673f9d6547b12df.jpg', tags: ['3d','dark','organic','blob','render','surreal'], label: 'Organic Blob Render' },
-        { file: 'https://i.pinimg.com/736x/81/c0/8c/81c08c15d39ae6a7fa15464bff703838.jpg', tags: ['abstract','dark','particles','scatter','cosmic','light'], label: 'Particle Scatter' },
-        { file: 'https://i.pinimg.com/736x/97/cb/fe/97cbfe29f57ecb11c77c2007026c4317.jpg', tags: ['dark','fluid','silk','abstract','motion','elegant'], label: 'Dark Silk Flow' },
-        { file: 'https://i.pinimg.com/736x/c5/3c/4f/c53c4ff0404ea2a74b5cf041da975707.jpg', tags: ['3d','dark','chrome','sphere','render','minimal'], label: 'Chrome Sphere' },
-        { file: 'https://i.pinimg.com/736x/d1/33/80/d13380fd7492fdea0f4857d4e8a460fa.jpg', tags: ['abstract','dark','distortion','glitch','experimental','motion'], label: 'Glitch Distortion' },
-        { file: 'https://i.pinimg.com/736x/57/55/4e/57554e0784c121525230a54844f5e812.jpg', tags: ['3d','dark','crystalline','abstract','light','prismatic'], label: 'Crystalline Light' },
       ]},
       uiux: { icon: '🖥️', name: 'UI/UX', boardId: '1121607550888730159', images: [
         { file: 'https://i.pinimg.com/736x/fb/63/74/fb637424ade0ef69b992a34f940d1bac.jpg', tags: ['dashboard','dark','analytics','data-viz','modern'], label: 'Dark Analytics Dashboard' },
@@ -287,18 +641,6 @@ const DEPARTMENTS = {
         { file: 'https://i.pinimg.com/736x/14/c6/70/14c670b85515a620919e129fffbc5917.jpg', tags: ['dashboard','dark','stats','minimal','modern'], label: 'Stats Dashboard' },
         { file: 'https://i.pinimg.com/736x/1d/32/0c/1d320cb90b7afe0cab23b291b80c438b.jpg', tags: ['ui','dark','component','widget','app'], label: 'Dark UI Widgets' },
         { file: 'https://i.pinimg.com/736x/e8/ee/71/e8ee7161177693e017d12a0ed928b505.jpg', tags: ['dashboard','dark','finance','crypto','modern'], label: 'Finance Dashboard' },
-        { file: 'https://i.pinimg.com/736x/c1/4a/a2/c14aa2a22044644ba4d94f30d0703306.jpg', tags: ['glassmorphism','dark','ui','blur','modern','glass'], label: 'Glassmorphism UI' },
-        { file: 'https://i.pinimg.com/736x/7d/8c/23/7d8c2331824aed5f0f28cc299954877d.jpg', tags: ['dark','app','mobile','ui','minimal','clean'], label: 'Dark Mobile App' },
-        { file: 'https://i.pinimg.com/736x/0e/f3/fc/0ef3fccbe2a842757b9b42613e23ac56.jpg', tags: ['dashboard','dark','saas','modern','gradient','ui'], label: 'SaaS Dark Dashboard' },
-        { file: 'https://i.pinimg.com/736x/d6/fe/58/d6fe58460ee240f40d5843cf7be2c5bd.jpg', tags: ['ui','dark','neomorphism','soft','depth','minimal'], label: 'Neomorphism UI' },
-        { file: 'https://i.pinimg.com/736x/7b/6f/18/7b6f186528882a34f63e6f527a01b28b.jpg', tags: ['dark','landing','page','web','modern','bold'], label: 'Bold Dark Landing' },
-        { file: 'https://i.pinimg.com/736x/e7/68/f0/e768f0be34f16304da7a0cb8c5b54b79.jpg', tags: ['dark','ui','card','component','design','system'], label: 'UI Component Cards' },
-        { file: 'https://i.pinimg.com/736x/f4/b8/21/f4b821859b0915a6213d9f8d0235bcda.jpg', tags: ['dark','dashboard','chart','analytics','purple','data'], label: 'Purple Analytics' },
-        { file: 'https://i.pinimg.com/736x/cc/ec/52/ccec522a34c3330126f29b0f328caafe.jpg', tags: ['dark','app','ui','ios','clean','minimal'], label: 'Clean iOS Dark App' },
-        { file: 'https://i.pinimg.com/736x/95/ea/93/95ea934148c3fed506f27131f6504d36.jpg', tags: ['dark','web','design','creative','portfolio','bold'], label: 'Creative Portfolio Dark' },
-        { file: 'https://i.pinimg.com/736x/5e/af/a5/5eafa5bb29e1e6a4ac44a5d0e59bd02f.jpg', tags: ['dark','ui','table','data','enterprise','clean'], label: 'Enterprise Data Table' },
-        { file: 'https://i.pinimg.com/736x/2c/27/79/2c2779274afce668b5600cb41b9659c0.jpg', tags: ['dark','onboarding','ui','flow','modern','gradient'], label: 'Onboarding Flow' },
-        { file: 'https://i.pinimg.com/736x/eb/b6/c2/ebb6c2e30b0e30dc947cf17fb4c5dbec.jpg', tags: ['dark','music','app','ui','player','vibrant'], label: 'Dark Music Player' },
       ]},
     }
   },
@@ -310,270 +652,351 @@ const DEPARTMENTS = {
         { file: 'https://i.pinimg.com/736x/bc/4a/3c/bc4a3c4270d511e727b7b97cb276752b.jpg', tags: ['ui','dark','cards','metrics','layout'], label: 'UI Cards Layout' },
         { file: 'https://i.pinimg.com/736x/6a/69/49/6a694943a20803f725be3dde911f42b2.jpg', tags: ['interface','dark','gradient','modern','web'], label: 'Dark Web Interface' },
         { file: 'https://i.pinimg.com/736x/da/73/39/da7339be47d3811cea70968395d3fc6b.jpg', tags: ['dashboard','dark','charts','data','product'], label: 'Product Dashboard' },
-        { file: 'https://i.pinimg.com/736x/ab/1a/7c/ab1a7c2329b8c27ae10087f8a84d3442.jpg', tags: ['design','dark','panel','ui','system'], label: 'Design System Panel' },
-        { file: 'https://i.pinimg.com/736x/14/c6/70/14c670b85515a620919e129fffbc5917.jpg', tags: ['stats','dark','minimal','modern','saas'], label: 'SaaS Stats View' },
-        { file: 'https://i.pinimg.com/736x/1d/32/0c/1d320cb90b7afe0cab23b291b80c438b.jpg', tags: ['widget','dark','component','app','mobile'], label: 'App Components' },
-        { file: 'https://i.pinimg.com/736x/e8/ee/71/e8ee7161177693e017d12a0ed928b505.jpg', tags: ['finance','dark','crypto','dashboard','modern'], label: 'Finance Dashboard' },
         { file: 'https://i.pinimg.com/736x/c1/4a/a2/c14aa2a22044644ba4d94f30d0703306.jpg', tags: ['glassmorphism','dark','blur','ui','modern','glass'], label: 'Glass Effect Dashboard' },
         { file: 'https://i.pinimg.com/736x/0e/f3/fc/0ef3fccbe2a842757b9b42613e23ac56.jpg', tags: ['saas','dark','product','modern','gradient','ui'], label: 'SaaS Product Page' },
         { file: 'https://i.pinimg.com/736x/d6/fe/58/d6fe58460ee240f40d5843cf7be2c5bd.jpg', tags: ['neomorphism','dark','soft','depth','minimal','ui'], label: 'Soft Neomorphism' },
         { file: 'https://i.pinimg.com/736x/7b/6f/18/7b6f186528882a34f63e6f527a01b28b.jpg', tags: ['landing','dark','bold','web','modern','hero'], label: 'Bold Hero Section' },
-        { file: 'https://i.pinimg.com/736x/e7/68/f0/e768f0be34f16304da7a0cb8c5b54b79.jpg', tags: ['component','dark','card','design','system','ui'], label: 'Component Library' },
-        { file: 'https://i.pinimg.com/736x/f4/b8/21/f4b821859b0915a6213d9f8d0235bcda.jpg', tags: ['analytics','dark','purple','chart','data','dashboard'], label: 'Purple Data Analytics' },
-        { file: 'https://i.pinimg.com/736x/8b/72/e7/8b72e7904f2d3f687bd6051cf36962d6.jpg', tags: ['fintech','dark','banking','app','modern','clean'], label: 'Fintech Banking App' },
-        { file: 'https://i.pinimg.com/736x/09/71/34/0971347c1306a759113f4aa214aa388f.jpg', tags: ['ecommerce','dark','product','shop','modern','ui'], label: 'Dark E-Commerce' },
-        { file: 'https://i.pinimg.com/736x/cc/ec/52/ccec522a34c3330126f29b0f328caafe.jpg', tags: ['ios','dark','app','clean','minimal','native'], label: 'Native iOS Dark' },
-        { file: 'https://i.pinimg.com/736x/95/ea/93/95ea934148c3fed506f27131f6504d36.jpg', tags: ['portfolio','dark','creative','web','design','bold'], label: 'Creative Dark Portfolio' },
-        { file: 'https://i.pinimg.com/736x/5e/af/a5/5eafa5bb29e1e6a4ac44a5d0e59bd02f.jpg', tags: ['enterprise','dark','table','data','clean','saas'], label: 'Enterprise SaaS Table' },
-        { file: 'https://i.pinimg.com/736x/eb/b6/c2/ebb6c2e30b0e30dc947cf17fb4c5dbec.jpg', tags: ['music','dark','player','app','vibrant','ui'], label: 'Music Player App' },
       ]},
       vp001: { icon: '🤝', name: 'VP-001', boardId: '1121607619606610020', images: [
         { file: 'https://i.pinimg.com/736x/fb/63/74/fb637424ade0ef69b992a34f940d1bac.jpg', tags: ['saas','dashboard','dark','blue','analytics'], label: 'SaaS Analytics' },
         { file: 'https://i.pinimg.com/736x/da/73/39/da7339be47d3811cea70968395d3fc6b.jpg', tags: ['data-viz','chart','dark','blue','metrics'], label: 'Data Metrics' },
         { file: 'https://i.pinimg.com/736x/14/c6/70/14c670b85515a620919e129fffbc5917.jpg', tags: ['tech','ui','dark','modern','stats'], label: 'Tech Stats UI' },
         { file: 'https://i.pinimg.com/736x/1d/32/0c/1d320cb90b7afe0cab23b291b80c438b.jpg', tags: ['minimal','clean','dark','widget','component'], label: 'Dark Widgets' },
-        { file: 'https://i.pinimg.com/736x/c1/4a/a2/c14aa2a22044644ba4d94f30d0703306.jpg', tags: ['glass','dark','blur','modern','dashboard','saas'], label: 'Glass Dashboard' },
-        { file: 'https://i.pinimg.com/736x/0e/f3/fc/0ef3fccbe2a842757b9b42613e23ac56.jpg', tags: ['product','dark','saas','gradient','modern','tech'], label: 'SaaS Product' },
-        { file: 'https://i.pinimg.com/736x/7d/8c/23/7d8c2331824aed5f0f28cc299954877d.jpg', tags: ['mobile','dark','app','clean','minimal','ui'], label: 'Clean Mobile App' },
-        { file: 'https://i.pinimg.com/736x/d6/fe/58/d6fe58460ee240f40d5843cf7be2c5bd.jpg', tags: ['soft','dark','neomorphism','depth','ui','minimal'], label: 'Soft Dark UI' },
-        { file: 'https://i.pinimg.com/736x/f4/b8/21/f4b821859b0915a6213d9f8d0235bcda.jpg', tags: ['analytics','dark','chart','data','purple','viz'], label: 'Data Viz Purple' },
-        { file: 'https://i.pinimg.com/736x/8b/72/e7/8b72e7904f2d3f687bd6051cf36962d6.jpg', tags: ['fintech','dark','banking','modern','blue','app'], label: 'Fintech App' },
       ]},
     }
   }
 };
 
-// ===== STATE =====
+// ============================================================
+//  LIBRARY FUNCTIONS
+// ============================================================
+let activeFilters = new Set();
+
+function getAllTags() {
+  const tags = new Set();
+  STYLES.forEach(s => s.tags.forEach(t => tags.add(t)));
+  return [...tags].sort();
+}
+
+function buildFilterRow() {
+  const row = document.getElementById('filterRow');
+  const popular = ['cinematic', 'dark', 'surreal', 'abstract', 'minimal', 'typography', 'ui', '3d', 'fog', 'cosmic', 'neon'];
+  row.innerHTML = popular.map(t =>
+    `<div class="filter-tag" data-tag="${t}" onclick="toggleFilter('${t}')">${t}</div>`
+  ).join('');
+}
+
+function toggleFilter(tag) {
+  if (activeFilters.has(tag)) activeFilters.delete(tag);
+  else activeFilters.add(tag);
+  document.querySelectorAll('.filter-tag').forEach(el => {
+    el.classList.toggle('active', activeFilters.has(el.dataset.tag));
+  });
+  filterLibrary();
+}
+
+function filterLibrary() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const grid = document.getElementById('styleGrid');
+  let filtered = STYLES;
+
+  if (q) {
+    filtered = filtered.filter(s =>
+      s.name.toLowerCase().includes(q) ||
+      s.desc.toLowerCase().includes(q) ||
+      s.sref.includes(q) ||
+      s.tags.some(t => t.includes(q))
+    );
+  }
+
+  if (activeFilters.size > 0) {
+    filtered = filtered.filter(s =>
+      [...activeFilters].some(f => s.tags.includes(f))
+    );
+  }
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="empty-state"><span class="emoji">🔍</span>No styles found. Try different keywords.</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(s => {
+    const engineHTML = s.engines.map(e => {
+      const label = { midjourney: 'MJ', sd: 'SD', flux: 'Flux', dalle: 'DALL·E' }[e] || e;
+      const cls = { midjourney: 'engine-mj', sd: 'engine-sd', flux: 'engine-flux', dalle: 'engine-dalle' }[e] || '';
+      return `<span class="engine-badge ${cls}">${label}</span>`;
+    }).join('');
+
+    return `
+      <div class="style-card" onclick="openStyle('${s.id}')">
+        <div class="style-samples">
+          ${s.images.slice(0,4).map(img => `<img src="${img}" alt="" loading="lazy">`).join('')}
+        </div>
+        <div class="style-meta">
+          <div class="style-name">${s.name}</div>
+          <div class="style-code">
+            <span>${s.sref}</span>
+            <span class="copy-code" onclick="event.stopPropagation();copyCode('${s.sref}',this)">Copy</span>
+          </div>
+          <div class="style-tags">${s.tags.slice(0,4).map(t => `<span>${t}</span>`).join('')}</div>
+          <div class="style-engines">${engineHTML}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function copyCode(code, el) {
+  navigator.clipboard.writeText(code).then(() => {
+    el.textContent = '✓';
+    setTimeout(() => el.textContent = 'Copy', 1500);
+  });
+}
+
+function openStyle(id) {
+  const s = STYLES.find(x => x.id === id);
+  if (!s) return;
+
+  const engineHTML = s.engines.map(e => {
+    const label = { midjourney: 'MJ', sd: 'SD', flux: 'Flux', dalle: 'DALL·E' }[e] || e;
+    const cls = { midjourney: 'engine-mj', sd: 'engine-sd', flux: 'engine-flux', dalle: 'engine-dalle' }[e] || '';
+    return `<span class="engine-badge ${cls}">${label}</span>`;
+  }).join('');
+
+  document.getElementById('modalGallery').innerHTML =
+    s.images.map(img => `<img src="${img}" alt="" loading="lazy">`).join('');
+
+  document.getElementById('modalBody').innerHTML = `
+    <h2>${s.name}</h2>
+    <div class="modal-code">
+      <span>${s.sref}</span>
+      <button onclick="copyCode('${s.sref}',this)">📋 Copy Code</button>
+    </div>
+    <div class="modal-desc">${s.desc}</div>
+    <div class="modal-section">
+      <h4>Tags</h4>
+      <div class="modal-tags">${s.tags.map(t => `<span>${t}</span>`).join('')}</div>
+    </div>
+    <div class="modal-section">
+      <h4>Engines</h4>
+      <div style="display:flex;gap:8px;">${engineHTML}</div>
+    </div>
+    <div class="modal-section">
+      <h4>Example Prompt</h4>
+      <div class="modal-prompt">
+        <span class="copy-prompt" onclick="navigator.clipboard.writeText(\`${s.prompt}\`).then(()=>{this.textContent='✓';setTimeout(()=>this.textContent='Copy',1500)})">Copy</span>
+        ${s.prompt}
+      </div>
+    </div>
+  `;
+
+  document.getElementById('modalOverlay').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+}
+
+function updateStats() {
+  document.getElementById('statStyles').textContent = STYLES.length;
+  const allTags = new Set();
+  STYLES.forEach(s => s.tags.forEach(t => allTags.add(t)));
+  document.getElementById('statTags').textContent = allTags.size;
+}
+
+// ============================================================
+//  A/B TEST FUNCTIONS (preserved)
+// ============================================================
 let currentDept = null, currentBoard = null;
 let pool = [], pairIdx = 0;
 let currentRound = 0, ratingResults = [];
 
 function shuffle(a){ const b=[...a]; for(let i=b.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]; } return b; }
+function makePairs(images){ const s=shuffle(images); const p=[]; for(let i=0;i<s.length-1;i+=2) p.push([s[i],s[i+1]]); return p; }
+function getTotalRatings(dKey,bKey){ const data=JSON.parse(localStorage.getItem(`sc_ratings_${dKey}_${bKey}`)||'0'); return typeof data==='number'?data:0; }
+function addRatings(dKey,bKey,count){ const cur=getTotalRatings(dKey,bKey); localStorage.setItem(`sc_ratings_${dKey}_${bKey}`,JSON.stringify(cur+count)); }
 
-function makePairs(images){
-  const s = shuffle(images);
-  const p = [];
-  for(let i=0; i<s.length-1; i+=2) p.push([s[i], s[i+1]]);
-  return p;
-}
-
-// Get cumulative rating count for a board
-function getTotalRatings(dKey, bKey){
-  const data = JSON.parse(localStorage.getItem(`sc_ratings_${dKey}_${bKey}`) || '0');
-  return typeof data === 'number' ? data : 0;
-}
-function addRatings(dKey, bKey, count){
-  const cur = getTotalRatings(dKey, bKey);
-  localStorage.setItem(`sc_ratings_${dKey}_${bKey}`, JSON.stringify(cur + count));
-}
-
-// ===== NAVIGATION =====
 function showScreen(name){
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById(`screen-${name}`).classList.add('active');
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const screenId = name==='test'?'screen-test':(`screen-${name}`);
+  document.getElementById(screenId).classList.add('active');
   const nav = document.getElementById(`nav-${name}`);
   if(nav) nav.classList.add('active');
   document.getElementById('undoBtn').classList.add('hidden');
-  if(name === 'home') buildHome();
-  if(name === 'history') buildHistory();
+  if(name==='test') buildHome();
+  if(name==='history') buildHistory();
+  if(name==='library'){ filterLibrary(); updateStats(); }
 }
 
-// ===== HOME =====
 function buildHome(){
-  const container = document.getElementById('deptCards');
-  container.innerHTML = '';
-  Object.entries(DEPARTMENTS).forEach(([dKey, dept]) => {
-    const card = document.createElement('div');
-    card.className = 'dept-card';
-    let chipsHTML = '';
-    Object.entries(dept.boards).forEach(([bKey, board]) => {
-      const total = getTotalRatings(dKey, bKey);
-      const pct = Math.min(100, Math.round(total/200*100));
-      const done = total >= 200;
-      const cls = done ? 'chip chip-done' : 'chip';
-      const badge = total > 0 ? ` <span style="font-size:10px;color:#555;">${total}</span>` : '';
-      chipsHTML += \`<div class="\${cls}" onclick="startBoard('\${dKey}','\${bKey}')"><span class="chip-icon">\${board.icon}</span>\${board.name}\${badge}</div>\`;
+  const container=document.getElementById('deptCards');
+  container.innerHTML='';
+  Object.entries(DEPARTMENTS).forEach(([dKey,dept])=>{
+    const card=document.createElement('div');
+    card.className='dept-card';
+    let chipsHTML='';
+    Object.entries(dept.boards).forEach(([bKey,board])=>{
+      const total=getTotalRatings(dKey,bKey);
+      const badge=total>0?` <span style="font-size:10px;color:#555;">${total}</span>`:'';
+      chipsHTML+=`<div class="chip" onclick="startBoard('${dKey}','${bKey}')"><span class="chip-icon">${board.icon}</span>${board.name}${badge}</div>`;
     });
-    card.innerHTML = \`
+    card.innerHTML=`
       <div class="dept-header">
-        <div class="dept-icon">\${dept.icon}</div>
-        <div class="dept-info"><h3>\${dept.name}</h3><p>\${dept.desc}</p></div>
+        <div class="dept-icon">${dept.icon}</div>
+        <div class="dept-info"><h3>${dept.name}</h3><p>${dept.desc}</p></div>
       </div>
-      <div class="dept-chips">\${chipsHTML}</div>
-    \`;
+      <div class="dept-chips">${chipsHTML}</div>
+    `;
     container.appendChild(card);
   });
 }
 
-// ===== START BOARD =====
-function startBoard(dKey, bKey){
-  currentDept = dKey; currentBoard = bKey;
-  const board = DEPARTMENTS[dKey].boards[bKey];
-  pool = makePairs(board.images);
-  pairIdx = 0; currentRound = 0; ratingResults = [];
-
-  document.getElementById('arenaTitle').textContent = \`\${board.icon} \${board.name}\`;
-  document.getElementById('arenaSub').textContent = \`\${DEPARTMENTS[dKey].name}\`;
+function startBoard(dKey,bKey){
+  currentDept=dKey; currentBoard=bKey;
+  const board=DEPARTMENTS[dKey].boards[bKey];
+  pool=makePairs(board.images); pairIdx=0; currentRound=0; ratingResults=[];
+  document.getElementById('arenaTitle').textContent=`${board.icon} ${board.name}`;
+  document.getElementById('arenaSub').textContent=`${DEPARTMENTS[dKey].name}`;
   updateCounters();
-  showScreen('arena');
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-arena').classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('nav-test').classList.add('active');
   loadRound();
 }
 
 function updateCounters(){
-  const total = getTotalRatings(currentDept, currentBoard) + ratingResults.length;
-  document.getElementById('sessionCount').textContent = ratingResults.length;
-  document.getElementById('totalCount').textContent = total;
-  document.getElementById('progressFill').style.width = Math.min(100, Math.round(total/200*100)) + '%';
+  const total=getTotalRatings(currentDept,currentBoard)+ratingResults.length;
+  document.getElementById('sessionCount').textContent=ratingResults.length;
+  document.getElementById('totalCount').textContent=total;
+  document.getElementById('progressFill').style.width=Math.min(100,Math.round(total/200*100))+'%';
 }
 
-// ===== ROUND (continuous) =====
 function loadRound(){
-  if(pairIdx >= pool.length){
-    // Reshuffle and keep going
-    const board = DEPARTMENTS[currentDept].boards[currentBoard];
-    pool = makePairs(board.images);
-    pairIdx = 0;
-  }
-  const [a,b] = pool[pairIdx];
-  document.getElementById('imgA').src = a.file;
-  document.getElementById('imgB').src = b.file;
+  if(pairIdx>=pool.length){ const board=DEPARTMENTS[currentDept].boards[currentBoard]; pool=makePairs(board.images); pairIdx=0; }
+  const [a,b]=pool[pairIdx];
+  document.getElementById('imgA').src=a.file;
+  document.getElementById('imgB').src=b.file;
 }
 
 function pick(c){
-  const [a,b] = pool[pairIdx];
+  const [a,b]=pool[pairIdx];
   ratingResults.push({
-    round: ratingResults.length+1, a: a.label, b: b.label, choice: c,
-    winnerTags: c==='A'?a.tags:c==='B'?b.tags:c==='both'?[...a.tags,...b.tags]:[],
-    loserTags: c==='A'?b.tags:c==='B'?a.tags:[],
-    winnerFiles: c==='A'?[a.file]:c==='B'?[b.file]:c==='both'?[a.file,b.file]:[],
-    loserFiles: c==='A'?[b.file]:c==='B'?[a.file]:c==='both'?[]:[a.file,b.file],
+    round:ratingResults.length+1, a:a.label, b:b.label, choice:c,
+    winnerTags:c==='A'?a.tags:c==='B'?b.tags:c==='both'?[...a.tags,...b.tags]:[],
+    loserTags:c==='A'?b.tags:c==='B'?a.tags:[],
+    winnerFiles:c==='A'?[a.file]:c==='B'?[b.file]:c==='both'?[a.file,b.file]:[],
+    loserFiles:c==='A'?[b.file]:c==='B'?[a.file]:c==='both'?[]:[a.file,b.file],
   });
   pairIdx++; currentRound++;
   document.getElementById('undoBtn').classList.remove('hidden');
-  updateCounters();
-  loadRound();
+  updateCounters(); loadRound();
 }
 
 function undo(){
-  if(ratingResults.length<=0) return;
+  if(ratingResults.length<=0)return;
   ratingResults.pop();
-  if(pairIdx>0) pairIdx--;
-  updateCounters();
-  loadRound();
+  if(pairIdx>0)pairIdx--;
+  updateCounters(); loadRound();
   if(ratingResults.length===0) document.getElementById('undoBtn').classList.add('hidden');
 }
 
 function finishSession(){
-  if(ratingResults.length === 0){ showScreen('home'); return; }
-  showResults();
+  if(ratingResults.length===0){showScreen('test');return;}
+  showResultsScreen();
 }
 
-document.addEventListener('keydown', e => {
-  if(e.key==='z'||e.key==='Z'){ undo(); return; }
-  if(e.key==='Escape'){ finishSession(); return; }
-  if(!currentBoard) return;
-  if(e.key==='ArrowLeft') pick('A');
-  else if(e.key==='ArrowRight') pick('B');
-  else if(e.key==='ArrowUp'){ e.preventDefault(); pick('both'); }
-  else if(e.key==='ArrowDown'){ e.preventDefault(); pick('skip'); }
+document.addEventListener('keydown',e=>{
+  if(e.key==='z'||e.key==='Z'){undo();return;}
+  if(e.key==='Escape'){
+    if(document.getElementById('modalOverlay').classList.contains('active')){closeModal();return;}
+    finishSession();return;
+  }
+  if(!currentBoard)return;
+  if(document.getElementById('screen-arena').classList.contains('active')){
+    if(e.key==='ArrowLeft')pick('A');
+    else if(e.key==='ArrowRight')pick('B');
+    else if(e.key==='ArrowUp'){e.preventDefault();pick('both');}
+    else if(e.key==='ArrowDown'){e.preventDefault();pick('skip');}
+  }
 });
 
-// ===== RESULTS =====
-function showResults(){
-  const dept = DEPARTMENTS[currentDept];
-  const board = dept.boards[currentBoard];
-
-  // Save cumulative count
-  addRatings(currentDept, currentBoard, ratingResults.length);
-  const totalNow = getTotalRatings(currentDept, currentBoard);
-
-  document.getElementById('resultsTitle').textContent = \`\${board.icon} \${board.name} — Style DNA\`;
-  const grid = document.getElementById('winnersGrid'); grid.innerHTML = '';
-  ratingResults.flatMap(r=>r.winnerFiles).forEach(f=>{ const img=document.createElement('img'); img.src=f; grid.appendChild(img); });
-  const lgrid = document.getElementById('losersGrid'); lgrid.innerHTML = '';
-  ratingResults.flatMap(r=>r.loserFiles).forEach(f=>{ const img=document.createElement('img'); img.src=f; lgrid.appendChild(img); });
-
-  const tagScores = {};
-  ratingResults.forEach(r => {
-    r.winnerTags.forEach(t=>{ tagScores[t]=(tagScores[t]||0)+1; });
-    r.loserTags.forEach(t=>{ tagScores[t]=(tagScores[t]||0)-0.5; });
-  });
-  const sorted = Object.entries(tagScores).sort((a,b)=>b[1]-a[1]);
-  const top = sorted.filter(([,v])=>v>0).slice(0,15);
-  const bottom = sorted.filter(([,v])=>v<0).slice(-10);
-
-  let s = \`\${dept.name} · \${board.name} · \${ratingResults.length} ratings (\${totalNow}/200 total)\n\n\`;
-  s += '🏆 TOP:\n';
-  top.forEach(([t,v])=>{ s+=\`  \${t}: \${'█'.repeat(Math.round(v*2))} (\${v.toFixed(1)})\n\`; });
+function showResultsScreen(){
+  const dept=DEPARTMENTS[currentDept];
+  const board=dept.boards[currentBoard];
+  addRatings(currentDept,currentBoard,ratingResults.length);
+  const totalNow=getTotalRatings(currentDept,currentBoard);
+  document.getElementById('resultsTitle').textContent=`${board.icon} ${board.name} — Style DNA`;
+  const grid=document.getElementById('winnersGrid');grid.innerHTML='';
+  ratingResults.flatMap(r=>r.winnerFiles).forEach(f=>{const img=document.createElement('img');img.src=f;grid.appendChild(img);});
+  const lgrid=document.getElementById('losersGrid');lgrid.innerHTML='';
+  ratingResults.flatMap(r=>r.loserFiles).forEach(f=>{const img=document.createElement('img');img.src=f;lgrid.appendChild(img);});
+  const tagScores={};
+  ratingResults.forEach(r=>{r.winnerTags.forEach(t=>{tagScores[t]=(tagScores[t]||0)+1;});r.loserTags.forEach(t=>{tagScores[t]=(tagScores[t]||0)-0.5;});});
+  const sorted=Object.entries(tagScores).sort((a,b)=>b[1]-a[1]);
+  const top=sorted.filter(([,v])=>v>0).slice(0,15);
+  const bottom=sorted.filter(([,v])=>v<0).slice(-10);
+  let s=`${dept.name} · ${board.name} · ${ratingResults.length} ratings (${totalNow}/200 total)\n\n`;
+  s+='🏆 TOP:\n';
+  top.forEach(([t,v])=>{s+=`  ${t}: ${'█'.repeat(Math.round(v*2))} (${v.toFixed(1)})\n`;});
   s+='\n🚫 REJECTED:\n';
-  bottom.forEach(([t,v])=>{ s+=\`  \${t}: (\${v.toFixed(1)})\n\`; });
-  document.getElementById('resultsData').textContent = s;
-
-  window.__styleCuratorResults = {
-    department: currentDept, deptName: dept.name,
-    board: currentBoard, boardId: board.boardId, boardName: board.name,
-    sessionRatings: ratingResults.length, totalRatings: totalNow,
-    results: ratingResults, tagScores: Object.fromEntries(sorted), summary: s
+  bottom.forEach(([t,v])=>{s+=`  ${t}: (${v.toFixed(1)})\n`;});
+  document.getElementById('resultsData').textContent=s;
+  window.__styleCuratorResults={
+    department:currentDept,deptName:dept.name,board:currentBoard,boardId:board.boardId,boardName:board.name,
+    sessionRatings:ratingResults.length,totalRatings:totalNow,results:ratingResults,tagScores:Object.fromEntries(sorted),summary:s
   };
-  showScreen('results');
-  // Auto-save locally
-  const autoPayload = { ...window.__styleCuratorResults, timestamp: new Date().toISOString(), submitted: false };
-  localStorage.setItem(\`sc_\${currentDept}_\${currentBoard}_latest\`, JSON.stringify(autoPayload));
-  const all = JSON.parse(localStorage.getItem('sc_history') || '[]');
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-results').classList.add('active');
+  const autoPayload={...window.__styleCuratorResults,timestamp:new Date().toISOString(),submitted:false};
+  localStorage.setItem(`sc_${currentDept}_${currentBoard}_latest`,JSON.stringify(autoPayload));
+  const all=JSON.parse(localStorage.getItem('sc_history')||'[]');
   all.unshift(autoPayload);
-  localStorage.setItem('sc_history', JSON.stringify(all.slice(0,50)));
+  localStorage.setItem('sc_history',JSON.stringify(all.slice(0,50)));
 }
 
-// ===== SUBMIT TO LUX =====
 async function submitToLux(){
-  const el = document.getElementById('saveStatus');
-  const btn = document.getElementById('doneWrap');
-  el.innerHTML = '<div class="save-status save-pending">⏳ Sending to Lux...</div>';
-  btn.innerHTML = '<div style="color:#555;font-size:13px;">Sending...</div>';
-
-  const payload = { ...window.__styleCuratorResults, timestamp: new Date().toISOString(), submitted: true };
-  localStorage.setItem(\`sc_\${currentDept}_\${currentBoard}_latest\`, JSON.stringify(payload));
-
-  let binId = null;
-  try {
-    const r = await fetch('https://api.jsonbin.io/v3/b',{ method:'POST', headers:{'Content-Type':'application/json','X-Bin-Private':'false'}, body:JSON.stringify(payload) });
-    if(r.ok){ const d = await r.json(); binId = d.metadata.id; }
-  } catch(e){}
-
-  const inbox = JSON.parse(localStorage.getItem('sc_inbox') || '[]');
-  inbox.unshift({ binId, department: currentDept, board: currentBoard, timestamp: payload.timestamp });
-  localStorage.setItem('sc_inbox', JSON.stringify(inbox.slice(0,20)));
-
-  el.innerHTML = '<div class="save-status save-ok">✅ Lux notified — analysis incoming</div>';
-  btn.innerHTML = '<div style="color:#4ade80;font-size:14px;font-weight:600;">✅ Submitted</div>';
+  const el=document.getElementById('saveStatus');
+  const btn=document.getElementById('doneWrap');
+  el.innerHTML='<div class="save-status save-pending">⏳ Sending to Lux...</div>';
+  btn.innerHTML='<div style="color:#555;font-size:13px;">Sending...</div>';
+  const payload={...window.__styleCuratorResults,timestamp:new Date().toISOString(),submitted:true};
+  localStorage.setItem(`sc_${currentDept}_${currentBoard}_latest`,JSON.stringify(payload));
+  let binId=null;
+  try{const r=await fetch('https://api.jsonbin.io/v3/b',{method:'POST',headers:{'Content-Type':'application/json','X-Bin-Private':'false'},body:JSON.stringify(payload)});if(r.ok){const d=await r.json();binId=d.metadata.id;}}catch(e){}
+  const inbox=JSON.parse(localStorage.getItem('sc_inbox')||'[]');
+  inbox.unshift({binId,department:currentDept,board:currentBoard,timestamp:payload.timestamp});
+  localStorage.setItem('sc_inbox',JSON.stringify(inbox.slice(0,20)));
+  el.innerHTML='<div class="save-status save-ok">✅ Lux notified — analysis incoming</div>';
+  btn.innerHTML='<div style="color:#4ade80;font-size:14px;font-weight:600;">✅ Submitted</div>';
 }
 
 function copyResults(){
   navigator.clipboard.writeText(JSON.stringify(window.__styleCuratorResults,null,2)).then(()=>{
-    const b=event.target; b.textContent='✅ Copied!'; setTimeout(()=>b.textContent='📋 Copy',2000);
+    const b=event.target;b.textContent='✅ Copied!';setTimeout(()=>b.textContent='📋 Copy',2000);
   });
 }
 
-// ===== HISTORY =====
 function buildHistory(){
-  const list = document.getElementById('historyList');
-  const all = JSON.parse(localStorage.getItem('sc_history') || '[]');
-  if(!all.length){ list.innerHTML='<div class="history-empty">No ratings yet. Go rate some boards!</div>'; return; }
-  list.innerHTML = '';
-  all.forEach(h => {
-    const wins = h.results ? h.results.filter(r=>r.choice==='A'||r.choice==='B'||r.choice==='both').length : 0;
-    const d = new Date(h.timestamp);
-    const total = h.totalRatings || '?';
-    const item = document.createElement('div');
-    item.className = 'history-item';
-    item.innerHTML = \`<h4>\${h.deptName || ''} · \${h.boardName || ''}</h4><p>\${d.toLocaleDateString()} \${d.toLocaleTimeString()} · \${h.sessionRatings || h.results?.length || 0} ratings · \${total}/200 total</p>\`;
+  const list=document.getElementById('historyList');
+  const all=JSON.parse(localStorage.getItem('sc_history')||'[]');
+  if(!all.length){list.innerHTML='<div class="history-empty">No ratings yet. Go rate some boards!</div>';return;}
+  list.innerHTML='';
+  all.forEach(h=>{
+    const d=new Date(h.timestamp);
+    const total=h.totalRatings||'?';
+    const item=document.createElement('div');
+    item.className='history-item';
+    item.innerHTML=`<h4>${h.deptName||''} · ${h.boardName||''}</h4><p>${d.toLocaleDateString()} ${d.toLocaleTimeString()} · ${h.sessionRatings||h.results?.length||0} ratings · ${total}/200 total</p>`;
     list.appendChild(item);
   });
 }
 
 // ===== INIT =====
-buildHome();
+buildFilterRow();
+filterLibrary();
+updateStats();
 </script>
 </body>
 </html>
