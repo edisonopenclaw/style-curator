@@ -129,13 +129,17 @@
   <div class="arena-header">
     <h2 id="arenaTitle"></h2>
     <div class="sub" id="arenaSub"></div>
-    <div class="progress">Round <span id="round">1</span> / <span id="totalRounds">0</span></div>
-    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:10px;">
+      <div class="progress" style="margin:0;"><span id="sessionCount">0</span> this session</div>
+      <div style="color:#333;">·</div>
+      <div class="progress" style="margin:0;"><span id="totalCount">0</span>/200 total</div>
+    </div>
+    <div class="progress-bar" style="width:200px;"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
   </div>
   <div class="arena">
-    <div class="card" onclick="pick('A')"><div class="card-label">A</div><img id="imgA" src="" alt="A"><div class="card-footer" id="labelA"></div></div>
+    <div class="card" onclick="pick('A')"><img id="imgA" src="" alt="A"></div>
     <div class="vs">VS</div>
-    <div class="card" onclick="pick('B')"><div class="card-label">B</div><img id="imgB" src="" alt="B"><div class="card-footer" id="labelB"></div></div>
+    <div class="card" onclick="pick('B')"><img id="imgB" src="" alt="B"></div>
   </div>
   <div class="actions">
     <button class="btn-a" onclick="pick('A')">← A</button>
@@ -143,7 +147,10 @@
     <button class="btn-skip" onclick="pick('skip')">Skip</button>
     <button class="btn-b" onclick="pick('B')">B →</button>
   </div>
-  <div class="keyboard-hint">← A · → B · ↑ Both · ↓ Skip · Z Undo</div>
+  <div style="margin-top:4px;">
+    <button onclick="finishSession()" style="padding:8px 24px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;background:#1a1a28;color:#666;transition:all 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#666'">Finish Session →</button>
+  </div>
+  <div class="keyboard-hint" style="margin-top:6px;">← A · → B · ↑ Both · ↓ Skip · Z Undo · Esc Finish</div>
   <button class="undo-btn hidden" id="undoBtn" onclick="undo()">↩ Undo</button>
 </div>
 
@@ -338,9 +345,27 @@ const DEPARTMENTS = {
 
 // ===== STATE =====
 let currentDept = null, currentBoard = null;
-let pairs = [], currentRound = 0, totalRounds = 0, ratingResults = [];
+let pool = [], pairIdx = 0;
+let currentRound = 0, ratingResults = [];
 
 function shuffle(a){ const b=[...a]; for(let i=b.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]; } return b; }
+
+function makePairs(images){
+  const s = shuffle(images);
+  const p = [];
+  for(let i=0; i<s.length-1; i+=2) p.push([s[i], s[i+1]]);
+  return p;
+}
+
+// Get cumulative rating count for a board
+function getTotalRatings(dKey, bKey){
+  const data = JSON.parse(localStorage.getItem(`sc_ratings_${dKey}_${bKey}`) || '0');
+  return typeof data === 'number' ? data : 0;
+}
+function addRatings(dKey, bKey, count){
+  const cur = getTotalRatings(dKey, bKey);
+  localStorage.setItem(`sc_ratings_${dKey}_${bKey}`, JSON.stringify(cur + count));
+}
 
 // ===== NAVIGATION =====
 function showScreen(name){
@@ -363,17 +388,20 @@ function buildHome(){
     card.className = 'dept-card';
     let chipsHTML = '';
     Object.entries(dept.boards).forEach(([bKey, board]) => {
-      const done = localStorage.getItem(`sc_${dKey}_${bKey}_latest`);
+      const total = getTotalRatings(dKey, bKey);
+      const pct = Math.min(100, Math.round(total/200*100));
+      const done = total >= 200;
       const cls = done ? 'chip chip-done' : 'chip';
-      chipsHTML += `<div class="${cls}" onclick="startBoard('${dKey}','${bKey}')"><span class="chip-icon">${board.icon}</span>${board.name}</div>`;
+      const badge = total > 0 ? ` <span style="font-size:10px;color:#555;">${total}</span>` : '';
+      chipsHTML += \`<div class="\${cls}" onclick="startBoard('\${dKey}','\${bKey}')"><span class="chip-icon">\${board.icon}</span>\${board.name}\${badge}</div>\`;
     });
-    card.innerHTML = `
+    card.innerHTML = \`
       <div class="dept-header">
-        <div class="dept-icon">${dept.icon}</div>
-        <div class="dept-info"><h3>${dept.name}</h3><p>${dept.desc}</p></div>
+        <div class="dept-icon">\${dept.icon}</div>
+        <div class="dept-info"><h3>\${dept.name}</h3><p>\${dept.desc}</p></div>
       </div>
-      <div class="dept-chips">${chipsHTML}</div>
-    `;
+      <div class="dept-chips">\${chipsHTML}</div>
+    \`;
     container.appendChild(card);
   });
 }
@@ -382,53 +410,69 @@ function buildHome(){
 function startBoard(dKey, bKey){
   currentDept = dKey; currentBoard = bKey;
   const board = DEPARTMENTS[dKey].boards[bKey];
-  const shuffled = shuffle(board.images);
-  pairs = [];
-  for(let i=0; i<shuffled.length-1; i+=2) pairs.push([shuffled[i], shuffled[i+1]]);
-  totalRounds = pairs.length; currentRound = 0; ratingResults = [];
+  pool = makePairs(board.images);
+  pairIdx = 0; currentRound = 0; ratingResults = [];
 
-  document.getElementById('arenaTitle').textContent = `${board.icon} ${board.name}`;
-  document.getElementById('arenaSub').textContent = `${DEPARTMENTS[dKey].name} · ${board.name}`;
-  document.getElementById('totalRounds').textContent = totalRounds;
+  document.getElementById('arenaTitle').textContent = \`\${board.icon} \${board.name}\`;
+  document.getElementById('arenaSub').textContent = \`\${DEPARTMENTS[dKey].name}\`;
+  updateCounters();
   showScreen('arena');
   loadRound();
 }
 
-// ===== ROUND =====
+function updateCounters(){
+  const total = getTotalRatings(currentDept, currentBoard) + ratingResults.length;
+  document.getElementById('sessionCount').textContent = ratingResults.length;
+  document.getElementById('totalCount').textContent = total;
+  document.getElementById('progressFill').style.width = Math.min(100, Math.round(total/200*100)) + '%';
+}
+
+// ===== ROUND (continuous) =====
 function loadRound(){
-  if(currentRound >= totalRounds){ showResults(); return; }
-  const [a,b] = pairs[currentRound];
+  if(pairIdx >= pool.length){
+    // Reshuffle and keep going
+    const board = DEPARTMENTS[currentDept].boards[currentBoard];
+    pool = makePairs(board.images);
+    pairIdx = 0;
+  }
+  const [a,b] = pool[pairIdx];
   document.getElementById('imgA').src = a.file;
   document.getElementById('imgB').src = b.file;
-  document.getElementById('labelA').textContent = a.label;
-  document.getElementById('labelB').textContent = b.label;
-  document.getElementById('round').textContent = currentRound + 1;
-  document.getElementById('progressFill').style.width = ((currentRound+1)/totalRounds*100)+'%';
 }
 
 function pick(c){
-  const [a,b] = pairs[currentRound];
+  const [a,b] = pool[pairIdx];
   ratingResults.push({
-    round: currentRound+1, a: a.label, b: b.label, choice: c,
+    round: ratingResults.length+1, a: a.label, b: b.label, choice: c,
     winnerTags: c==='A'?a.tags:c==='B'?b.tags:c==='both'?[...a.tags,...b.tags]:[],
     loserTags: c==='A'?b.tags:c==='B'?a.tags:[],
     winnerFiles: c==='A'?[a.file]:c==='B'?[b.file]:c==='both'?[a.file,b.file]:[],
     loserFiles: c==='A'?[b.file]:c==='B'?[a.file]:c==='both'?[]:[a.file,b.file],
   });
-  currentRound++;
+  pairIdx++; currentRound++;
   document.getElementById('undoBtn').classList.remove('hidden');
+  updateCounters();
   loadRound();
 }
 
 function undo(){
-  if(currentRound<=0) return;
-  currentRound--; ratingResults.pop(); loadRound();
-  if(currentRound===0) document.getElementById('undoBtn').classList.add('hidden');
+  if(ratingResults.length<=0) return;
+  ratingResults.pop();
+  if(pairIdx>0) pairIdx--;
+  updateCounters();
+  loadRound();
+  if(ratingResults.length===0) document.getElementById('undoBtn').classList.add('hidden');
+}
+
+function finishSession(){
+  if(ratingResults.length === 0){ showScreen('home'); return; }
+  showResults();
 }
 
 document.addEventListener('keydown', e => {
   if(e.key==='z'||e.key==='Z'){ undo(); return; }
-  if(!currentBoard || currentRound>=totalRounds) return;
+  if(e.key==='Escape'){ finishSession(); return; }
+  if(!currentBoard) return;
   if(e.key==='ArrowLeft') pick('A');
   else if(e.key==='ArrowRight') pick('B');
   else if(e.key==='ArrowUp'){ e.preventDefault(); pick('both'); }
@@ -440,7 +484,11 @@ function showResults(){
   const dept = DEPARTMENTS[currentDept];
   const board = dept.boards[currentBoard];
 
-  document.getElementById('resultsTitle').textContent = `${board.icon} ${board.name} — Style DNA`;
+  // Save cumulative count
+  addRatings(currentDept, currentBoard, ratingResults.length);
+  const totalNow = getTotalRatings(currentDept, currentBoard);
+
+  document.getElementById('resultsTitle').textContent = \`\${board.icon} \${board.name} — Style DNA\`;
   const grid = document.getElementById('winnersGrid'); grid.innerHTML = '';
   ratingResults.flatMap(r=>r.winnerFiles).forEach(f=>{ const img=document.createElement('img'); img.src=f; grid.appendChild(img); });
   const lgrid = document.getElementById('losersGrid'); lgrid.innerHTML = '';
@@ -455,23 +503,23 @@ function showResults(){
   const top = sorted.filter(([,v])=>v>0).slice(0,15);
   const bottom = sorted.filter(([,v])=>v<0).slice(-10);
 
-  let s = `${dept.name} · ${board.name}\n\n🏆 TOP:\n`;
-  top.forEach(([t,v])=>{ s+=`  ${t}: ${'█'.repeat(Math.round(v*2))} (${v.toFixed(1)})\n`; });
-  s+=`\n🚫 REJECTED:\n`;
-  bottom.forEach(([t,v])=>{ s+=`  ${t}: (${v.toFixed(1)})\n`; });
-  s+=`\n📊 PICKS:\n`;
-  ratingResults.forEach(r=>{ s+=`  R${r.round}: ${r.a} vs ${r.b} → ${r.choice}\n`; });
+  let s = \`\${dept.name} · \${board.name} · \${ratingResults.length} ratings (\${totalNow}/200 total)\n\n\`;
+  s += '🏆 TOP:\n';
+  top.forEach(([t,v])=>{ s+=\`  \${t}: \${'█'.repeat(Math.round(v*2))} (\${v.toFixed(1)})\n\`; });
+  s+='\n🚫 REJECTED:\n';
+  bottom.forEach(([t,v])=>{ s+=\`  \${t}: (\${v.toFixed(1)})\n\`; });
   document.getElementById('resultsData').textContent = s;
 
   window.__styleCuratorResults = {
     department: currentDept, deptName: dept.name,
     board: currentBoard, boardId: board.boardId, boardName: board.name,
+    sessionRatings: ratingResults.length, totalRatings: totalNow,
     results: ratingResults, tagScores: Object.fromEntries(sorted), summary: s
   };
   showScreen('results');
-  // Auto-save locally as backup
+  // Auto-save locally
   const autoPayload = { ...window.__styleCuratorResults, timestamp: new Date().toISOString(), submitted: false };
-  localStorage.setItem(`sc_${currentDept}_${currentBoard}_latest`, JSON.stringify(autoPayload));
+  localStorage.setItem(\`sc_\${currentDept}_\${currentBoard}_latest\`, JSON.stringify(autoPayload));
   const all = JSON.parse(localStorage.getItem('sc_history') || '[]');
   all.unshift(autoPayload);
   localStorage.setItem('sc_history', JSON.stringify(all.slice(0,50)));
@@ -485,26 +533,19 @@ async function submitToLux(){
   btn.innerHTML = '<div style="color:#555;font-size:13px;">Sending...</div>';
 
   const payload = { ...window.__styleCuratorResults, timestamp: new Date().toISOString(), submitted: true };
+  localStorage.setItem(\`sc_\${currentDept}_\${currentBoard}_latest\`, JSON.stringify(payload));
 
-  // Save locally
-  localStorage.setItem(`sc_${currentDept}_${currentBoard}_latest`, JSON.stringify(payload));
-  const all = JSON.parse(localStorage.getItem('sc_history') || '[]');
-  all.unshift(payload);
-  localStorage.setItem('sc_history', JSON.stringify(all.slice(0,50)));
-
-  // Save to jsonbin for Lux to pick up
   let binId = null;
   try {
     const r = await fetch('https://api.jsonbin.io/v3/b',{ method:'POST', headers:{'Content-Type':'application/json','X-Bin-Private':'false'}, body:JSON.stringify(payload) });
     if(r.ok){ const d = await r.json(); binId = d.metadata.id; }
   } catch(e){}
 
-  // Also save bin ID to a known "inbox" in localStorage
   const inbox = JSON.parse(localStorage.getItem('sc_inbox') || '[]');
   inbox.unshift({ binId, department: currentDept, board: currentBoard, timestamp: payload.timestamp });
   localStorage.setItem('sc_inbox', JSON.stringify(inbox.slice(0,20)));
 
-  el.innerHTML = `<div class="save-status save-ok">✅ Lux has been notified — analysis incoming</div>`;
+  el.innerHTML = '<div class="save-status save-ok">✅ Lux notified — analysis incoming</div>';
   btn.innerHTML = '<div style="color:#4ade80;font-size:14px;font-weight:600;">✅ Submitted</div>';
 }
 
@@ -521,11 +562,12 @@ function buildHistory(){
   if(!all.length){ list.innerHTML='<div class="history-empty">No ratings yet. Go rate some boards!</div>'; return; }
   list.innerHTML = '';
   all.forEach(h => {
-    const wins = h.results.filter(r=>r.choice==='A'||r.choice==='B'||r.choice==='both').length;
+    const wins = h.results ? h.results.filter(r=>r.choice==='A'||r.choice==='B'||r.choice==='both').length : 0;
     const d = new Date(h.timestamp);
+    const total = h.totalRatings || '?';
     const item = document.createElement('div');
     item.className = 'history-item';
-    item.innerHTML = `<h4>${h.deptName} · ${h.boardName}</h4><p>${d.toLocaleDateString()} ${d.toLocaleTimeString()} · ${h.results.length} rounds · ${wins} picks</p>`;
+    item.innerHTML = \`<h4>\${h.deptName || ''} · \${h.boardName || ''}</h4><p>\${d.toLocaleDateString()} \${d.toLocaleTimeString()} · \${h.sessionRatings || h.results?.length || 0} ratings · \${total}/200 total</p>\`;
     list.appendChild(item);
   });
 }
