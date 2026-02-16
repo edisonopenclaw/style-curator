@@ -1,6 +1,6 @@
 // === CREATORS ===
 const C=[
-  {id:'ciguleva',name:'Ciguleva',handle:'@ciguleva',url:'https://x.com/ciguleva',avatar:'https://pbs.twimg.com/profile_images/1869891007351025664/jE6FLbTk_200x200.jpg',bio:'Midjourney specialist · Perplexity ambassador · Surreal, cosmic & pointillist AI art',images:[
+  {id:'ciguleva',name:'Ciguleva',handle:'@ciguleva',url:'https://x.com/ciguleva',avatar:'https://pbs.twimg.com/profile_images/1684921618148265984/euVl5ESk_200x200.jpg',bio:'Midjourney specialist · Perplexity ambassador · Surreal, cosmic & pointillist AI art',images:[
     'https://pbs.twimg.com/media/HBPEg0NboAEpvuy?format=jpg&name=medium',
     'https://pbs.twimg.com/media/HBIiT9lakAItX52?format=jpg&name=medium',
     'https://pbs.twimg.com/media/HAqpz0rbAAEw6IT?format=jpg&name=medium',
@@ -20,7 +20,7 @@ const C=[
     'https://pbs.twimg.com/media/G_6VJX7aoAE5Tz0?format=jpg&name=medium',
     'https://pbs.twimg.com/media/G_2PNdjaYAAyJld?format=jpg&name=medium',
   ]},
-  {id:'coinbase',name:'Coinbase',handle:'@coinbase',url:'https://x.com/coinbase',avatar:'https://pbs.twimg.com/profile_images/1764344081684017152/KGGBOCSU_200x200.jpg',bio:'The future of finance · Bold blue brand identity · Crypto culture',images:[
+  {id:'coinbase',name:'Coinbase',handle:'@coinbase',url:'https://x.com/coinbase',avatar:'https://pbs.twimg.com/profile_images/2020664347249582080/8-4VsYvS_200x200.png',bio:'The future of finance · Bold blue brand identity · Crypto culture',images:[
     'https://pbs.twimg.com/media/G_SA6QXXkAAgVED?format=jpg&name=medium',
     'https://pbs.twimg.com/media/G_G71SmaoAUh4XR?format=jpg&name=medium',
     'https://pbs.twimg.com/media/G-uD8_4W8AAN-Fp?format=jpg&name=medium',
