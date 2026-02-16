@@ -391,6 +391,12 @@ function showResults(){
     results: ratingResults, tagScores: Object.fromEntries(sorted), summary: s
   };
   showScreen('results');
+  // Auto-save locally as backup
+  const autoPayload = { ...window.__styleCuratorResults, timestamp: new Date().toISOString(), submitted: false };
+  localStorage.setItem(`sc_${currentDept}_${currentBoard}_latest`, JSON.stringify(autoPayload));
+  const all = JSON.parse(localStorage.getItem('sc_history') || '[]');
+  all.unshift(autoPayload);
+  localStorage.setItem('sc_history', JSON.stringify(all.slice(0,50)));
 }
 
 // ===== SUBMIT TO LUX =====
