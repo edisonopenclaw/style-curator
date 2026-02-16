@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Style Curator ✨ — Round 4 (Board Review)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0f; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+  .header { padding: 24px; text-align: center; }
+  .header h1 { font-size: 28px; font-weight: 600; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .header .subtitle { font-size: 13px; color: #666; margin-top: 4px; }
+  .progress { margin-top: 12px; font-size: 14px; color: #888; }
+  .progress-bar { width: 280px; height: 4px; background: #222; border-radius: 2px; margin: 8px auto 0; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); transition: width 0.4s ease; border-radius: 2px; }
+  .arena { display: flex; gap: 24px; padding: 20px; max-width: 900px; width: 100%; justify-content: center; align-items: stretch; }
+  .card { flex: 1; max-width: 400px; border-radius: 16px; overflow: hidden; background: #151520; border: 2px solid transparent; cursor: pointer; transition: all 0.25s ease; position: relative; }
+  .card:hover { border-color: #667eea; transform: translateY(-4px); box-shadow: 0 12px 40px rgba(102, 126, 234, 0.2); }
+  .card img { width: 100%; height: 360px; object-fit: cover; display: block; }
+  .card-label { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.7); color: #fff; padding: 6px 16px; border-radius: 20px; font-size: 16px; font-weight: 700; backdrop-filter: blur(8px); }
+  .card-type { position: absolute; top: 12px; right: 12px; background: rgba(102,126,234,0.3); color: #a0b4ff; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; backdrop-filter: blur(8px); text-transform: uppercase; letter-spacing: 0.5px; }
+  .card-footer { padding: 14px 16px; font-size: 13px; color: #999; text-align: center; }
+  .vs { display: flex; align-items: center; font-size: 20px; font-weight: 800; color: #444; }
+  .actions { display: flex; gap: 16px; padding: 8px 20px 32px; }
+  .actions button { padding: 10px 32px; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .btn-a { background: linear-gradient(135deg, #667eea, #5a67d8); color: #fff; }
+  .btn-b { background: linear-gradient(135deg, #764ba2, #6b46a1); color: #fff; }
+  .btn-skip { background: #222; color: #888; }
+  .btn-both { background: #1a2a1a; color: #6f6; }
+  .actions button:hover { opacity: 0.85; transform: scale(1.04); }
+  .results { display: none; max-width: 800px; width: 100%; padding: 24px; text-align: center; }
+  .results h2 { font-size: 24px; margin-bottom: 16px; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .winners { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 20px 0; }
+  .winners img { width: 110px; height: 110px; object-fit: cover; border-radius: 10px; border: 2px solid #667eea; }
+  .losers { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 12px 0; }
+  .losers img { width: 55px; height: 55px; object-fit: cover; border-radius: 6px; border: 1px solid #333; opacity: 0.4; }
+  .results-data { background: #151520; border-radius: 12px; padding: 20px; margin-top: 20px; text-align: left; font-size: 13px; line-height: 1.8; white-space: pre-wrap; font-family: monospace; color: #ccc; max-height: 500px; overflow-y: auto; }
+  .hidden { display: none; }
+  .keyboard-hint { font-size: 12px; color: #555; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>✨ Style Curator — Round 4</h1>
+  <div class="subtitle">Fresh from Pinterest boards · Cinematography · Conceptual · Poster · UI/UX · Motion</div>
+  <div class="progress">Round <span id="round">1</span> of <span id="totalRounds">20</span></div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+<div class="arena" id="arena">
+  <div class="card" id="cardA" onclick="pick('A')"><div class="card-label">A</div><div class="card-type" id="typeA"></div><img id="imgA" src="" alt="A"><div class="card-footer" id="labelA"></div></div>
+  <div class="vs">VS</div>
+  <div class="card" id="cardB" onclick="pick('B')"><div class="card-label">B</div><div class="card-type" id="typeB"></div><img id="imgB" src="" alt="B"><div class="card-footer" id="labelB"></div></div>
+</div>
+<div class="actions" id="actions">
+  <button class="btn-a" onclick="pick('A')">← Pick A</button>
+  <button class="btn-both" onclick="pick('both')">Both ♥</button>
+  <button class="btn-skip" onclick="pick('skip')">Skip</button>
+  <button class="btn-b" onclick="pick('B')">Pick B →</button>
+</div>
+<div class="keyboard-hint">← A · → B · ↑ Both · ↓ Skip</div>
+<div class="results" id="results">
+  <h2>Your Style DNA — Round 4</h2>
+  <p style="color:#888;margin-bottom:8px;">✅ Picks:</p><div class="winners" id="winnersGrid"></div>
+  <p style="color:#555;margin-bottom:8px;margin-top:16px;">❌ Rejected:</p><div class="losers" id="losersGrid"></div>
+  <div class="results-data" id="resultsData"></div>
+</div>
+<script>
+const images = [
+  // === CINEMATOGRAPHY (from surviving board pins + new) ===
+  { file: "https://i.pinimg.com/736x/ae/31/59/ae3159f93d0c33dbdddb3e58e6a977b1.jpg", type: "cinema", tags: ["fog","night","street","atmospheric","dark","urban"], label: "Foggy Night Street" },
+  { file: "https://i.pinimg.com/736x/c8/ec/5d/c8ec5dcd900ef889290b9a6a3d05a268.jpg", type: "cinema", tags: ["bridge","fog","silhouette","dark","atmospheric","moody"], label: "Bridge in Fog" },
+  { file: "https://i.pinimg.com/736x/f2/33/7b/f2337b3086acbcd7b2d0c42ea9dbe186.jpg", type: "cinema", tags: ["night","eerie","street","dark","quiet","atmospheric"], label: "Eerie Night Street" },
+  { file: "https://i.pinimg.com/736x/42/78/75/42787558e3ce78ff17f6aedfb90e1c79.jpg", type: "cinema", tags: ["parking","night","empty","dark","lights","lonely"], label: "Empty Parking Lot" },
+  { file: "https://i.pinimg.com/736x/9d/ee/1a/9dee1a4d0a68d7c2cc74f573aa45fdce.jpg", type: "cinema", tags: ["noir","contrast","dark","cinematic","shadow","moody"], label: "Noir Shadow Scene" },
+  { file: "https://i.pinimg.com/736x/76/7e/0d/767e0dbb34035007ee569b11337c799e.jpg", type: "cinema", tags: ["fog","figure","backlit","dark","atmospheric","depth"], label: "Backlit Figure in Fog" },
+  { file: "https://i.pinimg.com/736x/52/8e/ea/528eeaea0ff139612dc9aeb14cf3ff9b.jpg", type: "cinema", tags: ["rain","night","reflection","dark","urban","neon"], label: "Rain Reflections" },
+  { file: "https://i.pinimg.com/736x/2c/38/ae/2c38ae4c04189ac43f5e9f560e8d7088.jpg", type: "cinema", tags: ["dark","moody","interior","shadow","atmospheric","noir"], label: "Moody Dark Interior" },
+
+  // === CONCEPTUAL ART (survived Edward's 70% cull + new) ===
+  { file: "https://i.pinimg.com/736x/21/0d/8d/210d8d2761e6b134a7a0f27fd2569623.jpg", type: "conceptual", tags: ["surreal","dark","figure","abstract","fine-art","mysterious"], label: "Surreal Dark Figure" },
+  { file: "https://i.pinimg.com/736x/88/a0/bf/88a0bfbd0945888bc181f7ab02e8e641.jpg", type: "conceptual", tags: ["surreal","dark","dreamlike","fog","ethereal","fine-art"], label: "Dreamlike Dark Scene" },
+  { file: "https://i.pinimg.com/736x/72/2d/41/722d410fd57badf142ae2237338a5530.jpg", type: "conceptual", tags: ["tunnel","figure","light","dark","dramatic","depth"], label: "Figure in Tunnel" },
+  { file: "https://i.pinimg.com/736x/36/33/b3/3633b3be93191eca00a2363bfd93a5c7.jpg", type: "conceptual", tags: ["surreal","portal","glowing","dark","otherworldly","scale"], label: "Glowing Portal" },
+  { file: "https://i.pinimg.com/736x/9b/a8/d1/9ba8d1887b5ce0d5ee03aa576bd8a8f4.jpg", type: "conceptual", tags: ["abstract","dark","movement","fine-art","monochrome","expressive"], label: "Abstract Movement" },
+  { file: "https://i.pinimg.com/736x/28/1a/34/281a34a2e88babdc2e054e8ae7cfdad8.jpg", type: "conceptual", tags: ["surreal","landscape","dark","vast","solitary","scale"], label: "Vast Dark Landscape" },
+
+  // === NEW SEARCH: Surreal/Portal/Fog ===
+  { file: "https://i.pinimg.com/736x/1d/74/1a/1d741ad5318548b0b1b87eac4e23eb69.jpg", type: "conceptual", tags: ["portal","surreal","dark","glowing","figure","mystical"], label: "Dark Portal Gateway" },
+  { file: "https://i.pinimg.com/736x/34/df/c5/34dfc5994e366bade1394e9f2338d34a.jpg", type: "conceptual", tags: ["fog","surreal","landscape","dark","atmospheric","vast"], label: "Surreal Fog Landscape" },
+  { file: "https://i.pinimg.com/736x/d8/16/91/d8169147b98e6c8cbbd74e8062bccfdb.jpg", type: "conceptual", tags: ["dark","figure","light","contrast","dramatic","mystery"], label: "Figure in Light" },
+  { file: "https://i.pinimg.com/736x/63/b9/ea/63b9ea659e3e0334a64d1863bbda0b61.jpg", type: "conceptual", tags: ["surreal","underwater","dark","ethereal","dream","blue"], label: "Surreal Underwater" },
+  { file: "https://i.pinimg.com/736x/05/b7/04/05b70401244b8b7a8cb94710e974913a.jpg", type: "conceptual", tags: ["portal","circle","dark","glowing","cosmic","minimal"], label: "Cosmic Portal" },
+  { file: "https://i.pinimg.com/736x/d2/54/10/d2541072ed091395d57bcfc0d15f5dd2.jpg", type: "conceptual", tags: ["surreal","dark","abstract","figure","void","fine-art"], label: "Figure in Void" },
+  { file: "https://i.pinimg.com/736x/e5/d0/32/e5d032787216c076db1457b27df857ec.jpg", type: "conceptual", tags: ["fog","dark","horizon","solitary","atmospheric","vast"], label: "Solitary Fog Horizon" },
+  { file: "https://i.pinimg.com/736x/86/15/6c/86156c3fce80f3c8eac07ebddabf7d1a.jpg", type: "conceptual", tags: ["surreal","dark","portal","light","otherworldly","scale"], label: "Otherworldly Light" },
+  { file: "https://i.pinimg.com/736x/cf/18/67/cf1867982188b45dfcfad26d85efef5a.jpg", type: "conceptual", tags: ["dark","silhouette","fog","moody","cinematic","atmospheric"], label: "Silhouette in Fog" },
+  { file: "https://i.pinimg.com/736x/c2/4d/e6/c24de626ed123e5cc90781a68a707141.jpg", type: "conceptual", tags: ["surreal","cosmic","dark","galaxy","figure","scale"], label: "Cosmic Scale" },
+
+  // === POSTER DESIGN (100% survived — Edward kept all 20) ===
+  { file: "https://i.pinimg.com/736x/d0/10/61/d01061073f51ad72a262c1ade1b4cef3.jpg", type: "poster", tags: ["dark","textured","abstract","lines","blue","design"], label: "Blue Abstract Lines" },
+  { file: "https://i.pinimg.com/736x/90/0d/06/900d06cd57a30dc72cb7ce949cce6344.jpg", type: "poster", tags: ["dark","cosmic","light","dramatic","space","atmospheric"], label: "Cosmic Light Burst" },
+  { file: "https://i.pinimg.com/736x/c4/8c/a1/c48ca116ff069c4f451aa464c2ac2c9d.jpg", type: "poster", tags: ["planets","space","dark","infographic","cosmic","design"], label: "Space Infographic" },
+  { file: "https://i.pinimg.com/736x/eb/fc/42/ebfc42ac15176c8dfaa9563e5658bf5f.jpg", type: "poster", tags: ["neon","colorful","dark","typography","bold","vibrant"], label: "Neon Typography" },
+
+  // === NEGATIVE EXAMPLES (product/corporate — Edward's "hates") ===
+  { file: "https://i.pinimg.com/736x/ad/53/6b/ad536b4e021dd38c5c10f141c4c8e10f.jpg", type: "product", tags: ["white","clean","minimal","product","photography","commercial"], label: "Clean Product Photo" },
+  { file: "https://i.pinimg.com/736x/4d/55/84/4d55846c472ceabd1b37ea394b1eeddc.jpg", type: "product", tags: ["white","flat-lay","clean","minimal","product","bright"], label: "Bright Flat Lay" },
+  { file: "https://i.pinimg.com/736x/ec/f5/fd/ecf5fd28b9a1857012cf31d08fdb65e4.jpg", type: "product", tags: ["white","studio","product","photography","commercial","bright"], label: "Studio Product Shot" },
+  { file: "https://i.pinimg.com/736x/9c/f7/38/9cf738c4c2f8c33aa392dc9c32cfb5a2.jpg", type: "product", tags: ["white","minimal","clean","bright","product","simple"], label: "Minimal White Product" },
+  { file: "https://i.pinimg.com/736x/a8/41/89/a84189d65ca6754a65fd4fccd9275677.jpg", type: "product", tags: ["pastel","soft","product","lifestyle","bright","commercial"], label: "Pastel Lifestyle Product" },
+  { file: "https://i.pinimg.com/736x/f5/04/10/f5041023713a373f1dac274c1fb6452d.jpg", type: "product", tags: ["white","clean","product","bright","commercial","studio"], label: "White Studio Setup" },
+
+  // === MOTION GRAPHICS (50% survived — Edward cut half) ===
+  { file: "https://i.pinimg.com/736x/c3/8a/86/c38a867f53cef698117da479bfc21267.jpg", type: "motion", tags: ["abstract","dark","fluid","organic","3d","movement"], label: "Dark Fluid Motion" },
+  { file: "https://i.pinimg.com/736x/7a/ce/ef/7aceefeda4518eeda909cc0c5167d61c.jpg", type: "motion", tags: ["abstract","dark","metallic","chrome","3d","liquid"], label: "Chrome Liquid" },
+  { file: "https://i.pinimg.com/736x/16/08/18/160818fd9f0f3d4647a0fcb1c2a7fb8e.jpg", type: "motion", tags: ["abstract","dark","particles","light","motion","cosmic"], label: "Particle Motion" },
+  { file: "https://i.pinimg.com/736x/82/cd/16/82cd162535b0d7546f8ba20d62292882.jpg", type: "motion", tags: ["abstract","dark","organic","texture","3d","movement"], label: "Organic Dark Texture" },
+];
+
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+const shuffled=shuffle(images);const pairs=[];for(let i=0;i<shuffled.length-1;i+=2)pairs.push([shuffled[i],shuffled[i+1]]);
+const totalRounds=pairs.length;let currentRound=0;const results=[];
+document.getElementById('totalRounds').textContent=totalRounds;
+function loadRound(){
+  if(currentRound>=totalRounds){showResults();return;}
+  const[a,b]=pairs[currentRound];
+  document.getElementById('imgA').src=a.file;document.getElementById('imgB').src=b.file;
+  document.getElementById('labelA').textContent=a.label;document.getElementById('labelB').textContent=b.label;
+  document.getElementById('typeA').textContent=a.type;document.getElementById('typeB').textContent=b.type;
+  document.getElementById('round').textContent=currentRound+1;
+  document.getElementById('progressFill').style.width=((currentRound+1)/totalRounds*100)+'%';
+}
+function pick(c){
+  const[a,b]=pairs[currentRound];
+  results.push({round:currentRound+1,a:a.label,b:b.label,choice:c,aType:a.type,bType:b.type,
+    winnerTags:c==='A'?a.tags:c==='B'?b.tags:c==='both'?[...a.tags,...b.tags]:[],
+    loserTags:c==='A'?b.tags:c==='B'?a.tags:[],
+    winnerFiles:c==='A'?[a.file]:c==='B'?[b.file]:c==='both'?[a.file,b.file]:[],
+    loserFiles:c==='A'?[b.file]:c==='B'?[a.file]:c==='both'?[]:[a.file,b.file],
+    winnerTypes:c==='A'?[a.type]:c==='B'?[b.type]:c==='both'?[a.type,b.type]:[],
+    loserTypes:c==='A'?[b.type]:c==='B'?[a.type]:c==='both'?[]:[a.type,b.type],
+  });currentRound++;loadRound();
+}
+document.addEventListener('keydown',e=>{if(currentRound>=totalRounds)return;if(e.key==='ArrowLeft')pick('A');else if(e.key==='ArrowRight')pick('B');else if(e.key==='ArrowUp'){e.preventDefault();pick('both');}else if(e.key==='ArrowDown'){e.preventDefault();pick('skip');}});
+function showResults(){
+  document.getElementById('arena').classList.add('hidden');document.getElementById('actions').classList.add('hidden');
+  document.querySelector('.header').classList.add('hidden');document.querySelector('.keyboard-hint').classList.add('hidden');
+  const res=document.getElementById('results');res.style.display='block';
+  const grid=document.getElementById('winnersGrid');results.flatMap(r=>r.winnerFiles).forEach(f=>{const img=document.createElement('img');img.src=f;grid.appendChild(img);});
+  const lgrid=document.getElementById('losersGrid');results.flatMap(r=>r.loserFiles).forEach(f=>{const img=document.createElement('img');img.src=f;lgrid.appendChild(img);});
+  const tagScores={};const typeScores={};
+  results.forEach(r=>{r.winnerTags.forEach(t=>{tagScores[t]=(tagScores[t]||0)+1;});r.loserTags.forEach(t=>{tagScores[t]=(tagScores[t]||0)-0.5;});
+    r.winnerTypes.forEach(t=>{typeScores[t]=(typeScores[t]||0)+1;});r.loserTypes.forEach(t=>{typeScores[t]=(typeScores[t]||0)-0.5;});});
+  const sorted=Object.entries(tagScores).sort((a,b)=>b[1]-a[1]);const typeSorted=Object.entries(typeScores).sort((a,b)=>b[1]-a[1]);
+  const top=sorted.filter(([,v])=>v>0).slice(0,15);const bottom=sorted.filter(([,v])=>v<0).slice(-10);
+  let s="🎨 CONTENT TYPE:\n";typeSorted.forEach(([t,v])=>{s+=`  ${t}: ${v>0?'█'.repeat(Math.round(v*2)):''} (${v.toFixed(1)})\n`;});
+  s+="\n🏆 TOP TAGS:\n";top.forEach(([t,v])=>{s+=`  ${t}: ${'█'.repeat(Math.round(v*2))} (${v.toFixed(1)})\n`;});
+  s+="\n🚫 REJECTED:\n";bottom.forEach(([t,v])=>{s+=`  ${t}: (${v.toFixed(1)})\n`;});
+  s+="\n📊 PICKS:\n";results.forEach(r=>{s+=`  R${r.round}: ${r.choice==='A'?'✅':'❌'} [${r.aType}] ${r.a}  vs  ${r.choice==='B'?'✅':'❌'} [${r.bType}] ${r.b} → ${r.choice}\n`;});
+  document.getElementById('resultsData').textContent=s;
+  window.__styleCuratorResults={round:4,results,tagScores:Object.fromEntries(sorted),typeScores:Object.fromEntries(typeSorted),summary:s};
+}
+loadRound();
+</script>
+</body>
+</html>
