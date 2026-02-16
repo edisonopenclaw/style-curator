@@ -20,5 +20,12 @@ document.addEventListener('keydown',e=>{
   else if(e.key==='ArrowDown'){e.preventDefault();pick('skip');}
 });
 
+// HERO PILLS
+function buildHeroPills(){
+  const el=document.getElementById('heroPills');if(!el)return;
+  const pills=['dark cinematic','surreal','neon noir','ethereal','retro','moody','abstract','illustration','cyberpunk','minimal'];
+  el.innerHTML=pills.map(p=>`<span class="hero-pill" onclick="document.getElementById('q').value='${p}';render()">${p}</span>`).join('');
+}
+
 // INIT
-buildFilters();renderCreators();renderTrending();render();updStats();
+buildHeroPills();buildFilters();renderCreators();renderTrending();render();updStats();

@@ -38,7 +38,7 @@ function openS(id){
   document.getElementById('overlay').classList.add('active');
 }
 function closeModal(){document.getElementById('overlay').classList.remove('active');}
-function updStats(){document.getElementById('sN').textContent=S.length;const t=new Set();S.forEach(s=>s.tags.forEach(x=>t.add(x)));document.getElementById('sT').textContent=t.size;}
+function updStats(){document.getElementById('sN').textContent=S.length;}
 
 // === TRENDING ===
 function renderTrending(){

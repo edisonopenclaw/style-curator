@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>scuttlesref</title>
-<link rel="stylesheet" href="css/style.css?v=11">
+<link rel="stylesheet" href="css/style.css?v=12">
 </head>
 <body>
 
 <!-- NAV -->
 <nav class="navbar">
   <div class="nav-item active" onclick="nav('library')" id="nav-library"><svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Library</div>
-  <div class="nav-item" onclick="nav('test')" id="nav-test"><svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 00-2 2v3"/><path d="M21 8V5a2 2 0 00-2-2h-3"/><path d="M3 16v3a2 2 0 002 2h3"/><path d="M16 21h3a2 2 0 002-2v-3"/><circle cx="12" cy="12" r="3"/></svg>Compare</div>
+  <div class="nav-item" onclick="nav('test')" id="nav-test"><svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 00-2 2v3"/><path d="M21 8V5a2 2 0 00-2-2h-3"/><path d="M3 16v3a2 2 0 002 2h3"/><path d="M16 21h3a2 2 0 002-2v-3"/><circle cx="12" cy="12" r="3"/></svg>Match</div>
   <div class="nav-item" onclick="nav('history')" id="nav-history"><svg class="nav-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>History</div>
 </nav>
 
@@ -27,27 +27,25 @@
 
 <!-- LIBRARY -->
 <div class="screen active" id="screen-library">
-  <div class="hero">
+  <div class="hero hero-search">
     <div class="hero-label">scuttlesref</div>
-    <h1>Find your <span>style.</span><br>Copy the code.</h1>
-    <p>A curated collection of style reference codes for Midjourney, Stable Diffusion, Flux & DALL·E.</p>
-  </div>
-  <div class="stats-row">
-    <div class="stat-item"><div class="stat-num" id="sN">0</div><div class="stat-label">Styles</div></div>
-    <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">Engines</div></div>
-    <div class="stat-item"><div class="stat-num" id="sT">0</div><div class="stat-label">Tags</div></div>
-  </div>
-  <div class="search-section">
-    <div class="search-wrap">
-      <span class="search-glyph">⌕</span>
-      <input type="text" id="q" placeholder="Search styles, tags, codes..." oninput="render()">
+    <h1>Find your <span>style.</span></h1>
+    <p>Search styles, explore creators, or let us match your taste.</p>
+    <div class="hero-search-bar">
+      <svg class="hero-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="q" placeholder="Search dark cinematic, surreal, neon..." oninput="render()">
     </div>
+    <div class="hero-pills" id="heroPills"></div>
+    <button class="hero-cta" onclick="nav('test')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 00-2 2v3"/><path d="M21 8V5a2 2 0 00-2-2h-3"/><path d="M3 16v3a2 2 0 002 2h3"/><path d="M16 21h3a2 2 0 002-2v-3"/><circle cx="12" cy="12" r="3"/></svg>
+      Match My Style
+    </button>
   </div>
   <div class="filters" id="filters"></div>
   <div class="grid-container">
     <div id="creators"></div>
     <div id="trending"></div>
-    <div class="section-label">Styles</div>
+    <div class="section-label" id="stylesLabel">Styles · <span id="sN">0</span></div>
     <div class="style-grid" id="grid"></div>
   </div>
 </div>
@@ -55,9 +53,9 @@
 <!-- A/B TEST -->
 <div class="screen" id="screen-test">
   <div class="hero">
-    <div class="hero-label">Visual Taste Profiler</div>
-    <h1>Discover your <span>taste.</span></h1>
-    <p>Can't describe your style? Pick between images and we'll figure it out.</p>
+    <div class="hero-label">Style Match</div>
+    <h1>Match your <span>taste.</span></h1>
+    <p>Pick between images. We'll find the sref codes that match your style.</p>
   </div>
   <div class="dept-section" id="depts"></div>
 </div>
@@ -123,10 +121,10 @@
   <div class="history-section" id="hList"></div>
 </div>
 
-<script src="js/data.js?v=11"></script>
-<script src="js/library.js?v=11"></script>
-<script src="js/compare.js?v=11"></script>
-<script src="js/history.js?v=11"></script>
-<script src="js/nav.js?v=11"></script>
+<script src="js/data.js?v=12"></script>
+<script src="js/library.js?v=12"></script>
+<script src="js/compare.js?v=12"></script>
+<script src="js/history.js?v=12"></script>
+<script src="js/nav.js?v=12"></script>
 </body>
 </html>
