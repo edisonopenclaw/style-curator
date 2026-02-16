@@ -90,7 +90,10 @@ function renderCreators(){
 }
 function openCreator(id){
   const c=C.find(x=>x.id===id);if(!c)return;
-  document.getElementById('mGallery').innerHTML=c.images.map(i=>`<img src="${i}" loading="lazy">`).join('');
+  // Get full image set from D (compare departments) if available
+  const dept=D[id];
+  const allImgs=dept?Object.values(dept.boards).flatMap(b=>b.images):[];
+  document.getElementById('mGallery').innerHTML='';
   document.getElementById('mContent').innerHTML=`
     <div class="creator-modal-header">
       <img class="creator-modal-avatar" src="${c.avatar}" alt="${c.name}">
@@ -100,12 +103,23 @@ function openCreator(id){
       </div>
     </div>
     <div class="modal-desc">${c.bio}</div>
-    <div class="modal-label">Gallery</div>
-    <div style="font-size:13px;color:var(--text-3);margin-bottom:16px">Latest work from ${c.handle}</div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <a href="${c.url}" target="_blank" style="padding:10px 24px;background:var(--accent);color:#fff;border-radius:var(--radius-xs);font-size:14px;font-weight:600;text-decoration:none;transition:all var(--transition)">View on X ↗</a>
-      <button onclick="closeModal();nav('test')" style="padding:10px 24px;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);border-radius:var(--radius-xs);font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font)">Rate their art →</button>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px">
+      <a href="${c.url}" target="_blank" style="padding:8px 20px;background:rgba(74,222,128,0.1);border:1px solid var(--accent);color:var(--accent);border-radius:var(--radius-xs);font-size:13px;font-weight:600;text-decoration:none">View on X ↗</a>
+      <button onclick="closeModal();nav('test')" style="padding:8px 20px;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);border-radius:var(--radius-xs);font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font)">Rate their art →</button>
     </div>
+    <div class="modal-label">${allImgs.length} Works</div>
+    <div class="creator-works">${allImgs.map((img,i)=>{
+      const sref=img.sref||'';
+      const srefHtml=sref?`<div class="work-sref"><span>${sref}</span><span class="card-copy" onclick="event.stopPropagation();cc('${sref}',this)">Copy</span></div>`:'';
+      return`<div class="work-card">
+        <img src="${img.file}" loading="lazy">
+        <div class="work-info">
+          <div class="work-label">${img.label}</div>
+          ${srefHtml}
+          <div class="work-tags">${img.tags.slice(0,3).map(t=>`<span>${t}</span>`).join('')}</div>
+        </div>
+      </div>`;
+    }).join('')}</div>
   `;
   document.getElementById('overlay').classList.add('active');
 }
