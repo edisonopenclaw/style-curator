@@ -34,9 +34,9 @@ const C=[
 
 // === TRENDING ===
 const T=[
-  {id:'claude-brutalist',title:'Claude\'s Anti-OpenAI Ad',desc:'Anthropic dropped a brutalist, text-heavy ad directly calling out OpenAI. Minimal design, bold serif type, raw copywriting. The internet lost it.',date:'2026-02-14',tags:['brutalist','typography','brand','viral'],image:'https://pbs.twimg.com/media/HBDGoNEbcAA5SoV?format=jpg&name=medium',source:'@anthropic',url:'https://x.com/anthropic'},
-  {id:'midjourney-v7',title:'Midjourney V7 Launch',desc:'V7 dropped with insane photorealism and new --personalize flag. The community is flooding Twitter with comparison grids.',date:'2026-02-12',tags:['midjourney','photorealism','ai-art','launch'],image:'https://pbs.twimg.com/media/G_d3MQWXUAAPVGW?format=jpg&name=medium',source:'@midjourney',url:'https://x.com/midjourney'},
-  {id:'dark-ui-glassmorphism',title:'Dark Glassmorphism Revival',desc:'Frosted glass panels on pure black are back. Driven by Apple Vision Pro and spatial computing UI trends.',date:'2026-02-10',tags:['glassmorphism','dark-ui','spatial','trend'],image:'https://i.pinimg.com/736x/c1/4a/a2/c14aa2a22044644ba4d94f30d0703306.jpg',source:'Dribbble',url:'https://dribbble.com'},
+  {id:'claude-brutalist',title:'Claude\'s Anti-OpenAI Ad',desc:'Anthropic dropped a brutalist, text-heavy ad directly calling out OpenAI. Minimal design, bold serif type, raw copywriting. The internet lost it.',date:'2026-02-14',tags:['brutalist','typography','brand','viral'],image:'https://pbs.twimg.com/media/HBDGoNEbcAA5SoV?format=jpg&name=medium',source:'@anthropic'},
+  {id:'midjourney-v7',title:'Midjourney V7 Launch',desc:'V7 dropped with insane photorealism and new --personalize flag. The community is flooding Twitter with comparison grids.',date:'2026-02-12',tags:['midjourney','photorealism','ai-art','launch'],image:'https://pbs.twimg.com/media/G_d3MQWXUAAPVGW?format=jpg&name=medium',source:'@midjourney'},
+  {id:'dark-ui-glassmorphism',title:'Dark Glassmorphism Revival',desc:'Frosted glass panels on pure black are back. Driven by Apple Vision Pro and spatial computing UI trends.',date:'2026-02-10',tags:['glassmorphism','dark-ui','spatial','trend'],image:'https://i.pinimg.com/736x/c1/4a/a2/c14aa2a22044644ba4d94f30d0703306.jpg',source:'Dribbble'},
 ];
 
 // === STYLE DATA ===

@@ -65,7 +65,6 @@ function openTrending(id){
     <div class="modal-desc">${t.desc}</div>
     <div class="modal-label">Tags</div>
     <div class="modal-tags">${t.tags.map(x=>`<span>${x}</span>`).join('')}</div>
-    ${t.url?`<a href="${t.url}" target="_blank" rel="noopener" class="modal-link">View Original ↗</a>`:''}
   `;
   document.getElementById('overlay').classList.add('active');
 }
