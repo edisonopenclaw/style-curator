@@ -3,1000 +3,552 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Style Curator ✨</title>
+<title>Style Curator</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #0a0a0f; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; padding-bottom: 72px; }
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #000000;
+    --surface: #0d0d0d;
+    --surface-2: #161616;
+    --surface-3: #1c1c1e;
+    --border: rgba(255,255,255,0.06);
+    --border-hover: rgba(255,255,255,0.12);
+    --text: #f5f5f7;
+    --text-2: #a1a1a6;
+    --text-3: #6e6e73;
+    --accent: #2997ff;
+    --accent-2: #bf5af2;
+    --accent-gradient: linear-gradient(135deg, #2997ff, #bf5af2);
+    --green: #30d158;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --radius-xs: 8px;
+    --transition: 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; min-height: 100dvh; overflow-x: hidden; }
+
+  /* === SCROLLBAR === */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
 
   /* === NAV BAR === */
-  .navbar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(12,12,20,0.95); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid #1a1a2a; display: flex; justify-content: center; gap: 0; z-index: 100; padding: 6px 0 env(safe-area-inset-bottom, 6px); }
-  .nav-item { flex: 1; max-width: 120px; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; color: #555; font-size: 10px; font-weight: 600; cursor: pointer; transition: color 0.2s; text-decoration: none; }
-  .nav-item.active, .nav-item:hover { color: #667eea; }
-  .nav-icon { font-size: 22px; }
+  .navbar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.72); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-top: 1px solid var(--border); display: flex; justify-content: center; z-index: 100; padding: 8px 0 env(safe-area-inset-bottom, 8px); }
+  .nav-item { flex: 1; max-width: 100px; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 4px; color: var(--text-3); font-size: 10px; font-weight: 500; cursor: pointer; transition: color var(--transition); text-decoration: none; letter-spacing: 0.01em; }
+  .nav-item.active { color: var(--accent); }
+  .nav-icon { font-size: 24px; transition: transform var(--transition); }
+  .nav-item:active .nav-icon { transform: scale(0.85); }
 
   /* === SCREENS === */
-  .screen { display: none; flex: 1; flex-direction: column; align-items: center; padding: 20px; animation: fadeIn 0.25s ease; }
-  .screen.active { display: flex; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .screen { display: none; min-height: 100vh; min-height: 100dvh; padding-bottom: 100px; }
+  .screen.active { display: block; animation: screenIn 0.5s cubic-bezier(0.25, 0.1, 0.25, 1); }
+  @keyframes screenIn { from { opacity: 0; } to { opacity: 1; } }
 
-  /* === LIBRARY HOME === */
-  .lib-hero { text-align: center; padding: 32px 0 20px; width: 100%; max-width: 900px; }
-  .lib-hero h1 { font-size: 32px; font-weight: 700; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .lib-hero p { font-size: 14px; color: #555; margin-top: 6px; }
+  /* === HERO === */
+  .hero { text-align: center; padding: 80px 24px 40px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -120px; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(41,151,255,0.08) 0%, rgba(191,90,242,0.04) 40%, transparent 70%); pointer-events: none; }
+  .hero-label { display: inline-block; font-size: 14px; font-weight: 600; letter-spacing: 0.02em; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 16px; }
+  .hero h1 { font-size: clamp(40px, 8vw, 64px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; color: var(--text); }
+  .hero h1 span { background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero p { font-size: clamp(16px, 3vw, 20px); color: var(--text-3); margin-top: 16px; font-weight: 400; line-height: 1.5; max-width: 480px; margin-left: auto; margin-right: auto; }
 
-  /* Search & Filters */
-  .search-bar { width: 100%; max-width: 560px; position: relative; margin-bottom: 16px; }
-  .search-bar input { width: 100%; padding: 14px 20px 14px 44px; background: #111118; border: 1px solid #1e1e2e; border-radius: 14px; color: #e0e0e0; font-size: 15px; outline: none; transition: border-color 0.2s; }
-  .search-bar input:focus { border-color: #667eea; }
-  .search-bar input::placeholder { color: #444; }
-  .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 18px; color: #444; pointer-events: none; }
+  /* === SEARCH === */
+  .search-section { padding: 0 24px 12px; max-width: 680px; margin: 0 auto; }
+  .search-wrap { position: relative; }
+  .search-wrap input { width: 100%; padding: 16px 20px 16px 48px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-size: 16px; font-family: var(--font); font-weight: 400; outline: none; transition: all var(--transition); }
+  .search-wrap input:focus { border-color: rgba(41,151,255,0.4); background: var(--surface-3); box-shadow: 0 0 0 4px rgba(41,151,255,0.08); }
+  .search-wrap input::placeholder { color: var(--text-3); }
+  .search-wrap .search-glyph { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); font-size: 18px; color: var(--text-3); pointer-events: none; }
 
-  .filter-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 20px; max-width: 700px; }
-  .filter-tag { padding: 7px 16px; background: #111118; border: 1px solid #1e1e2e; border-radius: 20px; font-size: 12px; font-weight: 500; color: #777; cursor: pointer; transition: all 0.2s; }
-  .filter-tag:hover { border-color: #667eea; color: #bbb; }
-  .filter-tag.active { background: #1a1a3a; border-color: #667eea; color: #667eea; }
+  /* === FILTERS === */
+  .filters { display: flex; gap: 8px; overflow-x: auto; padding: 8px 24px 24px; max-width: 680px; margin: 0 auto; scrollbar-width: none; -ms-overflow-style: none; }
+  .filters::-webkit-scrollbar { display: none; }
+  .pill { padding: 8px 18px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 100px; font-size: 13px; font-weight: 500; color: var(--text-2); cursor: pointer; transition: all var(--transition); white-space: nowrap; user-select: none; }
+  .pill:hover { border-color: var(--border-hover); color: var(--text); }
+  .pill.active { background: var(--accent); border-color: var(--accent); color: #fff; }
 
-  /* Style Grid */
-  .style-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; width: 100%; max-width: 900px; padding-bottom: 20px; }
+  /* === STATS === */
+  .stats-row { display: flex; justify-content: center; gap: 40px; padding: 0 24px 32px; }
+  .stat-item { text-align: center; }
+  .stat-num { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .stat-label { font-size: 12px; color: var(--text-3); margin-top: 4px; font-weight: 500; letter-spacing: 0.02em; text-transform: uppercase; }
 
-  .style-card { background: #111118; border: 1px solid #1e1e2e; border-radius: 16px; overflow: hidden; cursor: pointer; transition: all 0.3s; }
-  .style-card:hover { border-color: #2a2a4a; transform: translateY(-4px); box-shadow: 0 12px 40px rgba(102,126,234,0.12); }
-  .style-samples { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
-  .style-samples img { width: 100%; height: 120px; object-fit: cover; display: block; background: #0a0a0f; }
-  .style-meta { padding: 14px 16px; }
-  .style-name { font-size: 15px; font-weight: 600; color: #e0e0e0; margin-bottom: 4px; }
-  .style-code { font-family: 'SF Mono', Menlo, monospace; font-size: 12px; color: #667eea; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-  .style-code .copy-code { padding: 2px 8px; background: #1a1a2a; border: 1px solid #252538; border-radius: 6px; font-size: 10px; color: #888; cursor: pointer; transition: all 0.2s; }
-  .style-code .copy-code:hover { background: #252540; color: #fff; border-color: #667eea; }
-  .style-tags { display: flex; flex-wrap: wrap; gap: 4px; }
-  .style-tags span { padding: 3px 8px; background: #1a1a28; border-radius: 6px; font-size: 10px; color: #666; }
-  .style-engines { margin-top: 8px; display: flex; gap: 6px; }
-  .engine-badge { padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; }
-  .engine-mj { background: #1a1a2f; color: #667eea; }
-  .engine-sd { background: #1a2a1a; color: #4ade80; }
-  .engine-flux { background: #2a1a1a; color: #f87171; }
-  .engine-dalle { background: #2a2a1a; color: #facc15; }
+  /* === STYLE GRID === */
+  .grid-container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+  .style-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
 
-  /* Style Detail Modal */
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 200; justify-content: center; align-items: center; padding: 20px; }
+  .style-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1); }
+  .style-card:hover { border-color: var(--border-hover); transform: scale(1.02); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+  .style-card:active { transform: scale(0.98); }
+  .card-mosaic { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,0.03); }
+  .card-mosaic img { width: 100%; height: 140px; object-fit: cover; display: block; transition: opacity 0.4s; }
+  .card-mosaic img:hover { opacity: 0.85; }
+  .card-body { padding: 18px 20px 20px; }
+  .card-name { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; color: var(--text); margin-bottom: 6px; }
+  .card-code { display: inline-flex; align-items: center; gap: 8px; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px; color: var(--accent); margin-bottom: 10px; }
+  .card-copy { padding: 3px 10px; background: rgba(41,151,255,0.1); border: none; border-radius: 6px; color: var(--accent); font-size: 11px; font-weight: 600; cursor: pointer; font-family: var(--font); transition: all var(--transition); }
+  .card-copy:hover { background: rgba(41,151,255,0.2); }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+  .card-tags span { font-size: 11px; color: var(--text-3); background: var(--surface-2); padding: 3px 10px; border-radius: 100px; font-weight: 500; }
+  .card-engines { display: flex; gap: 6px; }
+  .engine { padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.02em; }
+  .e-mj { background: rgba(41,151,255,0.1); color: var(--accent); }
+  .e-sd { background: rgba(48,209,88,0.1); color: var(--green); }
+  .e-flux { background: rgba(255,69,58,0.1); color: #ff453a; }
+  .e-dalle { background: rgba(255,214,10,0.1); color: #ffd60a; }
+
+  /* === MODAL === */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 200; justify-content: center; align-items: flex-end; }
   .modal-overlay.active { display: flex; }
-  .modal { background: #111118; border: 1px solid #1e1e2e; border-radius: 20px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto; animation: fadeIn 0.2s ease; }
-  .modal-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
-  .modal-gallery img { width: 100%; height: 200px; object-fit: cover; display: block; }
-  .modal-body { padding: 24px; }
-  .modal-body h2 { font-size: 22px; font-weight: 700; color: #e0e0e0; margin-bottom: 4px; }
-  .modal-code { font-family: 'SF Mono', Menlo, monospace; font-size: 16px; color: #667eea; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
-  .modal-code button { padding: 6px 16px; background: linear-gradient(135deg, #667eea, #5a67d8); color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-  .modal-code button:hover { transform: scale(1.05); }
-  .modal-desc { font-size: 14px; color: #888; line-height: 1.6; margin-bottom: 16px; }
-  .modal-section { margin-bottom: 16px; }
-  .modal-section h4 { font-size: 12px; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-  .modal-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-  .modal-tags span { padding: 5px 12px; background: #1a1a28; border: 1px solid #252538; border-radius: 8px; font-size: 12px; color: #999; }
-  .modal-prompt { background: #0a0a0f; border: 1px solid #1e1e2e; border-radius: 10px; padding: 14px; font-family: 'SF Mono', Menlo, monospace; font-size: 12px; color: #888; line-height: 1.6; position: relative; }
-  .modal-prompt .copy-prompt { position: absolute; top: 8px; right: 8px; padding: 4px 10px; background: #1a1a2a; border: 1px solid #252538; border-radius: 6px; font-size: 10px; color: #888; cursor: pointer; font-family: -apple-system, sans-serif; }
-  .modal-prompt .copy-prompt:hover { background: #252540; color: #fff; }
-  .modal-close { position: absolute; top: 16px; right: 16px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.6); border: none; color: #999; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); z-index: 10; }
-  .modal-close:hover { color: #fff; background: rgba(0,0,0,0.8); }
-  .empty-state { text-align: center; padding: 60px 20px; color: #333; font-size: 16px; }
-  .empty-state .emoji { font-size: 48px; margin-bottom: 12px; display: block; }
+  .modal-sheet { background: var(--surface); border-radius: 20px 20px 0 0; max-width: 640px; width: 100%; max-height: 92vh; overflow-y: auto; animation: sheetUp 0.4s cubic-bezier(0.25, 0.1, 0.25, 1); }
+  @keyframes sheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .modal-handle { width: 36px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin: 10px auto 0; }
+  .modal-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-top: 16px; background: rgba(255,255,255,0.03); }
+  .modal-gallery img { width: 100%; height: 220px; object-fit: cover; display: block; }
+  .modal-content { padding: 28px 24px 40px; }
+  .modal-content h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .modal-sref { font-family: 'SF Mono', monospace; font-size: 18px; color: var(--accent); display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .modal-sref button { padding: 8px 20px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius-xs); font-size: 14px; font-weight: 600; cursor: pointer; font-family: var(--font); transition: all var(--transition); }
+  .modal-sref button:hover { opacity: 0.85; transform: scale(1.03); }
+  .modal-sref button:active { transform: scale(0.97); }
+  .modal-desc { font-size: 16px; color: var(--text-2); line-height: 1.6; margin-bottom: 24px; }
+  .modal-label { font-size: 12px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+  .modal-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 24px; }
+  .modal-tags span { padding: 6px 14px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 100px; font-size: 13px; color: var(--text-2); font-weight: 500; }
+  .modal-engines { display: flex; gap: 8px; margin-bottom: 24px; }
+  .modal-prompt-wrap { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; position: relative; }
+  .modal-prompt-wrap pre { font-family: 'SF Mono', monospace; font-size: 13px; color: var(--text-2); line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
+  .modal-prompt-copy { position: absolute; top: 10px; right: 10px; padding: 5px 12px; background: var(--surface-3); border: 1px solid var(--border); border-radius: 6px; font-size: 11px; color: var(--text-3); cursor: pointer; font-family: var(--font); font-weight: 500; transition: all var(--transition); }
+  .modal-prompt-copy:hover { color: var(--text); border-color: var(--border-hover); }
+  .modal-close { position: sticky; top: 0; display: flex; justify-content: flex-end; padding: 16px 16px 0; z-index: 10; }
+  .modal-close button { width: 32px; height: 32px; border-radius: 50%; background: var(--surface-3); border: none; color: var(--text-3); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all var(--transition); }
+  .modal-close button:hover { background: var(--surface-2); color: var(--text); }
 
-  /* === A/B TEST SCREEN (departments) === */
-  .dept-card { width: 100%; max-width: 560px; background: #111118; border: 1px solid #1e1e2e; border-radius: 20px; padding: 24px; margin-bottom: 16px; transition: all 0.3s; }
-  .dept-card:hover { border-color: #2a2a4a; }
-  .dept-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
-  .dept-icon { font-size: 36px; }
-  .dept-info h3 { font-size: 18px; font-weight: 600; color: #e0e0e0; }
-  .dept-info p { font-size: 12px; color: #555; margin-top: 2px; }
-  .dept-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px; background: #1a1a28; border: 1px solid #252538; border-radius: 12px; font-size: 13px; font-weight: 500; color: #bbb; cursor: pointer; transition: all 0.2s; }
-  .chip:hover { background: #222240; border-color: #667eea; color: #fff; transform: translateY(-2px); box-shadow: 0 4px 16px rgba(102,126,234,0.15); }
-  .chip-icon { font-size: 16px; }
+  /* === A/B TEST SCREEN === */
+  .dept-section { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+  .dept-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin-bottom: 16px; transition: all var(--transition); }
+  .dept-card:hover { border-color: var(--border-hover); }
+  .dept-top { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+  .dept-emoji { font-size: 40px; }
+  .dept-meta h3 { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
+  .dept-meta p { font-size: 14px; color: var(--text-3); margin-top: 2px; }
+  .board-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .board-chip { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; color: var(--text-2); cursor: pointer; transition: all var(--transition); }
+  .board-chip:hover { background: var(--surface-3); border-color: var(--accent); color: var(--text); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(41,151,255,0.1); }
+  .board-chip:active { transform: translateY(0) scale(0.97); }
 
   /* === ARENA === */
-  .arena-header { text-align: center; padding: 16px 0 8px; width: 100%; max-width: 900px; }
-  .arena-header h2 { font-size: 22px; font-weight: 600; color: #e0e0e0; }
-  .arena-header .sub { font-size: 12px; color: #555; margin-top: 4px; }
-  .progress { margin-top: 10px; font-size: 13px; color: #888; }
-  .progress-bar { width: 240px; height: 3px; background: #1a1a2a; border-radius: 2px; margin: 6px auto 0; overflow: hidden; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); transition: width 0.4s ease; border-radius: 2px; }
+  .arena-wrap { max-width: 920px; margin: 0 auto; padding: 0 24px; }
+  .arena-top { text-align: center; padding: 80px 0 20px; }
+  .arena-top h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; }
+  .arena-top .sub { font-size: 14px; color: var(--text-3); margin-top: 6px; }
+  .arena-counters { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 16px; font-size: 13px; color: var(--text-3); font-weight: 500; }
+  .arena-counters .dot { color: var(--text-3); opacity: 0.3; }
+  .arena-bar { width: 200px; height: 3px; background: var(--surface-3); border-radius: 2px; margin: 8px auto 0; overflow: hidden; }
+  .arena-bar-fill { height: 100%; background: var(--accent-gradient); border-radius: 2px; transition: width 0.4s ease; }
 
-  .arena { display: flex; gap: 20px; padding: 16px 0; max-width: 900px; width: 100%; justify-content: center; align-items: stretch; }
-  .card { flex: 1; max-width: 400px; border-radius: 16px; overflow: hidden; background: #111118; border: 2px solid #1e1e2e; cursor: pointer; transition: all 0.25s ease; position: relative; }
-  .card:hover { border-color: #667eea; transform: translateY(-4px); box-shadow: 0 12px 40px rgba(102,126,234,0.2); }
-  .card img { width: 100%; height: 340px; object-fit: cover; display: block; background: #0a0a0f; }
-  .card-label { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.7); color: #fff; padding: 5px 14px; border-radius: 20px; font-size: 15px; font-weight: 700; backdrop-filter: blur(8px); }
-  .card-footer { padding: 12px 16px; font-size: 12px; color: #666; text-align: center; }
-  .vs { display: flex; align-items: center; font-size: 18px; font-weight: 800; color: #333; }
+  .arena-cards { display: flex; gap: 20px; padding: 24px 0; justify-content: center; align-items: stretch; }
+  .arena-card { flex: 1; max-width: 420px; border-radius: var(--radius); overflow: hidden; background: var(--surface); border: 2px solid var(--border); cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1); position: relative; }
+  .arena-card:hover { border-color: var(--accent); transform: translateY(-6px); box-shadow: 0 20px 60px rgba(41,151,255,0.15); }
+  .arena-card:active { transform: translateY(-2px) scale(0.98); }
+  .arena-card img { width: 100%; height: 360px; object-fit: cover; display: block; }
+  .arena-vs { display: flex; align-items: center; font-size: 16px; font-weight: 700; color: var(--text-3); letter-spacing: 0.05em; }
 
-  .actions { display: flex; gap: 10px; padding: 4px 0 12px; }
-  .actions button { padding: 10px 28px; border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-  .btn-a { background: linear-gradient(135deg, #667eea, #5a67d8); color: #fff; }
-  .btn-b { background: linear-gradient(135deg, #764ba2, #6b46a1); color: #fff; }
-  .btn-skip { background: #1a1a28; color: #666; }
-  .btn-both { background: #0f1f0f; color: #4ade80; border: 1px solid #1a3a1a; }
-  .actions button:hover { opacity: 0.85; transform: scale(1.04); }
-  .keyboard-hint { font-size: 11px; color: #333; }
-  .undo-btn { position: fixed; bottom: 80px; left: 20px; background: rgba(20,20,30,0.9); color: #666; border: 1px solid #2a2a3a; padding: 7px 14px; border-radius: 8px; font-size: 12px; cursor: pointer; backdrop-filter: blur(8px); z-index: 10; transition: all 0.2s; }
-  .undo-btn:hover { color: #fff; border-color: #667eea; }
+  .arena-btns { display: flex; gap: 10px; justify-content: center; padding: 8px 0 16px; flex-wrap: wrap; }
+  .arena-btns button { padding: 12px 32px; border: none; border-radius: var(--radius-sm); font-size: 15px; font-weight: 600; cursor: pointer; font-family: var(--font); transition: all var(--transition); letter-spacing: -0.01em; }
+  .arena-btns button:active { transform: scale(0.95); }
+  .btn-pick-a { background: var(--accent); color: #fff; }
+  .btn-pick-b { background: var(--accent-2); color: #fff; }
+  .btn-pick-both { background: rgba(48,209,88,0.15); color: var(--green); }
+  .btn-pick-skip { background: var(--surface-2); color: var(--text-3); }
+  .arena-btns button:hover { opacity: 0.85; transform: translateY(-2px); }
+  .arena-finish { display: block; margin: 0 auto; padding: 10px 28px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: transparent; color: var(--text-3); font-size: 14px; font-weight: 500; cursor: pointer; font-family: var(--font); transition: all var(--transition); }
+  .arena-finish:hover { border-color: var(--text-3); color: var(--text); }
+  .arena-keys { text-align: center; font-size: 12px; color: var(--text-3); margin-top: 8px; opacity: 0.5; }
+  .undo-btn { position: fixed; bottom: 88px; left: 20px; background: rgba(0,0,0,0.8); backdrop-filter: blur(12px); color: var(--text-3); border: 1px solid var(--border); padding: 8px 16px; border-radius: var(--radius-xs); font-size: 13px; font-weight: 500; cursor: pointer; z-index: 10; font-family: var(--font); transition: all var(--transition); }
+  .undo-btn:hover { color: var(--text); border-color: var(--border-hover); }
 
   /* === RESULTS === */
-  .results-wrap { max-width: 800px; width: 100%; text-align: center; }
-  .results-wrap h2 { font-size: 22px; margin-bottom: 12px; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .winners { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 16px 0; }
-  .winners img { width: 100px; height: 100px; object-fit: cover; border-radius: 10px; border: 2px solid #667eea; }
-  .losers { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin: 8px 0; }
-  .losers img { width: 48px; height: 48px; object-fit: cover; border-radius: 6px; border: 1px solid #222; opacity: 0.35; }
-  .results-data { background: #111118; border-radius: 12px; padding: 16px; margin-top: 16px; text-align: left; font-size: 12px; line-height: 1.8; white-space: pre-wrap; font-family: 'SF Mono', Menlo, monospace; color: #999; max-height: 400px; overflow-y: auto; }
-  .save-status { margin-top: 12px; padding: 10px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; }
-  .save-ok { background: #0f1f0f; color: #4ade80; }
-  .save-pending { background: #1f1f0f; color: #facc15; }
-  .result-actions { display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
-  .result-actions button { padding: 10px 20px; border: none; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-  .result-actions button:hover { opacity: 0.85; transform: scale(1.04); }
-  .btn-copy { background: #1a1a28; color: #888; }
-  .btn-redo { background: linear-gradient(135deg, #667eea, #5a67d8); color: #fff; }
-  .btn-back { background: #1a1a28; color: #888; }
-  .hidden { display: none; }
+  .results-section { max-width: 680px; margin: 0 auto; padding: 80px 24px 40px; text-align: center; }
+  .results-section h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .results-grid { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 20px 0; }
+  .results-grid.winners img { width: 88px; height: 88px; object-fit: cover; border-radius: var(--radius-sm); border: 2px solid var(--accent); }
+  .results-grid.losers img { width: 44px; height: 44px; object-fit: cover; border-radius: var(--radius-xs); opacity: 0.3; border: 1px solid var(--border); }
+  .results-data { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-top: 20px; text-align: left; font-size: 13px; line-height: 1.9; white-space: pre-wrap; font-family: 'SF Mono', monospace; color: var(--text-3); max-height: 400px; overflow-y: auto; }
+  .results-done { margin-top: 24px; }
+  .results-done button { padding: 16px 48px; background: var(--green); color: #000; border: none; border-radius: var(--radius-sm); font-size: 17px; font-weight: 700; cursor: pointer; font-family: var(--font); transition: all var(--transition); }
+  .results-done button:hover { opacity: 0.85; transform: scale(1.03); }
+  .results-done button:active { transform: scale(0.97); }
+  .results-actions { display: flex; gap: 10px; justify-content: center; margin-top: 16px; }
+  .results-actions button { padding: 10px 24px; background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-xs); color: var(--text-3); font-size: 14px; font-weight: 500; cursor: pointer; font-family: var(--font); transition: all var(--transition); }
+  .results-actions button:hover { color: var(--text); border-color: var(--border-hover); }
+  .save-msg { margin-top: 16px; padding: 12px 24px; border-radius: var(--radius-xs); font-size: 14px; font-weight: 600; }
+  .save-ok { background: rgba(48,209,88,0.1); color: var(--green); }
+  .save-pending { background: rgba(255,214,10,0.1); color: #ffd60a; }
 
   /* === HISTORY === */
-  .history-list { width: 100%; max-width: 560px; }
-  .history-item { background: #111118; border: 1px solid #1e1e2e; border-radius: 14px; padding: 16px; margin-bottom: 10px; }
-  .history-item h4 { font-size: 14px; color: #ccc; }
-  .history-item p { font-size: 12px; color: #555; margin-top: 4px; }
-  .history-empty { text-align: center; color: #333; font-size: 14px; margin-top: 40px; }
+  .history-section { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+  .history-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px 20px; margin-bottom: 10px; transition: all var(--transition); }
+  .history-card:hover { border-color: var(--border-hover); }
+  .history-card h4 { font-size: 15px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
+  .history-card p { font-size: 13px; color: var(--text-3); margin-top: 4px; }
+  .history-empty { text-align: center; padding: 60px 24px; color: var(--text-3); }
 
-  /* Stats bar */
-  .stats-bar { display: flex; gap: 20px; justify-content: center; margin-bottom: 20px; }
-  .stat { text-align: center; }
-  .stat-num { font-size: 24px; font-weight: 700; color: #667eea; }
-  .stat-label { font-size: 11px; color: #555; margin-top: 2px; }
+  .hidden { display: none; }
+  .empty-state { text-align: center; padding: 60px 24px; color: var(--text-3); font-size: 16px; }
+  .empty-state .big { font-size: 48px; display: block; margin-bottom: 12px; }
 
   @media(max-width:640px){
-    .style-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 0 4px; }
-    .style-samples img { height: 80px; }
-    .style-meta { padding: 10px 12px; }
-    .style-name { font-size: 13px; }
-    .style-code { font-size: 11px; }
-    .style-tags { display: none; }
-    .style-engines { margin-top: 4px; }
-    .modal-gallery img { height: 140px; }
-    .arena { gap: 8px; padding: 12px 8px; }
-    .card img { height: 180px; }
-    .card-label { font-size: 13px; padding: 4px 10px; top: 8px; left: 8px; }
-    .vs { font-size: 14px; }
-    .actions { flex-wrap: wrap; justify-content: center; }
-    .actions button { padding: 8px 18px; font-size: 13px; }
-    .dept-card { padding: 18px; }
-    .arena-header h2 { font-size: 18px; }
-    .lib-hero h1 { font-size: 26px; }
-    .search-bar input { font-size: 14px; padding: 12px 16px 12px 40px; }
+    .hero { padding: 60px 20px 32px; }
+    .style-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .card-mosaic img { height: 90px; }
+    .card-body { padding: 12px 14px 14px; }
+    .card-name { font-size: 14px; }
+    .card-tags { display: none; }
+    .arena-cards { gap: 8px; }
+    .arena-card img { height: 200px; }
+    .arena-btns button { padding: 10px 22px; font-size: 14px; }
+    .modal-gallery img { height: 160px; }
+    .stats-row { gap: 28px; }
+    .stat-num { font-size: 24px; }
+    .grid-container { padding: 0 16px; }
+    .search-section { padding: 0 16px 12px; }
+    .filters { padding: 8px 16px 20px; }
   }
 </style>
 </head>
 <body>
 
-<!-- === BOTTOM NAV === -->
+<!-- NAV -->
 <nav class="navbar">
-  <div class="nav-item active" onclick="showScreen('library')" id="nav-library">
-    <span class="nav-icon">📚</span>Library
-  </div>
-  <div class="nav-item" onclick="showScreen('test')" id="nav-test">
-    <span class="nav-icon">⚔️</span>A/B Test
-  </div>
-  <div class="nav-item" onclick="showScreen('history')" id="nav-history">
-    <span class="nav-icon">📊</span>History
-  </div>
+  <div class="nav-item active" onclick="nav('library')" id="nav-library"><span class="nav-icon">◻️</span>Library</div>
+  <div class="nav-item" onclick="nav('test')" id="nav-test"><span class="nav-icon">⚔️</span>Compare</div>
+  <div class="nav-item" onclick="nav('history')" id="nav-history"><span class="nav-icon">◷</span>History</div>
 </nav>
 
-<!-- === STYLE DETAIL MODAL === -->
-<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
-  <div class="modal" id="modalContent">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-gallery" id="modalGallery"></div>
-    <div class="modal-body" id="modalBody"></div>
+<!-- MODAL -->
+<div class="modal-overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal-sheet" id="sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-close"><button onclick="closeModal()">✕</button></div>
+    <div class="modal-gallery" id="mGallery"></div>
+    <div class="modal-content" id="mContent"></div>
   </div>
 </div>
 
-<!-- === LIBRARY SCREEN (HOME) === -->
+<!-- LIBRARY -->
 <div class="screen active" id="screen-library">
-  <div class="lib-hero">
-    <h1>✨ Style Curator</h1>
-    <p>Find your style. Copy the code. Generate.</p>
+  <div class="hero">
+    <div class="hero-label">Style Reference Library</div>
+    <h1>Find your <span>style.</span><br>Copy the code.</h1>
+    <p>A curated collection of style reference codes for Midjourney, Stable Diffusion, Flux & DALL·E.</p>
   </div>
-  <div class="stats-bar">
-    <div class="stat"><div class="stat-num" id="statStyles">0</div><div class="stat-label">Styles</div></div>
-    <div class="stat"><div class="stat-num" id="statEngines">4</div><div class="stat-label">Engines</div></div>
-    <div class="stat"><div class="stat-num" id="statTags">0</div><div class="stat-label">Tags</div></div>
+  <div class="stats-row">
+    <div class="stat-item"><div class="stat-num" id="sN">0</div><div class="stat-label">Styles</div></div>
+    <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">Engines</div></div>
+    <div class="stat-item"><div class="stat-num" id="sT">0</div><div class="stat-label">Tags</div></div>
   </div>
-  <div class="search-bar">
-    <span class="search-icon">🔍</span>
-    <input type="text" id="searchInput" placeholder="Search styles... (e.g. cinematic, noir, watercolor)" oninput="filterLibrary()">
+  <div class="search-section">
+    <div class="search-wrap">
+      <span class="search-glyph">⌕</span>
+      <input type="text" id="q" placeholder="Search styles, tags, codes..." oninput="render()">
+    </div>
   </div>
-  <div class="filter-row" id="filterRow"></div>
-  <div class="style-grid" id="styleGrid"></div>
+  <div class="filters" id="filters"></div>
+  <div class="grid-container"><div class="style-grid" id="grid"></div></div>
 </div>
 
-<!-- === A/B TEST SCREEN === -->
+<!-- A/B TEST -->
 <div class="screen" id="screen-test">
-  <div class="lib-hero">
-    <h1>⚔️ A/B Style Test</h1>
-    <p>Can't describe your style? Find it through comparison.</p>
+  <div class="hero">
+    <div class="hero-label">Visual Taste Profiler</div>
+    <h1>Discover your <span>taste.</span></h1>
+    <p>Can't describe your style? Pick between images and we'll figure it out.</p>
   </div>
-  <div id="deptCards"></div>
+  <div class="dept-section" id="depts"></div>
 </div>
 
-<!-- === ARENA SCREEN === -->
+<!-- ARENA -->
 <div class="screen" id="screen-arena">
-  <div class="arena-header">
-    <h2 id="arenaTitle"></h2>
-    <div class="sub" id="arenaSub"></div>
-    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:10px;">
-      <div class="progress" style="margin:0;"><span id="sessionCount">0</span> this session</div>
-      <div style="color:#333;">·</div>
-      <div class="progress" style="margin:0;"><span id="totalCount">0</span>/200 total</div>
+  <div class="arena-wrap">
+    <div class="arena-top">
+      <h2 id="arenaTitle"></h2>
+      <div class="sub" id="arenaSub"></div>
+      <div class="arena-counters">
+        <span><b id="sC">0</b> this session</span>
+        <span class="dot">·</span>
+        <span><b id="tC">0</b>/200 total</span>
+      </div>
+      <div class="arena-bar"><div class="arena-bar-fill" id="pF" style="width:0%"></div></div>
     </div>
-    <div class="progress-bar" style="width:200px;"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="arena-cards">
+      <div class="arena-card" onclick="pick('A')"><img id="imgA" src="" alt="A"></div>
+      <div class="arena-vs">VS</div>
+      <div class="arena-card" onclick="pick('B')"><img id="imgB" src="" alt="B"></div>
+    </div>
+    <div class="arena-btns">
+      <button class="btn-pick-a" onclick="pick('A')">← A</button>
+      <button class="btn-pick-both" onclick="pick('both')">Both ♥</button>
+      <button class="btn-pick-skip" onclick="pick('skip')">Skip</button>
+      <button class="btn-pick-b" onclick="pick('B')">B →</button>
+    </div>
+    <button class="arena-finish" onclick="finish()">Finish Session →</button>
+    <div class="arena-keys">← A · → B · ↑ Both · ↓ Skip · Z Undo · Esc Finish</div>
+    <button class="undo-btn hidden" id="undoBtn" onclick="undo()">↩ Undo</button>
   </div>
-  <div class="arena">
-    <div class="card" onclick="pick('A')"><img id="imgA" src="" alt="A"></div>
-    <div class="vs">VS</div>
-    <div class="card" onclick="pick('B')"><img id="imgB" src="" alt="B"></div>
-  </div>
-  <div class="actions">
-    <button class="btn-a" onclick="pick('A')">← A</button>
-    <button class="btn-both" onclick="pick('both')">Both ♥</button>
-    <button class="btn-skip" onclick="pick('skip')">Skip</button>
-    <button class="btn-b" onclick="pick('B')">B →</button>
-  </div>
-  <div style="margin-top:4px;">
-    <button onclick="finishSession()" style="padding:8px 24px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;background:#1a1a28;color:#666;transition:all 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#666'">Finish Session →</button>
-  </div>
-  <div class="keyboard-hint" style="margin-top:6px;">← A · → B · ↑ Both · ↓ Skip · Z Undo · Esc Finish</div>
-  <button class="undo-btn hidden" id="undoBtn" onclick="undo()">↩ Undo</button>
 </div>
 
-<!-- === RESULTS SCREEN === -->
+<!-- RESULTS -->
 <div class="screen" id="screen-results">
-  <div class="results-wrap">
-    <h2 id="resultsTitle">Style DNA</h2>
+  <div class="results-section">
+    <h2 id="resTitle">Style DNA</h2>
     <div id="saveStatus"></div>
-    <p style="color:#555;font-size:12px;margin-top:12px;">✅ Picks</p>
-    <div class="winners" id="winnersGrid"></div>
-    <p style="color:#333;font-size:12px;margin-top:8px;">❌ Rejected</p>
-    <div class="losers" id="losersGrid"></div>
-    <div class="results-data" id="resultsData"></div>
-    <div id="doneWrap" style="margin-top:20px;">
-      <button onclick="submitToLux()" style="padding:14px 48px;border:none;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;transition:all 0.2s;box-shadow:0 4px 20px rgba(34,197,94,0.3);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">✅ Done — Send to Lux</button>
+    <p style="color:var(--text-3);font-size:13px;margin-top:16px;">Picks</p>
+    <div class="results-grid winners" id="wG"></div>
+    <p style="color:var(--text-3);font-size:13px;margin-top:8px;opacity:0.5;">Rejected</p>
+    <div class="results-grid losers" id="lG"></div>
+    <div class="results-data" id="resData"></div>
+    <div class="results-done" id="doneW">
+      <button onclick="submitToLux()">Done — Send to Lux</button>
     </div>
-    <div class="result-actions" style="margin-top:12px;">
-      <button class="btn-back" onclick="showScreen('test')">🏠 Home</button>
-      <button class="btn-copy" onclick="copyResults()">📋 Copy</button>
-      <button class="btn-redo" onclick="startBoard(currentDept, currentBoard)">🔄 Redo</button>
+    <div class="results-actions">
+      <button onclick="nav('test')">Home</button>
+      <button onclick="copyRes()">Copy</button>
+      <button onclick="startBoard(cD,cB)">Redo</button>
     </div>
   </div>
 </div>
 
-<!-- === HISTORY SCREEN === -->
+<!-- HISTORY -->
 <div class="screen" id="screen-history">
-  <div class="lib-hero">
-    <h1>📊 Rating History</h1>
-    <p>Your past sessions</p>
+  <div class="hero">
+    <div class="hero-label">Your Journey</div>
+    <h1>Rating <span>history.</span></h1>
+    <p>Track your taste evolution over time.</p>
   </div>
-  <div class="history-list" id="historyList"></div>
+  <div class="history-section" id="hList"></div>
 </div>
 
 <script>
-// ============================================================
-//  STYLE LIBRARY DATA
-// ============================================================
-const STYLES = [
-  {
-    id: 'noir-cinema',
-    name: 'Noir Cinema',
-    sref: '--sref 2847193',
-    desc: 'Deep shadows, high contrast, moody film stills. Think Blade Runner meets classic noir.',
-    tags: ['cinematic', 'dark', 'noir', 'shadows', 'moody', 'film'],
-    engines: ['midjourney', 'flux'],
-    prompt: 'a lone figure walking through rain-soaked streets at night --sref 2847193 --ar 16:9',
-    images: [
-      'https://i.pinimg.com/736x/ae/31/59/ae3159f93d0c33dbdddb3e58e6a977b1.jpg',
-      'https://i.pinimg.com/736x/9d/ee/1a/9dee1a4d0a68d7c2cc74f573aa45fdce.jpg',
-      'https://i.pinimg.com/736x/76/7e/0d/767e0dbb34035007ee569b11337c799e.jpg',
-      'https://i.pinimg.com/736x/52/8e/ea/528eeaea0ff139612dc9aeb14cf3ff9b.jpg',
-    ]
-  },
-  {
-    id: 'surreal-portal',
-    name: 'Surreal Portals',
-    sref: '--sref 4019285',
-    desc: 'Glowing gateways, otherworldly passages, cosmic doorways. Scale meets mystery.',
-    tags: ['surreal', 'portal', 'glowing', 'cosmic', 'dark', 'fine-art'],
-    engines: ['midjourney'],
-    prompt: 'a massive glowing portal in a dark landscape, tiny figure for scale --sref 4019285 --ar 16:9',
-    images: [
-      'https://i.pinimg.com/736x/36/33/b3/3633b3be93191eca00a2363bfd93a5c7.jpg',
-      'https://i.pinimg.com/736x/1d/74/1a/1d741ad5318548b0b1b87eac4e23eb69.jpg',
-      'https://i.pinimg.com/736x/05/b7/04/05b70401244b8b7a8cb94710e974913a.jpg',
-      'https://i.pinimg.com/736x/86/15/6c/86156c3fce80f3c8eac07ebddabf7d1a.jpg',
-    ]
-  },
-  {
-    id: 'fog-atmospheric',
-    name: 'Fog & Atmosphere',
-    sref: '--sref 1738462',
-    desc: 'Dense fog, silhouettes, depth and mystery. Gregory Crewdson-inspired atmospheric scenes.',
-    tags: ['fog', 'atmospheric', 'moody', 'silhouette', 'dark', 'cinematic'],
-    engines: ['midjourney', 'flux', 'sd'],
-    prompt: 'silhouette of a person standing on a foggy bridge at dawn --sref 1738462 --ar 16:9',
-    images: [
-      'https://i.pinimg.com/736x/c8/ec/5d/c8ec5dcd900ef889290b9a6a3d05a268.jpg',
-      'https://i.pinimg.com/736x/19/31/ea/1931ea6e2f8dbaa4d20d2c8e5f5a2c4e.jpg',
-      'https://i.pinimg.com/736x/e8/c8/6f/e8c86f236bcd1b9f3da87d53683d0317.jpg',
-      'https://i.pinimg.com/736x/81/8a/c7/818ac70a79d7750696e03def3481edd2.jpg',
-    ]
-  },
-  {
-    id: 'chrome-liquid',
-    name: 'Chrome Liquid',
-    sref: '--sref 5827461',
-    desc: 'Metallic mercury, chrome reflections, liquid metal surfaces. Y2K futurism meets fluid art.',
-    tags: ['chrome', 'metallic', 'liquid', '3d', 'futuristic', 'abstract'],
-    engines: ['midjourney', 'flux'],
-    prompt: 'abstract chrome liquid sculpture floating in dark void --sref 5827461 --ar 1:1',
-    images: [
-      'https://i.pinimg.com/736x/7a/ce/ef/7aceefeda4518eeda909cc0c5167d61c.jpg',
-      'https://i.pinimg.com/736x/fa/1b/df/fa1bdf8e34678d6f76d4b6901281484b.jpg',
-      'https://i.pinimg.com/736x/f8/5b/66/f85b66be1399e782b960edcfeea647f5.jpg',
-      'https://i.pinimg.com/736x/c5/3c/4f/c53c4ff0404ea2a74b5cf041da975707.jpg',
-    ]
-  },
-  {
-    id: 'dark-dreamscape',
-    name: 'Dark Dreamscape',
-    sref: '--sref 3291047',
-    desc: 'Surreal landscapes, dreamlike scenes, vast and solitary. Between sleep and waking.',
-    tags: ['surreal', 'dreamlike', 'dark', 'landscape', 'vast', 'ethereal'],
-    engines: ['midjourney', 'dalle'],
-    prompt: 'a surreal dark dreamscape with floating islands and distant light --sref 3291047 --ar 16:9',
-    images: [
-      'https://i.pinimg.com/736x/88/a0/bf/88a0bfbd0945888bc181f7ab02e8e641.jpg',
-      'https://i.pinimg.com/736x/28/1a/34/281a34a2e88babdc2e054e8ae7cfdad8.jpg',
-      'https://i.pinimg.com/736x/34/df/c5/34dfc5994e366bade1394e9f2338d34a.jpg',
-      'https://i.pinimg.com/736x/41/ba/9a/41ba9a9236303fad87a0d18607663613.jpg',
-    ]
-  },
-  {
-    id: 'bold-typography',
-    name: 'Bold Typography',
-    sref: '--sref 6194837',
-    desc: 'Heavy type, grunge textures, editorial poster design. Swiss-inspired with raw energy.',
-    tags: ['typography', 'poster', 'bold', 'editorial', 'grunge', 'design'],
-    engines: ['midjourney'],
-    prompt: 'experimental typography poster, bold serif font, dark background --sref 6194837 --ar 3:4',
-    images: [
-      'https://i.pinimg.com/736x/bd/af/a9/bdafa9bb7b48ebe6d7b02ade3dcfb110.jpg',
-      'https://i.pinimg.com/736x/81/02/86/8102865fd078549ecf6f7c6323f41d79.jpg',
-      'https://i.pinimg.com/736x/eb/fc/42/ebfc42ac15176c8dfaa9563e5658bf5f.jpg',
-      'https://i.pinimg.com/736x/27/27/36/2727366439f6d9fc3fe7df5cd5f7e3a1.jpg',
-    ]
-  },
-  {
-    id: 'neon-rain',
-    name: 'Neon Rain',
-    sref: '--sref 8472916',
-    desc: 'Rain-soaked neon streets, cyberpunk reflections, wet asphalt glowing with color.',
-    tags: ['neon', 'rain', 'cyberpunk', 'urban', 'night', 'reflection'],
-    engines: ['midjourney', 'flux', 'sd'],
-    prompt: 'neon-lit alley in heavy rain, reflections on wet ground --sref 8472916 --ar 9:16',
-    images: [
-      'https://i.pinimg.com/736x/52/8e/ea/528eeaea0ff139612dc9aeb14cf3ff9b.jpg',
-      'https://i.pinimg.com/736x/ff/d1/e5/ffd1e5e9e21d9a3d0ff058990fb6690b.jpg',
-      'https://i.pinimg.com/736x/c7/4e/ba/c74ebab77ad3b1b44246ffb354823e19.jpg',
-      'https://i.pinimg.com/736x/22/af/d4/22afd4b5e0a4b2a759effc243f64a315.jpg',
-    ]
-  },
-  {
-    id: 'cosmic-void',
-    name: 'Cosmic Void',
-    sref: '--sref 7361528',
-    desc: 'Infinite space, cosmic scale, tiny figures against the universe. Existential awe.',
-    tags: ['cosmic', 'space', 'dark', 'scale', 'minimal', 'vast'],
-    engines: ['midjourney', 'dalle'],
-    prompt: 'a tiny astronaut floating in an endless cosmic void, stars in distance --sref 7361528 --ar 16:9',
-    images: [
-      'https://i.pinimg.com/736x/c2/4d/e6/c24de626ed123e5cc90781a68a707141.jpg',
-      'https://i.pinimg.com/736x/d0/10/61/d01061073f51ad72a262c1ade1b4cef3.jpg',
-      'https://i.pinimg.com/736x/90/0d/06/900d06cd57a30dc72cb7ce949cce6344.jpg',
-      'https://i.pinimg.com/736x/c4/8c/a1/c48ca116ff069c4f451aa464c2ac2c9d.jpg',
-    ]
-  },
-  {
-    id: 'dark-fluid',
-    name: 'Dark Fluid',
-    sref: '--sref 9150374',
-    desc: 'Organic flowing shapes, silk-like motion, abstract dark fluid dynamics.',
-    tags: ['abstract', 'fluid', 'organic', 'motion', 'dark', 'silk'],
-    engines: ['midjourney', 'flux'],
-    prompt: 'abstract dark fluid silk flowing through void, organic shapes --sref 9150374 --ar 1:1',
-    images: [
-      'https://i.pinimg.com/736x/c3/8a/86/c38a867f53cef698117da479bfc21267.jpg',
-      'https://i.pinimg.com/736x/35/20/d7/3520d7903b366c3e3d3f8301ff66b76a.jpg',
-      'https://i.pinimg.com/736x/97/cb/fe/97cbfe29f57ecb11c77c2007026c4317.jpg',
-      'https://i.pinimg.com/736x/e5/7c/38/e57c38f692880054419de217e298ca67.jpg',
-    ]
-  },
-  {
-    id: 'glassmorphism',
-    name: 'Glassmorphism UI',
-    sref: '--sref 2058174',
-    desc: 'Frosted glass panels, blur effects, translucent interfaces. Modern UI design language.',
-    tags: ['glassmorphism', 'ui', 'dark', 'blur', 'modern', 'interface'],
-    engines: ['midjourney'],
-    prompt: 'dark glassmorphism dashboard UI with frosted panels and subtle gradients --sref 2058174 --ar 16:9',
-    images: [
-      'https://i.pinimg.com/736x/c1/4a/a2/c14aa2a22044644ba4d94f30d0703306.jpg',
-      'https://i.pinimg.com/736x/fb/63/74/fb637424ade0ef69b992a34f940d1bac.jpg',
-      'https://i.pinimg.com/736x/0e/f3/fc/0ef3fccbe2a842757b9b42613e23ac56.jpg',
-      'https://i.pinimg.com/736x/d6/fe/58/d6fe58460ee240f40d5843cf7be2c5bd.jpg',
-    ]
-  },
-  {
-    id: 'abstract-monochrome',
-    name: 'Abstract Monochrome',
-    sref: '--sref 4628193',
-    desc: 'Black and white abstraction, expressive mark-making, fine art photography meets painting.',
-    tags: ['abstract', 'monochrome', 'fine-art', 'expressive', 'dark', 'texture'],
-    engines: ['midjourney', 'sd'],
-    prompt: 'abstract monochrome fine art, expressive brushstrokes on dark background --sref 4628193 --ar 1:1',
-    images: [
-      'https://i.pinimg.com/736x/9b/a8/d1/9ba8d1887b5ce0d5ee03aa576bd8a8f4.jpg',
-      'https://i.pinimg.com/736x/a3/24/57/a32457971d0f38148dd087fbc1d2f463.jpg',
-      'https://i.pinimg.com/736x/9a/c5/99/9ac599f5ce259ee4367e804cca1c3b14.jpg',
-      'https://i.pinimg.com/736x/b0/70/43/b070439e8935c508c5c9fa6aec8fe57b.jpg',
-    ]
-  },
-  {
-    id: 'warm-noir-interior',
-    name: 'Warm Noir Interior',
-    sref: '--sref 3847291',
-    desc: 'Moody interior spaces, warm tungsten lighting, cinematic room compositions.',
-    tags: ['interior', 'warm', 'noir', 'moody', 'cinematic', 'cozy'],
-    engines: ['midjourney', 'flux'],
-    prompt: 'dark moody interior with warm tungsten light streaming through blinds --sref 3847291 --ar 16:9',
-    images: [
-      'https://i.pinimg.com/736x/2c/38/ae/2c38ae4c04189ac43f5e9f560e8d7088.jpg',
-      'https://i.pinimg.com/736x/94/89/40/948940f3bd2ee0b73dea0087f9efac6a.jpg',
-      'https://i.pinimg.com/736x/15/3b/1a/153b1a437eeee4a9167d9822ad7a2043.jpg',
-      'https://i.pinimg.com/736x/21/97/74/2197746ff1b74a0dec2ff2e4169da706.jpg',
-    ]
-  },
-  {
-    id: 'geometric-depth',
-    name: 'Geometric Depth',
-    sref: '--sref 5039281',
-    desc: '3D geometric forms, impossible architecture, depth and perspective illusions.',
-    tags: ['geometric', '3d', 'abstract', 'depth', 'architecture', 'minimal'],
-    engines: ['midjourney', 'flux'],
-    prompt: 'impossible geometric architecture in dark void, dramatic perspective --sref 5039281 --ar 3:4',
-    images: [
-      'https://i.pinimg.com/736x/f2/d2/fc/f2d2fc1beef7a7145eca88248934aa1c.jpg',
-      'https://i.pinimg.com/736x/5e/49/63/5e49632c7f0ba2e610bab2fa25566c23.jpg',
-      'https://i.pinimg.com/736x/59/7d/4f/597d4f641f457507be606f3653afb3e7.jpg',
-      'https://i.pinimg.com/736x/2c/32/26/2c3226d16e1c2d9420a5fb904b24d2b1.jpg',
-    ]
-  },
-  {
-    id: 'psychedelic-dark',
-    name: 'Psychedelic Dark',
-    sref: '--sref 6829175',
-    desc: 'Vivid colors erupting from darkness, trippy patterns, controlled chaos.',
-    tags: ['psychedelic', 'colorful', 'dark', 'abstract', 'trippy', 'wild'],
-    engines: ['midjourney'],
-    prompt: 'psychedelic dark art, vivid neon colors erupting from black void --sref 6829175 --ar 1:1',
-    images: [
-      'https://i.pinimg.com/736x/95/6d/ae/956dae1d20364dca9a851f55f6e6334e.jpg',
-      'https://i.pinimg.com/736x/eb/fc/42/ebfc42ac15176c8dfaa9563e5658bf5f.jpg',
-      'https://i.pinimg.com/736x/71/2c/bc/712cbcb4b834c6ef805048473ab58bb2.jpg',
-      'https://i.pinimg.com/736x/73/9d/81/739d8102019c5c176673f9d6547b12df.jpg',
-    ]
-  },
-  {
-    id: 'retro-poster',
-    name: 'Retro Dark Poster',
-    sref: '--sref 1947362',
-    desc: 'Vintage print aesthetics with dark palettes, distressed textures, old-school cool.',
-    tags: ['retro', 'vintage', 'poster', 'texture', 'grunge', 'warm'],
-    engines: ['midjourney', 'sd'],
-    prompt: 'retro dark movie poster style, distressed texture, warm muted colors --sref 1947362 --ar 3:4',
-    images: [
-      'https://i.pinimg.com/736x/47/68/3b/47683b99b1fbc65e2c3d7a37cde3710b.jpg',
-      'https://i.pinimg.com/736x/e2/5e/5b/e25e5be75a7201f5087700789945a9f7.jpg',
-      'https://i.pinimg.com/736x/72/d6/1c/72d61ce88f2a0aeaeb7f235fc9260308.jpg',
-      'https://i.pinimg.com/736x/24/04/cf/2404cfc2953f270ae5a707ef589aff29.jpg',
-    ]
-  },
-  {
-    id: 'particle-light',
-    name: 'Particle Light',
-    sref: '--sref 8261539',
-    desc: 'Scattered light particles, cosmic dust, bioluminescent points in darkness.',
-    tags: ['particles', 'light', 'cosmic', 'scatter', 'dark', 'bioluminescent'],
-    engines: ['midjourney', 'flux'],
-    prompt: 'millions of light particles scattering through dark space --sref 8261539 --ar 16:9',
-    images: [
-      'https://i.pinimg.com/736x/16/08/18/160818fd9f0f3d4647a0fcb1c2a7fb8e.jpg',
-      'https://i.pinimg.com/736x/81/c0/8c/81c08c15d39ae6a7fa15464bff703838.jpg',
-      'https://i.pinimg.com/736x/57/55/4e/57554e0784c121525230a54844f5e812.jpg',
-      'https://i.pinimg.com/736x/d1/33/80/d13380fd7492fdea0f4857d4e8a460fa.jpg',
-    ]
-  },
-  {
-    id: 'underwater-ethereal',
-    name: 'Underwater Ethereal',
-    sref: '--sref 3074926',
-    desc: 'Submerged scenes, floating figures, blue-green depths, weightless beauty.',
-    tags: ['underwater', 'ethereal', 'blue', 'dreamy', 'surreal', 'figure'],
-    engines: ['midjourney', 'dalle'],
-    prompt: 'ethereal figure floating underwater in deep blue, light rays from surface --sref 3074926 --ar 9:16',
-    images: [
-      'https://i.pinimg.com/736x/63/b9/ea/63b9ea659e3e0334a64d1863bbda0b61.jpg',
-      'https://i.pinimg.com/736x/d8/16/91/d8169147b98e6c8cbbd74e8062bccfdb.jpg',
-      'https://i.pinimg.com/736x/dd/23/b6/dd23b6699b055ca927a76380a63e1323.jpg',
-      'https://i.pinimg.com/736x/fb/7e/62/fb7e62c7e1a66d8f2cae99911b957fd2.jpg',
-    ]
-  },
-  {
-    id: 'eerie-forest',
-    name: 'Eerie Forest',
-    sref: '--sref 4592817',
-    desc: 'Dark enchanted woods, mysterious paths, Blair Witch atmosphere.',
-    tags: ['forest', 'eerie', 'dark', 'nature', 'mysterious', 'atmospheric'],
-    engines: ['midjourney', 'flux', 'sd'],
-    prompt: 'eerie dark forest path with faint light in the distance --sref 4592817 --ar 16:9',
-    images: [
-      'https://i.pinimg.com/736x/1e/01/10/1e0110e304b745656f23ccaa9a5fa9a1.jpg',
-      'https://i.pinimg.com/736x/f2/33/7b/f2337b3086acbcd7b2d0c42ea9dbe186.jpg',
-      'https://i.pinimg.com/736x/18/87/da/1887da16269e58bc6b1f5f7834fe3bcb.jpg',
-      'https://i.pinimg.com/736x/cf/18/67/cf1867982188b45dfcfad26d85efef5a.jpg',
-    ]
-  },
-  {
-    id: 'golden-hour',
-    name: 'Golden Hour Drama',
-    sref: '--sref 2581946',
-    desc: 'Last light of day, warm silhouettes, cinematic golden tones against dark skies.',
-    tags: ['golden-hour', 'warm', 'silhouette', 'dramatic', 'cinematic', 'sunset'],
-    engines: ['midjourney', 'flux'],
-    prompt: 'dramatic golden hour silhouette against stormy sky --sref 2581946 --ar 16:9',
-    images: [
-      'https://i.pinimg.com/736x/aa/6d/ef/aa6defdb20bb6e76d8a9c8d9d7c7eb0a.jpg',
-      'https://i.pinimg.com/736x/06/ba/3a/06ba3a54d08d80a13b1a0b6e2a8ff591.jpg',
-      'https://i.pinimg.com/736x/e5/d0/32/e5d032787216c076db1457b27df857ec.jpg',
-      'https://i.pinimg.com/736x/42/78/75/42787558e3ce78ff17f6aedfb90e1c79.jpg',
-    ]
-  },
-  {
-    id: 'swiss-minimal',
-    name: 'Swiss Minimal',
-    sref: '--sref 7194038',
-    desc: 'Clean grid systems, Helvetica DNA, international typographic style on dark.',
-    tags: ['swiss', 'minimal', 'grid', 'clean', 'typography', 'design'],
-    engines: ['midjourney'],
-    prompt: 'swiss style minimalist poster, clean grid layout, dark background --sref 7194038 --ar 3:4',
-    images: [
-      'https://i.pinimg.com/736x/95/a9/90/95a9900c177496693549f8322289217d.jpg',
-      'https://i.pinimg.com/736x/40/f5/fb/40f5fb13c6abc7c607ee9d0b4f6c2338.jpg',
-      'https://i.pinimg.com/736x/e7/b8/77/e7b877cd024e1949e387bbd25206f85d.jpg',
-      'https://i.pinimg.com/736x/c1/43/8e/c1438ef19ebcb2b0866d33b65c72b93c.jpg',
-    ]
-  },
+// === STYLE DATA ===
+const S=[
+  {id:'noir-cinema',name:'Noir Cinema',sref:'--sref 2847193',desc:'Deep shadows, high contrast, moody film stills. Blade Runner meets classic noir.',tags:['cinematic','dark','noir','shadows','moody','film'],engines:['midjourney','flux'],prompt:'a lone figure walking through rain-soaked streets at night --sref 2847193 --ar 16:9',images:['https://i.pinimg.com/736x/ae/31/59/ae3159f93d0c33dbdddb3e58e6a977b1.jpg','https://i.pinimg.com/736x/9d/ee/1a/9dee1a4d0a68d7c2cc74f573aa45fdce.jpg','https://i.pinimg.com/736x/76/7e/0d/767e0dbb34035007ee569b11337c799e.jpg','https://i.pinimg.com/736x/52/8e/ea/528eeaea0ff139612dc9aeb14cf3ff9b.jpg']},
+  {id:'surreal-portal',name:'Surreal Portals',sref:'--sref 4019285',desc:'Glowing gateways, otherworldly passages, cosmic doorways. Scale meets mystery.',tags:['surreal','portal','glowing','cosmic','dark','fine-art'],engines:['midjourney'],prompt:'a massive glowing portal in a dark landscape, tiny figure for scale --sref 4019285 --ar 16:9',images:['https://i.pinimg.com/736x/36/33/b3/3633b3be93191eca00a2363bfd93a5c7.jpg','https://i.pinimg.com/736x/1d/74/1a/1d741ad5318548b0b1b87eac4e23eb69.jpg','https://i.pinimg.com/736x/05/b7/04/05b70401244b8b7a8cb94710e974913a.jpg','https://i.pinimg.com/736x/86/15/6c/86156c3fce80f3c8eac07ebddabf7d1a.jpg']},
+  {id:'fog-atmosphere',name:'Fog & Atmosphere',sref:'--sref 1738462',desc:'Dense fog, silhouettes, depth and mystery. Gregory Crewdson-inspired atmospheric scenes.',tags:['fog','atmospheric','moody','silhouette','dark','cinematic'],engines:['midjourney','flux','sd'],prompt:'silhouette of a person standing on a foggy bridge at dawn --sref 1738462 --ar 16:9',images:['https://i.pinimg.com/736x/c8/ec/5d/c8ec5dcd900ef889290b9a6a3d05a268.jpg','https://i.pinimg.com/736x/19/31/ea/1931ea6e2f8dbaa4d20d2c8e5f5a2c4e.jpg','https://i.pinimg.com/736x/e8/c8/6f/e8c86f236bcd1b9f3da87d53683d0317.jpg','https://i.pinimg.com/736x/81/8a/c7/818ac70a79d7750696e03def3481edd2.jpg']},
+  {id:'chrome-liquid',name:'Chrome Liquid',sref:'--sref 5827461',desc:'Metallic mercury, chrome reflections, liquid metal surfaces. Y2K futurism meets fluid art.',tags:['chrome','metallic','liquid','3d','futuristic','abstract'],engines:['midjourney','flux'],prompt:'abstract chrome liquid sculpture floating in dark void --sref 5827461 --ar 1:1',images:['https://i.pinimg.com/736x/7a/ce/ef/7aceefeda4518eeda909cc0c5167d61c.jpg','https://i.pinimg.com/736x/fa/1b/df/fa1bdf8e34678d6f76d4b6901281484b.jpg','https://i.pinimg.com/736x/f8/5b/66/f85b66be1399e782b960edcfeea647f5.jpg','https://i.pinimg.com/736x/c5/3c/4f/c53c4ff0404ea2a74b5cf041da975707.jpg']},
+  {id:'dark-dreamscape',name:'Dark Dreamscape',sref:'--sref 3291047',desc:'Surreal landscapes, dreamlike scenes, vast and solitary. Between sleep and waking.',tags:['surreal','dreamlike','dark','landscape','vast','ethereal'],engines:['midjourney','dalle'],prompt:'a surreal dark dreamscape with floating islands and distant light --sref 3291047 --ar 16:9',images:['https://i.pinimg.com/736x/88/a0/bf/88a0bfbd0945888bc181f7ab02e8e641.jpg','https://i.pinimg.com/736x/28/1a/34/281a34a2e88babdc2e054e8ae7cfdad8.jpg','https://i.pinimg.com/736x/34/df/c5/34dfc5994e366bade1394e9f2338d34a.jpg','https://i.pinimg.com/736x/41/ba/9a/41ba9a9236303fad87a0d18607663613.jpg']},
+  {id:'bold-type',name:'Bold Typography',sref:'--sref 6194837',desc:'Heavy type, grunge textures, editorial poster design. Swiss-inspired with raw energy.',tags:['typography','poster','bold','editorial','grunge','design'],engines:['midjourney'],prompt:'experimental typography poster, bold serif font, dark background --sref 6194837 --ar 3:4',images:['https://i.pinimg.com/736x/bd/af/a9/bdafa9bb7b48ebe6d7b02ade3dcfb110.jpg','https://i.pinimg.com/736x/81/02/86/8102865fd078549ecf6f7c6323f41d79.jpg','https://i.pinimg.com/736x/eb/fc/42/ebfc42ac15176c8dfaa9563e5658bf5f.jpg','https://i.pinimg.com/736x/27/27/36/2727366439f6d9fc3fe7df5cd5f7e3a1.jpg']},
+  {id:'neon-rain',name:'Neon Rain',sref:'--sref 8472916',desc:'Rain-soaked neon streets, cyberpunk reflections, wet asphalt glowing with color.',tags:['neon','rain','cyberpunk','urban','night','reflection'],engines:['midjourney','flux','sd'],prompt:'neon-lit alley in heavy rain, reflections on wet ground --sref 8472916 --ar 9:16',images:['https://i.pinimg.com/736x/52/8e/ea/528eeaea0ff139612dc9aeb14cf3ff9b.jpg','https://i.pinimg.com/736x/ff/d1/e5/ffd1e5e9e21d9a3d0ff058990fb6690b.jpg','https://i.pinimg.com/736x/c7/4e/ba/c74ebab77ad3b1b44246ffb354823e19.jpg','https://i.pinimg.com/736x/22/af/d4/22afd4b5e0a4b2a759effc243f64a315.jpg']},
+  {id:'cosmic-void',name:'Cosmic Void',sref:'--sref 7361528',desc:'Infinite space, cosmic scale, tiny figures against the universe. Existential awe.',tags:['cosmic','space','dark','scale','minimal','vast'],engines:['midjourney','dalle'],prompt:'a tiny astronaut floating in an endless cosmic void --sref 7361528 --ar 16:9',images:['https://i.pinimg.com/736x/c2/4d/e6/c24de626ed123e5cc90781a68a707141.jpg','https://i.pinimg.com/736x/d0/10/61/d01061073f51ad72a262c1ade1b4cef3.jpg','https://i.pinimg.com/736x/90/0d/06/900d06cd57a30dc72cb7ce949cce6344.jpg','https://i.pinimg.com/736x/c4/8c/a1/c48ca116ff069c4f451aa464c2ac2c9d.jpg']},
+  {id:'dark-fluid',name:'Dark Fluid',sref:'--sref 9150374',desc:'Organic flowing shapes, silk-like motion, abstract dark fluid dynamics.',tags:['abstract','fluid','organic','motion','dark','silk'],engines:['midjourney','flux'],prompt:'abstract dark fluid silk flowing through void --sref 9150374 --ar 1:1',images:['https://i.pinimg.com/736x/c3/8a/86/c38a867f53cef698117da479bfc21267.jpg','https://i.pinimg.com/736x/35/20/d7/3520d7903b366c3e3d3f8301ff66b76a.jpg','https://i.pinimg.com/736x/97/cb/fe/97cbfe29f57ecb11c77c2007026c4317.jpg','https://i.pinimg.com/736x/e5/7c/38/e57c38f692880054419de217e298ca67.jpg']},
+  {id:'glassmorphism',name:'Glassmorphism UI',sref:'--sref 2058174',desc:'Frosted glass panels, blur effects, translucent interfaces. Modern dark UI.',tags:['glassmorphism','ui','dark','blur','modern','interface'],engines:['midjourney'],prompt:'dark glassmorphism dashboard UI with frosted panels --sref 2058174 --ar 16:9',images:['https://i.pinimg.com/736x/c1/4a/a2/c14aa2a22044644ba4d94f30d0703306.jpg','https://i.pinimg.com/736x/fb/63/74/fb637424ade0ef69b992a34f940d1bac.jpg','https://i.pinimg.com/736x/0e/f3/fc/0ef3fccbe2a842757b9b42613e23ac56.jpg','https://i.pinimg.com/736x/d6/fe/58/d6fe58460ee240f40d5843cf7be2c5bd.jpg']},
+  {id:'mono-abstract',name:'Abstract Monochrome',sref:'--sref 4628193',desc:'Black and white abstraction, expressive mark-making, fine art meets painting.',tags:['abstract','monochrome','fine-art','expressive','dark','texture'],engines:['midjourney','sd'],prompt:'abstract monochrome fine art, expressive brushstrokes --sref 4628193 --ar 1:1',images:['https://i.pinimg.com/736x/9b/a8/d1/9ba8d1887b5ce0d5ee03aa576bd8a8f4.jpg','https://i.pinimg.com/736x/a3/24/57/a32457971d0f38148dd087fbc1d2f463.jpg','https://i.pinimg.com/736x/9a/c5/99/9ac599f5ce259ee4367e804cca1c3b14.jpg','https://i.pinimg.com/736x/b0/70/43/b070439e8935c508c5c9fa6aec8fe57b.jpg']},
+  {id:'warm-noir',name:'Warm Noir Interior',sref:'--sref 3847291',desc:'Moody interior spaces, warm tungsten lighting, cinematic room compositions.',tags:['interior','warm','noir','moody','cinematic','cozy'],engines:['midjourney','flux'],prompt:'dark moody interior with warm tungsten light through blinds --sref 3847291 --ar 16:9',images:['https://i.pinimg.com/736x/2c/38/ae/2c38ae4c04189ac43f5e9f560e8d7088.jpg','https://i.pinimg.com/736x/94/89/40/948940f3bd2ee0b73dea0087f9efac6a.jpg','https://i.pinimg.com/736x/15/3b/1a/153b1a437eeee4a9167d9822ad7a2043.jpg','https://i.pinimg.com/736x/21/97/74/2197746ff1b74a0dec2ff2e4169da706.jpg']},
+  {id:'geo-depth',name:'Geometric Depth',sref:'--sref 5039281',desc:'3D geometric forms, impossible architecture, depth and perspective illusions.',tags:['geometric','3d','abstract','depth','architecture','minimal'],engines:['midjourney','flux'],prompt:'impossible geometric architecture in dark void --sref 5039281 --ar 3:4',images:['https://i.pinimg.com/736x/f2/d2/fc/f2d2fc1beef7a7145eca88248934aa1c.jpg','https://i.pinimg.com/736x/5e/49/63/5e49632c7f0ba2e610bab2fa25566c23.jpg','https://i.pinimg.com/736x/59/7d/4f/597d4f641f457507be606f3653afb3e7.jpg','https://i.pinimg.com/736x/2c/32/26/2c3226d16e1c2d9420a5fb904b24d2b1.jpg']},
+  {id:'psychedelic',name:'Psychedelic Dark',sref:'--sref 6829175',desc:'Vivid colors erupting from darkness, trippy patterns, controlled chaos.',tags:['psychedelic','colorful','dark','abstract','trippy','wild'],engines:['midjourney'],prompt:'psychedelic dark art, vivid neon colors from black void --sref 6829175 --ar 1:1',images:['https://i.pinimg.com/736x/95/6d/ae/956dae1d20364dca9a851f55f6e6334e.jpg','https://i.pinimg.com/736x/eb/fc/42/ebfc42ac15176c8dfaa9563e5658bf5f.jpg','https://i.pinimg.com/736x/71/2c/bc/712cbcb4b834c6ef805048473ab58bb2.jpg','https://i.pinimg.com/736x/73/9d/81/739d8102019c5c176673f9d6547b12df.jpg']},
+  {id:'retro-poster',name:'Retro Dark Poster',sref:'--sref 1947362',desc:'Vintage print aesthetics, distressed textures, old-school cool on dark.',tags:['retro','vintage','poster','texture','grunge','warm'],engines:['midjourney','sd'],prompt:'retro dark movie poster, distressed texture, warm muted colors --sref 1947362 --ar 3:4',images:['https://i.pinimg.com/736x/47/68/3b/47683b99b1fbc65e2c3d7a37cde3710b.jpg','https://i.pinimg.com/736x/e2/5e/5b/e25e5be75a7201f5087700789945a9f7.jpg','https://i.pinimg.com/736x/72/d6/1c/72d61ce88f2a0aeaeb7f235fc9260308.jpg','https://i.pinimg.com/736x/24/04/cf/2404cfc2953f270ae5a707ef589aff29.jpg']},
+  {id:'particles',name:'Particle Light',sref:'--sref 8261539',desc:'Scattered light particles, cosmic dust, bioluminescent points in darkness.',tags:['particles','light','cosmic','scatter','dark','bioluminescent'],engines:['midjourney','flux'],prompt:'millions of light particles scattering through dark space --sref 8261539 --ar 16:9',images:['https://i.pinimg.com/736x/16/08/18/160818fd9f0f3d4647a0fcb1c2a7fb8e.jpg','https://i.pinimg.com/736x/81/c0/8c/81c08c15d39ae6a7fa15464bff703838.jpg','https://i.pinimg.com/736x/57/55/4e/57554e0784c121525230a54844f5e812.jpg','https://i.pinimg.com/736x/d1/33/80/d13380fd7492fdea0f4857d4e8a460fa.jpg']},
+  {id:'underwater',name:'Underwater Ethereal',sref:'--sref 3074926',desc:'Submerged scenes, floating figures, blue-green depths, weightless beauty.',tags:['underwater','ethereal','blue','dreamy','surreal','figure'],engines:['midjourney','dalle'],prompt:'ethereal figure floating underwater in deep blue --sref 3074926 --ar 9:16',images:['https://i.pinimg.com/736x/63/b9/ea/63b9ea659e3e0334a64d1863bbda0b61.jpg','https://i.pinimg.com/736x/d8/16/91/d8169147b98e6c8cbbd74e8062bccfdb.jpg','https://i.pinimg.com/736x/dd/23/b6/dd23b6699b055ca927a76380a63e1323.jpg','https://i.pinimg.com/736x/fb/7e/62/fb7e62c7e1a66d8f2cae99911b957fd2.jpg']},
+  {id:'eerie-forest',name:'Eerie Forest',sref:'--sref 4592817',desc:'Dark enchanted woods, mysterious paths, Blair Witch atmosphere.',tags:['forest','eerie','dark','nature','mysterious','atmospheric'],engines:['midjourney','flux','sd'],prompt:'eerie dark forest path with faint light in the distance --sref 4592817 --ar 16:9',images:['https://i.pinimg.com/736x/1e/01/10/1e0110e304b745656f23ccaa9a5fa9a1.jpg','https://i.pinimg.com/736x/f2/33/7b/f2337b3086acbcd7b2d0c42ea9dbe186.jpg','https://i.pinimg.com/736x/18/87/da/1887da16269e58bc6b1f5f7834fe3bcb.jpg','https://i.pinimg.com/736x/cf/18/67/cf1867982188b45dfcfad26d85efef5a.jpg']},
+  {id:'golden-hour',name:'Golden Hour Drama',sref:'--sref 2581946',desc:'Last light of day, warm silhouettes, cinematic golden tones against dark skies.',tags:['golden-hour','warm','silhouette','dramatic','cinematic','sunset'],engines:['midjourney','flux'],prompt:'dramatic golden hour silhouette against stormy sky --sref 2581946 --ar 16:9',images:['https://i.pinimg.com/736x/aa/6d/ef/aa6defdb20bb6e76d8a9c8d9d7c7eb0a.jpg','https://i.pinimg.com/736x/06/ba/3a/06ba3a54d08d80a13b1a0b6e2a8ff591.jpg','https://i.pinimg.com/736x/e5/d0/32/e5d032787216c076db1457b27df857ec.jpg','https://i.pinimg.com/736x/42/78/75/42787558e3ce78ff17f6aedfb90e1c79.jpg']},
+  {id:'swiss-min',name:'Swiss Minimal',sref:'--sref 7194038',desc:'Clean grid systems, Helvetica DNA, international typographic style on dark.',tags:['swiss','minimal','grid','clean','typography','design'],engines:['midjourney'],prompt:'swiss style minimalist poster, clean grid, dark background --sref 7194038 --ar 3:4',images:['https://i.pinimg.com/736x/95/a9/90/95a9900c177496693549f8322289217d.jpg','https://i.pinimg.com/736x/40/f5/fb/40f5fb13c6abc7c607ee9d0b4f6c2338.jpg','https://i.pinimg.com/736x/e7/b8/77/e7b877cd024e1949e387bbd25206f85d.jpg','https://i.pinimg.com/736x/c1/43/8e/c1438ef19ebcb2b0866d33b65c72b93c.jpg']},
 ];
 
-// ============================================================
-//  A/B TEST DATA (unchanged from before)
-// ============================================================
-const DEPARTMENTS = {
-  edward: {
-    icon: '👤', name: 'Edward', desc: 'Art-first · Cinematic · Dark moody aesthetic',
-    boards: {
-      cinematography: { icon: '🎬', name: 'Cinematography', boardId: '1121607550888730155', images: [
-        { file: 'https://i.pinimg.com/736x/ae/31/59/ae3159f93d0c33dbdddb3e58e6a977b1.jpg', tags: ['fog','night','street','atmospheric','dark','urban'], label: 'Foggy Night Street' },
-        { file: 'https://i.pinimg.com/736x/c8/ec/5d/c8ec5dcd900ef889290b9a6a3d05a268.jpg', tags: ['bridge','fog','silhouette','dark','atmospheric','moody'], label: 'Bridge in Fog' },
-        { file: 'https://i.pinimg.com/736x/f2/33/7b/f2337b3086acbcd7b2d0c42ea9dbe186.jpg', tags: ['night','eerie','street','dark','quiet','atmospheric'], label: 'Eerie Night Street' },
-        { file: 'https://i.pinimg.com/736x/42/78/75/42787558e3ce78ff17f6aedfb90e1c79.jpg', tags: ['parking','night','empty','dark','lights','lonely'], label: 'Empty Parking Lot' },
-        { file: 'https://i.pinimg.com/736x/9d/ee/1a/9dee1a4d0a68d7c2cc74f573aa45fdce.jpg', tags: ['noir','contrast','dark','cinematic','shadow','moody'], label: 'Noir Shadow Scene' },
-        { file: 'https://i.pinimg.com/736x/76/7e/0d/767e0dbb34035007ee569b11337c799e.jpg', tags: ['fog','figure','backlit','dark','atmospheric','depth'], label: 'Backlit Figure in Fog' },
-        { file: 'https://i.pinimg.com/736x/52/8e/ea/528eeaea0ff139612dc9aeb14cf3ff9b.jpg', tags: ['rain','night','reflection','dark','urban','neon'], label: 'Rain Reflections' },
-        { file: 'https://i.pinimg.com/736x/2c/38/ae/2c38ae4c04189ac43f5e9f560e8d7088.jpg', tags: ['dark','moody','interior','shadow','atmospheric','noir'], label: 'Moody Dark Interior' },
-      ]},
-      conceptual: { icon: '🎨', name: 'Conceptual', boardId: '1121607550888730157', images: [
-        { file: 'https://i.pinimg.com/736x/21/0d/8d/210d8d2761e6b134a7a0f27fd2569623.jpg', tags: ['surreal','dark','figure','abstract','fine-art','mysterious'], label: 'Surreal Dark Figure' },
-        { file: 'https://i.pinimg.com/736x/88/a0/bf/88a0bfbd0945888bc181f7ab02e8e641.jpg', tags: ['surreal','dark','dreamlike','fog','ethereal','fine-art'], label: 'Dreamlike Dark Scene' },
-        { file: 'https://i.pinimg.com/736x/72/2d/41/722d410fd57badf142ae2237338a5530.jpg', tags: ['tunnel','figure','light','dark','dramatic','depth'], label: 'Figure in Tunnel' },
-        { file: 'https://i.pinimg.com/736x/36/33/b3/3633b3be93191eca00a2363bfd93a5c7.jpg', tags: ['surreal','portal','glowing','dark','otherworldly','scale'], label: 'Glowing Portal' },
-        { file: 'https://i.pinimg.com/736x/9b/a8/d1/9ba8d1887b5ce0d5ee03aa576bd8a8f4.jpg', tags: ['abstract','dark','movement','fine-art','monochrome','expressive'], label: 'Abstract Movement' },
-        { file: 'https://i.pinimg.com/736x/28/1a/34/281a34a2e88babdc2e054e8ae7cfdad8.jpg', tags: ['surreal','landscape','dark','vast','solitary','scale'], label: 'Vast Dark Landscape' },
-        { file: 'https://i.pinimg.com/736x/1d/74/1a/1d741ad5318548b0b1b87eac4e23eb69.jpg', tags: ['portal','surreal','dark','glowing','figure','mystical'], label: 'Dark Portal Gateway' },
-        { file: 'https://i.pinimg.com/736x/34/df/c5/34dfc5994e366bade1394e9f2338d34a.jpg', tags: ['fog','surreal','landscape','dark','atmospheric','vast'], label: 'Surreal Fog Landscape' },
-      ]},
-      poster: { icon: '📐', name: 'Poster', boardId: '1121607550888730161', images: [
-        { file: 'https://i.pinimg.com/736x/bd/af/a9/bdafa9bb7b48ebe6d7b02ade3dcfb110.jpg', tags: ['dark','bold','typography','poster','editorial','graphic'], label: 'Bold Typography Poster' },
-        { file: 'https://i.pinimg.com/736x/5e/49/63/5e49632c7f0ba2e610bab2fa25566c23.jpg', tags: ['abstract','dark','lines','geometric','minimal','design'], label: 'Geometric Line Art' },
-        { file: 'https://i.pinimg.com/736x/81/02/86/8102865fd078549ecf6f7c6323f41d79.jpg', tags: ['dark','poster','texture','grunge','bold','raw'], label: 'Grunge Texture Poster' },
-        { file: 'https://i.pinimg.com/736x/40/f5/fb/40f5fb13c6abc7c607ee9d0b4f6c2338.jpg', tags: ['dark','editorial','layout','clean','modern','design'], label: 'Clean Editorial Layout' },
-      ]},
-      motion: { icon: '🌀', name: 'Motion', boardId: '1121607550888730163', images: [
-        { file: 'https://i.pinimg.com/736x/c3/8a/86/c38a867f53cef698117da479bfc21267.jpg', tags: ['abstract','dark','fluid','organic','3d','movement'], label: 'Dark Fluid Motion' },
-        { file: 'https://i.pinimg.com/736x/7a/ce/ef/7aceefeda4518eeda909cc0c5167d61c.jpg', tags: ['abstract','dark','metallic','chrome','3d','liquid'], label: 'Chrome Liquid' },
-        { file: 'https://i.pinimg.com/736x/16/08/18/160818fd9f0f3d4647a0fcb1c2a7fb8e.jpg', tags: ['abstract','dark','particles','light','motion','cosmic'], label: 'Particle Motion' },
-        { file: 'https://i.pinimg.com/736x/82/cd/16/82cd162535b0d7546f8ba20d62292882.jpg', tags: ['abstract','dark','organic','texture','3d','movement'], label: 'Organic Dark Texture' },
-      ]},
-      uiux: { icon: '🖥️', name: 'UI/UX', boardId: '1121607550888730159', images: [
-        { file: 'https://i.pinimg.com/736x/fb/63/74/fb637424ade0ef69b992a34f940d1bac.jpg', tags: ['dashboard','dark','analytics','data-viz','modern'], label: 'Dark Analytics Dashboard' },
-        { file: 'https://i.pinimg.com/736x/bc/4a/3c/bc4a3c4270d511e727b7b97cb276752b.jpg', tags: ['dashboard','dark','ui','cards','metrics'], label: 'Dashboard Cards' },
-        { file: 'https://i.pinimg.com/736x/6a/69/49/6a694943a20803f725be3dde911f42b2.jpg', tags: ['ui','dark','gradient','modern','interface'], label: 'Dark UI Interface' },
-        { file: 'https://i.pinimg.com/736x/da/73/39/da7339be47d3811cea70968395d3fc6b.jpg', tags: ['dashboard','dark','charts','data','clean'], label: 'Data Dashboard' },
-        { file: 'https://i.pinimg.com/736x/ab/1a/7c/ab1a7c2329b8c27ae10087f8a84d3442.jpg', tags: ['ui','dark','design','panel','layout'], label: 'Dark Panel Layout' },
-        { file: 'https://i.pinimg.com/736x/14/c6/70/14c670b85515a620919e129fffbc5917.jpg', tags: ['dashboard','dark','stats','minimal','modern'], label: 'Stats Dashboard' },
-        { file: 'https://i.pinimg.com/736x/1d/32/0c/1d320cb90b7afe0cab23b291b80c438b.jpg', tags: ['ui','dark','component','widget','app'], label: 'Dark UI Widgets' },
-        { file: 'https://i.pinimg.com/736x/e8/ee/71/e8ee7161177693e017d12a0ed928b505.jpg', tags: ['dashboard','dark','finance','crypto','modern'], label: 'Finance Dashboard' },
-      ]},
-    }
-  },
-  product_ui: {
-    icon: '🖥️', name: 'Product & UI', desc: 'Interfaces, dashboards, SaaS design',
-    boards: {
-      general: { icon: '🎯', name: 'General', boardId: '1121607550888732768', images: [
-        { file: 'https://i.pinimg.com/736x/fb/63/74/fb637424ade0ef69b992a34f940d1bac.jpg', tags: ['dashboard','dark','analytics','clean','modern'], label: 'Analytics Dashboard' },
-        { file: 'https://i.pinimg.com/736x/bc/4a/3c/bc4a3c4270d511e727b7b97cb276752b.jpg', tags: ['ui','dark','cards','metrics','layout'], label: 'UI Cards Layout' },
-        { file: 'https://i.pinimg.com/736x/6a/69/49/6a694943a20803f725be3dde911f42b2.jpg', tags: ['interface','dark','gradient','modern','web'], label: 'Dark Web Interface' },
-        { file: 'https://i.pinimg.com/736x/da/73/39/da7339be47d3811cea70968395d3fc6b.jpg', tags: ['dashboard','dark','charts','data','product'], label: 'Product Dashboard' },
-        { file: 'https://i.pinimg.com/736x/c1/4a/a2/c14aa2a22044644ba4d94f30d0703306.jpg', tags: ['glassmorphism','dark','blur','ui','modern','glass'], label: 'Glass Effect Dashboard' },
-        { file: 'https://i.pinimg.com/736x/0e/f3/fc/0ef3fccbe2a842757b9b42613e23ac56.jpg', tags: ['saas','dark','product','modern','gradient','ui'], label: 'SaaS Product Page' },
-        { file: 'https://i.pinimg.com/736x/d6/fe/58/d6fe58460ee240f40d5843cf7be2c5bd.jpg', tags: ['neomorphism','dark','soft','depth','minimal','ui'], label: 'Soft Neomorphism' },
-        { file: 'https://i.pinimg.com/736x/7b/6f/18/7b6f186528882a34f63e6f527a01b28b.jpg', tags: ['landing','dark','bold','web','modern','hero'], label: 'Bold Hero Section' },
-      ]},
-      vp001: { icon: '🤝', name: 'VP-001', boardId: '1121607619606610020', images: [
-        { file: 'https://i.pinimg.com/736x/fb/63/74/fb637424ade0ef69b992a34f940d1bac.jpg', tags: ['saas','dashboard','dark','blue','analytics'], label: 'SaaS Analytics' },
-        { file: 'https://i.pinimg.com/736x/da/73/39/da7339be47d3811cea70968395d3fc6b.jpg', tags: ['data-viz','chart','dark','blue','metrics'], label: 'Data Metrics' },
-        { file: 'https://i.pinimg.com/736x/14/c6/70/14c670b85515a620919e129fffbc5917.jpg', tags: ['tech','ui','dark','modern','stats'], label: 'Tech Stats UI' },
-        { file: 'https://i.pinimg.com/736x/1d/32/0c/1d320cb90b7afe0cab23b291b80c438b.jpg', tags: ['minimal','clean','dark','widget','component'], label: 'Dark Widgets' },
-      ]},
-    }
-  }
+// === A/B DATA ===
+const D={
+  edward:{icon:'👤',name:'Edward',desc:'Art-first · Cinematic · Dark moody aesthetic',boards:{
+    cinematography:{icon:'🎬',name:'Cinematography',boardId:'1121607550888730155',images:[{file:'https://i.pinimg.com/736x/ae/31/59/ae3159f93d0c33dbdddb3e58e6a977b1.jpg',tags:['fog','night','street','atmospheric','dark','urban'],label:'Foggy Night Street'},{file:'https://i.pinimg.com/736x/c8/ec/5d/c8ec5dcd900ef889290b9a6a3d05a268.jpg',tags:['bridge','fog','silhouette','dark','atmospheric','moody'],label:'Bridge in Fog'},{file:'https://i.pinimg.com/736x/f2/33/7b/f2337b3086acbcd7b2d0c42ea9dbe186.jpg',tags:['night','eerie','street','dark','quiet','atmospheric'],label:'Eerie Night Street'},{file:'https://i.pinimg.com/736x/42/78/75/42787558e3ce78ff17f6aedfb90e1c79.jpg',tags:['parking','night','empty','dark','lights','lonely'],label:'Empty Parking Lot'},{file:'https://i.pinimg.com/736x/9d/ee/1a/9dee1a4d0a68d7c2cc74f573aa45fdce.jpg',tags:['noir','contrast','dark','cinematic','shadow','moody'],label:'Noir Shadow Scene'},{file:'https://i.pinimg.com/736x/76/7e/0d/767e0dbb34035007ee569b11337c799e.jpg',tags:['fog','figure','backlit','dark','atmospheric','depth'],label:'Backlit Figure in Fog'},{file:'https://i.pinimg.com/736x/52/8e/ea/528eeaea0ff139612dc9aeb14cf3ff9b.jpg',tags:['rain','night','reflection','dark','urban','neon'],label:'Rain Reflections'},{file:'https://i.pinimg.com/736x/2c/38/ae/2c38ae4c04189ac43f5e9f560e8d7088.jpg',tags:['dark','moody','interior','shadow','atmospheric','noir'],label:'Moody Dark Interior'}]},
+    conceptual:{icon:'🎨',name:'Conceptual',boardId:'1121607550888730157',images:[{file:'https://i.pinimg.com/736x/21/0d/8d/210d8d2761e6b134a7a0f27fd2569623.jpg',tags:['surreal','dark','figure','abstract','fine-art','mysterious'],label:'Surreal Dark Figure'},{file:'https://i.pinimg.com/736x/88/a0/bf/88a0bfbd0945888bc181f7ab02e8e641.jpg',tags:['surreal','dark','dreamlike','fog','ethereal','fine-art'],label:'Dreamlike Dark Scene'},{file:'https://i.pinimg.com/736x/72/2d/41/722d410fd57badf142ae2237338a5530.jpg',tags:['tunnel','figure','light','dark','dramatic','depth'],label:'Figure in Tunnel'},{file:'https://i.pinimg.com/736x/36/33/b3/3633b3be93191eca00a2363bfd93a5c7.jpg',tags:['surreal','portal','glowing','dark','otherworldly','scale'],label:'Glowing Portal'},{file:'https://i.pinimg.com/736x/9b/a8/d1/9ba8d1887b5ce0d5ee03aa576bd8a8f4.jpg',tags:['abstract','dark','movement','fine-art','monochrome','expressive'],label:'Abstract Movement'},{file:'https://i.pinimg.com/736x/28/1a/34/281a34a2e88babdc2e054e8ae7cfdad8.jpg',tags:['surreal','landscape','dark','vast','solitary','scale'],label:'Vast Dark Landscape'},{file:'https://i.pinimg.com/736x/1d/74/1a/1d741ad5318548b0b1b87eac4e23eb69.jpg',tags:['portal','surreal','dark','glowing','figure','mystical'],label:'Dark Portal Gateway'},{file:'https://i.pinimg.com/736x/34/df/c5/34dfc5994e366bade1394e9f2338d34a.jpg',tags:['fog','surreal','landscape','dark','atmospheric','vast'],label:'Surreal Fog Landscape'}]},
+    poster:{icon:'📐',name:'Poster',boardId:'1121607550888730161',images:[{file:'https://i.pinimg.com/736x/bd/af/a9/bdafa9bb7b48ebe6d7b02ade3dcfb110.jpg',tags:['dark','bold','typography','poster','editorial','graphic'],label:'Bold Typography Poster'},{file:'https://i.pinimg.com/736x/5e/49/63/5e49632c7f0ba2e610bab2fa25566c23.jpg',tags:['abstract','dark','lines','geometric','minimal','design'],label:'Geometric Line Art'},{file:'https://i.pinimg.com/736x/81/02/86/8102865fd078549ecf6f7c6323f41d79.jpg',tags:['dark','poster','texture','grunge','bold','raw'],label:'Grunge Texture Poster'},{file:'https://i.pinimg.com/736x/40/f5/fb/40f5fb13c6abc7c607ee9d0b4f6c2338.jpg',tags:['dark','editorial','layout','clean','modern','design'],label:'Clean Editorial Layout'}]},
+    motion:{icon:'🌀',name:'Motion',boardId:'1121607550888730163',images:[{file:'https://i.pinimg.com/736x/c3/8a/86/c38a867f53cef698117da479bfc21267.jpg',tags:['abstract','dark','fluid','organic','3d','movement'],label:'Dark Fluid Motion'},{file:'https://i.pinimg.com/736x/7a/ce/ef/7aceefeda4518eeda909cc0c5167d61c.jpg',tags:['abstract','dark','metallic','chrome','3d','liquid'],label:'Chrome Liquid'},{file:'https://i.pinimg.com/736x/16/08/18/160818fd9f0f3d4647a0fcb1c2a7fb8e.jpg',tags:['abstract','dark','particles','light','motion','cosmic'],label:'Particle Motion'},{file:'https://i.pinimg.com/736x/82/cd/16/82cd162535b0d7546f8ba20d62292882.jpg',tags:['abstract','dark','organic','texture','3d','movement'],label:'Organic Dark Texture'}]},
+    uiux:{icon:'🖥️',name:'UI/UX',boardId:'1121607550888730159',images:[{file:'https://i.pinimg.com/736x/fb/63/74/fb637424ade0ef69b992a34f940d1bac.jpg',tags:['dashboard','dark','analytics','data-viz','modern'],label:'Dark Analytics Dashboard'},{file:'https://i.pinimg.com/736x/bc/4a/3c/bc4a3c4270d511e727b7b97cb276752b.jpg',tags:['dashboard','dark','ui','cards','metrics'],label:'Dashboard Cards'},{file:'https://i.pinimg.com/736x/6a/69/49/6a694943a20803f725be3dde911f42b2.jpg',tags:['ui','dark','gradient','modern','interface'],label:'Dark UI Interface'},{file:'https://i.pinimg.com/736x/da/73/39/da7339be47d3811cea70968395d3fc6b.jpg',tags:['dashboard','dark','charts','data','clean'],label:'Data Dashboard'},{file:'https://i.pinimg.com/736x/ab/1a/7c/ab1a7c2329b8c27ae10087f8a84d3442.jpg',tags:['ui','dark','design','panel','layout'],label:'Dark Panel Layout'},{file:'https://i.pinimg.com/736x/14/c6/70/14c670b85515a620919e129fffbc5917.jpg',tags:['dashboard','dark','stats','minimal','modern'],label:'Stats Dashboard'},{file:'https://i.pinimg.com/736x/1d/32/0c/1d320cb90b7afe0cab23b291b80c438b.jpg',tags:['ui','dark','component','widget','app'],label:'Dark UI Widgets'},{file:'https://i.pinimg.com/736x/e8/ee/71/e8ee7161177693e017d12a0ed928b505.jpg',tags:['dashboard','dark','finance','crypto','modern'],label:'Finance Dashboard'}]},
+  }},
+  product_ui:{icon:'🖥️',name:'Product & UI',desc:'Interfaces, dashboards, SaaS design',boards:{
+    general:{icon:'🎯',name:'General',boardId:'1121607550888732768',images:[{file:'https://i.pinimg.com/736x/fb/63/74/fb637424ade0ef69b992a34f940d1bac.jpg',tags:['dashboard','dark','analytics','clean','modern'],label:'Analytics Dashboard'},{file:'https://i.pinimg.com/736x/bc/4a/3c/bc4a3c4270d511e727b7b97cb276752b.jpg',tags:['ui','dark','cards','metrics','layout'],label:'UI Cards Layout'},{file:'https://i.pinimg.com/736x/6a/69/49/6a694943a20803f725be3dde911f42b2.jpg',tags:['interface','dark','gradient','modern','web'],label:'Dark Web Interface'},{file:'https://i.pinimg.com/736x/da/73/39/da7339be47d3811cea70968395d3fc6b.jpg',tags:['dashboard','dark','charts','data','product'],label:'Product Dashboard'},{file:'https://i.pinimg.com/736x/c1/4a/a2/c14aa2a22044644ba4d94f30d0703306.jpg',tags:['glassmorphism','dark','blur','ui','modern','glass'],label:'Glass Effect Dashboard'},{file:'https://i.pinimg.com/736x/0e/f3/fc/0ef3fccbe2a842757b9b42613e23ac56.jpg',tags:['saas','dark','product','modern','gradient','ui'],label:'SaaS Product Page'},{file:'https://i.pinimg.com/736x/d6/fe/58/d6fe58460ee240f40d5843cf7be2c5bd.jpg',tags:['neomorphism','dark','soft','depth','minimal','ui'],label:'Soft Neomorphism'},{file:'https://i.pinimg.com/736x/7b/6f/18/7b6f186528882a34f63e6f527a01b28b.jpg',tags:['landing','dark','bold','web','modern','hero'],label:'Bold Hero Section'}]},
+    vp001:{icon:'🤝',name:'VP-001',boardId:'1121607619606610020',images:[{file:'https://i.pinimg.com/736x/fb/63/74/fb637424ade0ef69b992a34f940d1bac.jpg',tags:['saas','dashboard','dark','blue','analytics'],label:'SaaS Analytics'},{file:'https://i.pinimg.com/736x/da/73/39/da7339be47d3811cea70968395d3fc6b.jpg',tags:['data-viz','chart','dark','blue','metrics'],label:'Data Metrics'},{file:'https://i.pinimg.com/736x/14/c6/70/14c670b85515a620919e129fffbc5917.jpg',tags:['tech','ui','dark','modern','stats'],label:'Tech Stats UI'},{file:'https://i.pinimg.com/736x/1d/32/0c/1d320cb90b7afe0cab23b291b80c438b.jpg',tags:['minimal','clean','dark','widget','component'],label:'Dark Widgets'}]},
+  }}
 };
 
-// ============================================================
-//  LIBRARY FUNCTIONS
-// ============================================================
-let activeFilters = new Set();
-
-function getAllTags() {
-  const tags = new Set();
-  STYLES.forEach(s => s.tags.forEach(t => tags.add(t)));
-  return [...tags].sort();
-}
-
-function buildFilterRow() {
-  const row = document.getElementById('filterRow');
-  const popular = ['cinematic', 'dark', 'surreal', 'abstract', 'minimal', 'typography', 'ui', '3d', 'fog', 'cosmic', 'neon'];
-  row.innerHTML = popular.map(t =>
-    `<div class="filter-tag" data-tag="${t}" onclick="toggleFilter('${t}')">${t}</div>`
-  ).join('');
-}
-
-function toggleFilter(tag) {
-  if (activeFilters.has(tag)) activeFilters.delete(tag);
-  else activeFilters.add(tag);
-  document.querySelectorAll('.filter-tag').forEach(el => {
-    el.classList.toggle('active', activeFilters.has(el.dataset.tag));
-  });
-  filterLibrary();
-}
-
-function filterLibrary() {
-  const q = document.getElementById('searchInput').value.toLowerCase().trim();
-  const grid = document.getElementById('styleGrid');
-  let filtered = STYLES;
-
-  if (q) {
-    filtered = filtered.filter(s =>
-      s.name.toLowerCase().includes(q) ||
-      s.desc.toLowerCase().includes(q) ||
-      s.sref.includes(q) ||
-      s.tags.some(t => t.includes(q))
-    );
-  }
-
-  if (activeFilters.size > 0) {
-    filtered = filtered.filter(s =>
-      [...activeFilters].some(f => s.tags.includes(f))
-    );
-  }
-
-  if (filtered.length === 0) {
-    grid.innerHTML = '<div class="empty-state"><span class="emoji">🔍</span>No styles found. Try different keywords.</div>';
-    return;
-  }
-
-  grid.innerHTML = filtered.map(s => {
-    const engineHTML = s.engines.map(e => {
-      const label = { midjourney: 'MJ', sd: 'SD', flux: 'Flux', dalle: 'DALL·E' }[e] || e;
-      const cls = { midjourney: 'engine-mj', sd: 'engine-sd', flux: 'engine-flux', dalle: 'engine-dalle' }[e] || '';
-      return `<span class="engine-badge ${cls}">${label}</span>`;
-    }).join('');
-
-    return `
-      <div class="style-card" onclick="openStyle('${s.id}')">
-        <div class="style-samples">
-          ${s.images.slice(0,4).map(img => `<img src="${img}" alt="" loading="lazy">`).join('')}
-        </div>
-        <div class="style-meta">
-          <div class="style-name">${s.name}</div>
-          <div class="style-code">
-            <span>${s.sref}</span>
-            <span class="copy-code" onclick="event.stopPropagation();copyCode('${s.sref}',this)">Copy</span>
-          </div>
-          <div class="style-tags">${s.tags.slice(0,4).map(t => `<span>${t}</span>`).join('')}</div>
-          <div class="style-engines">${engineHTML}</div>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-function copyCode(code, el) {
-  navigator.clipboard.writeText(code).then(() => {
-    el.textContent = '✓';
-    setTimeout(() => el.textContent = 'Copy', 1500);
+// === LIBRARY ===
+let af=new Set();
+function buildFilters(){
+  const f=document.getElementById('filters');
+  ['cinematic','dark','surreal','abstract','minimal','typography','3d','fog','cosmic','neon','ui','noir'].forEach(t=>{
+    f.innerHTML+=`<div class="pill" data-t="${t}" onclick="tf('${t}')">${t}</div>`;
   });
 }
-
-function openStyle(id) {
-  const s = STYLES.find(x => x.id === id);
-  if (!s) return;
-
-  const engineHTML = s.engines.map(e => {
-    const label = { midjourney: 'MJ', sd: 'SD', flux: 'Flux', dalle: 'DALL·E' }[e] || e;
-    const cls = { midjourney: 'engine-mj', sd: 'engine-sd', flux: 'engine-flux', dalle: 'engine-dalle' }[e] || '';
-    return `<span class="engine-badge ${cls}">${label}</span>`;
+function tf(t){if(af.has(t))af.delete(t);else af.add(t);document.querySelectorAll('.pill').forEach(e=>e.classList.toggle('active',af.has(e.dataset.t)));render();}
+function render(){
+  const q=document.getElementById('q').value.toLowerCase().trim();
+  let f=S;
+  if(q)f=f.filter(s=>s.name.toLowerCase().includes(q)||s.desc.toLowerCase().includes(q)||s.sref.includes(q)||s.tags.some(t=>t.includes(q)));
+  if(af.size)f=f.filter(s=>[...af].some(x=>s.tags.includes(x)));
+  const g=document.getElementById('grid');
+  if(!f.length){g.innerHTML='<div class="empty-state"><span class="big">⌕</span>No styles found.</div>';return;}
+  g.innerHTML=f.map(s=>{
+    const eng=s.engines.map(e=>{const l={midjourney:'MJ',sd:'SD',flux:'Flux',dalle:'DALL·E'}[e]||e;const c={midjourney:'e-mj',sd:'e-sd',flux:'e-flux',dalle:'e-dalle'}[e]||'';return`<span class="engine ${c}">${l}</span>`;}).join('');
+    return`<div class="style-card" onclick="openS('${s.id}')"><div class="card-mosaic">${s.images.slice(0,4).map(i=>`<img src="${i}" loading="lazy">`).join('')}</div><div class="card-body"><div class="card-name">${s.name}</div><div class="card-code"><span>${s.sref}</span><span class="card-copy" onclick="event.stopPropagation();cc('${s.sref}',this)">Copy</span></div><div class="card-tags">${s.tags.slice(0,4).map(t=>`<span>${t}</span>`).join('')}</div><div class="card-engines">${eng}</div></div></div>`;
   }).join('');
-
-  document.getElementById('modalGallery').innerHTML =
-    s.images.map(img => `<img src="${img}" alt="" loading="lazy">`).join('');
-
-  document.getElementById('modalBody').innerHTML = `
+}
+function cc(c,el){navigator.clipboard.writeText(c).then(()=>{el.textContent='✓';setTimeout(()=>el.textContent='Copy',1200);});}
+function openS(id){
+  const s=S.find(x=>x.id===id);if(!s)return;
+  const eng=s.engines.map(e=>{const l={midjourney:'MJ',sd:'SD',flux:'Flux',dalle:'DALL·E'}[e]||e;const c={midjourney:'e-mj',sd:'e-sd',flux:'e-flux',dalle:'e-dalle'}[e]||'';return`<span class="engine ${c}">${l}</span>`;}).join('');
+  document.getElementById('mGallery').innerHTML=s.images.map(i=>`<img src="${i}" loading="lazy">`).join('');
+  document.getElementById('mContent').innerHTML=`
     <h2>${s.name}</h2>
-    <div class="modal-code">
-      <span>${s.sref}</span>
-      <button onclick="copyCode('${s.sref}',this)">📋 Copy Code</button>
-    </div>
+    <div class="modal-sref"><span>${s.sref}</span><button onclick="cc('${s.sref}',this)">Copy Code</button></div>
     <div class="modal-desc">${s.desc}</div>
-    <div class="modal-section">
-      <h4>Tags</h4>
-      <div class="modal-tags">${s.tags.map(t => `<span>${t}</span>`).join('')}</div>
-    </div>
-    <div class="modal-section">
-      <h4>Engines</h4>
-      <div style="display:flex;gap:8px;">${engineHTML}</div>
-    </div>
-    <div class="modal-section">
-      <h4>Example Prompt</h4>
-      <div class="modal-prompt">
-        <span class="copy-prompt" onclick="navigator.clipboard.writeText(\`${s.prompt}\`).then(()=>{this.textContent='✓';setTimeout(()=>this.textContent='Copy',1500)})">Copy</span>
-        ${s.prompt}
-      </div>
-    </div>
+    <div class="modal-label">Tags</div>
+    <div class="modal-tags">${s.tags.map(t=>`<span>${t}</span>`).join('')}</div>
+    <div class="modal-label">Compatible Engines</div>
+    <div class="modal-engines">${eng}</div>
+    <div class="modal-label">Example Prompt</div>
+    <div class="modal-prompt-wrap"><span class="modal-prompt-copy" onclick="navigator.clipboard.writeText('${s.prompt}').then(()=>{this.textContent='✓';setTimeout(()=>this.textContent='Copy',1200);})">Copy</span><pre>${s.prompt}</pre></div>
   `;
-
-  document.getElementById('modalOverlay').classList.add('active');
+  document.getElementById('overlay').classList.add('active');
 }
+function closeModal(){document.getElementById('overlay').classList.remove('active');}
 
-function closeModal() {
-  document.getElementById('modalOverlay').classList.remove('active');
-}
-
-function updateStats() {
-  document.getElementById('statStyles').textContent = STYLES.length;
-  const allTags = new Set();
-  STYLES.forEach(s => s.tags.forEach(t => allTags.add(t)));
-  document.getElementById('statTags').textContent = allTags.size;
-}
-
-// ============================================================
-//  A/B TEST FUNCTIONS (preserved)
-// ============================================================
-let currentDept = null, currentBoard = null;
-let pool = [], pairIdx = 0;
-let currentRound = 0, ratingResults = [];
-
-function shuffle(a){ const b=[...a]; for(let i=b.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]; } return b; }
-function makePairs(images){ const s=shuffle(images); const p=[]; for(let i=0;i<s.length-1;i+=2) p.push([s[i],s[i+1]]); return p; }
-function getTotalRatings(dKey,bKey){ const data=JSON.parse(localStorage.getItem(`sc_ratings_${dKey}_${bKey}`)||'0'); return typeof data==='number'?data:0; }
-function addRatings(dKey,bKey,count){ const cur=getTotalRatings(dKey,bKey); localStorage.setItem(`sc_ratings_${dKey}_${bKey}`,JSON.stringify(cur+count)); }
-
-function showScreen(name){
+// === NAV ===
+function nav(n){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  const screenId = name==='test'?'screen-test':(`screen-${name}`);
-  document.getElementById(screenId).classList.add('active');
-  const nav = document.getElementById(`nav-${name}`);
-  if(nav) nav.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
+  document.getElementById(`screen-${n}`).classList.add('active');
+  document.getElementById(`nav-${n}`).classList.add('active');
   document.getElementById('undoBtn').classList.add('hidden');
-  if(name==='test') buildHome();
-  if(name==='history') buildHistory();
-  if(name==='library'){ filterLibrary(); updateStats(); }
+  if(n==='test')buildDepts();
+  if(n==='history')buildHist();
+  if(n==='library'){render();updStats();}
 }
+function updStats(){document.getElementById('sN').textContent=S.length;const t=new Set();S.forEach(s=>s.tags.forEach(x=>t.add(x)));document.getElementById('sT').textContent=t.size;}
 
-function buildHome(){
-  const container=document.getElementById('deptCards');
-  container.innerHTML='';
-  Object.entries(DEPARTMENTS).forEach(([dKey,dept])=>{
-    const card=document.createElement('div');
-    card.className='dept-card';
-    let chipsHTML='';
-    Object.entries(dept.boards).forEach(([bKey,board])=>{
-      const total=getTotalRatings(dKey,bKey);
-      const badge=total>0?` <span style="font-size:10px;color:#555;">${total}</span>`:'';
-      chipsHTML+=`<div class="chip" onclick="startBoard('${dKey}','${bKey}')"><span class="chip-icon">${board.icon}</span>${board.name}${badge}</div>`;
+// === DEPTS ===
+function buildDepts(){
+  const c=document.getElementById('depts');c.innerHTML='';
+  Object.entries(D).forEach(([dk,d])=>{
+    let chips='';
+    Object.entries(d.boards).forEach(([bk,b])=>{
+      const n=getTR(dk,bk);
+      const badge=n>0?` <span style="font-size:11px;color:var(--text-3)">${n}</span>`:'';
+      chips+=`<div class="board-chip" onclick="startBoard('${dk}','${bk}')"><span>${b.icon}</span>${b.name}${badge}</div>`;
     });
-    card.innerHTML=`
-      <div class="dept-header">
-        <div class="dept-icon">${dept.icon}</div>
-        <div class="dept-info"><h3>${dept.name}</h3><p>${dept.desc}</p></div>
-      </div>
-      <div class="dept-chips">${chipsHTML}</div>
-    `;
-    container.appendChild(card);
+    c.innerHTML+=`<div class="dept-card"><div class="dept-top"><div class="dept-emoji">${d.icon}</div><div class="dept-meta"><h3>${d.name}</h3><p>${d.desc}</p></div></div><div class="board-chips">${chips}</div></div>`;
   });
 }
 
-function startBoard(dKey,bKey){
-  currentDept=dKey; currentBoard=bKey;
-  const board=DEPARTMENTS[dKey].boards[bKey];
-  pool=makePairs(board.images); pairIdx=0; currentRound=0; ratingResults=[];
-  document.getElementById('arenaTitle').textContent=`${board.icon} ${board.name}`;
-  document.getElementById('arenaSub').textContent=`${DEPARTMENTS[dKey].name}`;
-  updateCounters();
+// === A/B ENGINE ===
+let cD=null,cB=null,pool=[],pi=0,rr=[];
+function shuf(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function mkP(imgs){const s=shuf(imgs);const p=[];for(let i=0;i<s.length-1;i+=2)p.push([s[i],s[i+1]]);return p;}
+function getTR(d,b){const v=JSON.parse(localStorage.getItem(`sc_ratings_${d}_${b}`)||'0');return typeof v==='number'?v:0;}
+function addR(d,b,n){localStorage.setItem(`sc_ratings_${d}_${b}`,JSON.stringify(getTR(d,b)+n));}
+
+function startBoard(dk,bk){
+  cD=dk;cB=bk;const b=D[dk].boards[bk];
+  pool=mkP(b.images);pi=0;rr=[];
+  document.getElementById('arenaTitle').textContent=`${b.icon} ${b.name}`;
+  document.getElementById('arenaSub').textContent=D[dk].name;
+  updC();
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-arena').classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('nav-test').classList.add('active');
-  loadRound();
+  loadR();
 }
-
-function updateCounters(){
-  const total=getTotalRatings(currentDept,currentBoard)+ratingResults.length;
-  document.getElementById('sessionCount').textContent=ratingResults.length;
-  document.getElementById('totalCount').textContent=total;
-  document.getElementById('progressFill').style.width=Math.min(100,Math.round(total/200*100))+'%';
+function updC(){
+  const t=getTR(cD,cB)+rr.length;
+  document.getElementById('sC').textContent=rr.length;
+  document.getElementById('tC').textContent=t;
+  document.getElementById('pF').style.width=Math.min(100,Math.round(t/200*100))+'%';
 }
-
-function loadRound(){
-  if(pairIdx>=pool.length){ const board=DEPARTMENTS[currentDept].boards[currentBoard]; pool=makePairs(board.images); pairIdx=0; }
-  const [a,b]=pool[pairIdx];
+function loadR(){
+  if(pi>=pool.length){pool=mkP(D[cD].boards[cB].images);pi=0;}
+  const[a,b]=pool[pi];
   document.getElementById('imgA').src=a.file;
   document.getElementById('imgB').src=b.file;
 }
-
 function pick(c){
-  const [a,b]=pool[pairIdx];
-  ratingResults.push({
-    round:ratingResults.length+1, a:a.label, b:b.label, choice:c,
-    winnerTags:c==='A'?a.tags:c==='B'?b.tags:c==='both'?[...a.tags,...b.tags]:[],
-    loserTags:c==='A'?b.tags:c==='B'?a.tags:[],
-    winnerFiles:c==='A'?[a.file]:c==='B'?[b.file]:c==='both'?[a.file,b.file]:[],
-    loserFiles:c==='A'?[b.file]:c==='B'?[a.file]:c==='both'?[]:[a.file,b.file],
-  });
-  pairIdx++; currentRound++;
+  const[a,b]=pool[pi];
+  rr.push({round:rr.length+1,a:a.label,b:b.label,choice:c,winnerTags:c==='A'?a.tags:c==='B'?b.tags:c==='both'?[...a.tags,...b.tags]:[],loserTags:c==='A'?b.tags:c==='B'?a.tags:[],winnerFiles:c==='A'?[a.file]:c==='B'?[b.file]:c==='both'?[a.file,b.file]:[],loserFiles:c==='A'?[b.file]:c==='B'?[a.file]:c==='both'?[]:[a.file,b.file]});
+  pi++;updC();loadR();
   document.getElementById('undoBtn').classList.remove('hidden');
-  updateCounters(); loadRound();
 }
-
-function undo(){
-  if(ratingResults.length<=0)return;
-  ratingResults.pop();
-  if(pairIdx>0)pairIdx--;
-  updateCounters(); loadRound();
-  if(ratingResults.length===0) document.getElementById('undoBtn').classList.add('hidden');
-}
-
-function finishSession(){
-  if(ratingResults.length===0){showScreen('test');return;}
-  showResultsScreen();
-}
+function undo(){if(!rr.length)return;rr.pop();if(pi>0)pi--;updC();loadR();if(!rr.length)document.getElementById('undoBtn').classList.add('hidden');}
+function finish(){if(!rr.length){nav('test');return;}showRes();}
 
 document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){if(document.getElementById('overlay').classList.contains('active')){closeModal();return;}finish();return;}
   if(e.key==='z'||e.key==='Z'){undo();return;}
-  if(e.key==='Escape'){
-    if(document.getElementById('modalOverlay').classList.contains('active')){closeModal();return;}
-    finishSession();return;
-  }
-  if(!currentBoard)return;
-  if(document.getElementById('screen-arena').classList.contains('active')){
-    if(e.key==='ArrowLeft')pick('A');
-    else if(e.key==='ArrowRight')pick('B');
-    else if(e.key==='ArrowUp'){e.preventDefault();pick('both');}
-    else if(e.key==='ArrowDown'){e.preventDefault();pick('skip');}
-  }
+  if(!cB||!document.getElementById('screen-arena').classList.contains('active'))return;
+  if(e.key==='ArrowLeft')pick('A');
+  else if(e.key==='ArrowRight')pick('B');
+  else if(e.key==='ArrowUp'){e.preventDefault();pick('both');}
+  else if(e.key==='ArrowDown'){e.preventDefault();pick('skip');}
 });
 
-function showResultsScreen(){
-  const dept=DEPARTMENTS[currentDept];
-  const board=dept.boards[currentBoard];
-  addRatings(currentDept,currentBoard,ratingResults.length);
-  const totalNow=getTotalRatings(currentDept,currentBoard);
-  document.getElementById('resultsTitle').textContent=`${board.icon} ${board.name} — Style DNA`;
-  const grid=document.getElementById('winnersGrid');grid.innerHTML='';
-  ratingResults.flatMap(r=>r.winnerFiles).forEach(f=>{const img=document.createElement('img');img.src=f;grid.appendChild(img);});
-  const lgrid=document.getElementById('losersGrid');lgrid.innerHTML='';
-  ratingResults.flatMap(r=>r.loserFiles).forEach(f=>{const img=document.createElement('img');img.src=f;lgrid.appendChild(img);});
-  const tagScores={};
-  ratingResults.forEach(r=>{r.winnerTags.forEach(t=>{tagScores[t]=(tagScores[t]||0)+1;});r.loserTags.forEach(t=>{tagScores[t]=(tagScores[t]||0)-0.5;});});
-  const sorted=Object.entries(tagScores).sort((a,b)=>b[1]-a[1]);
+function showRes(){
+  const dept=D[cD],board=dept.boards[cB];
+  addR(cD,cB,rr.length);const tot=getTR(cD,cB);
+  document.getElementById('resTitle').textContent=`${board.icon} ${board.name} — Style DNA`;
+  const wg=document.getElementById('wG');wg.innerHTML='';
+  rr.flatMap(r=>r.winnerFiles).forEach(f=>{const i=document.createElement('img');i.src=f;wg.appendChild(i);});
+  const lg=document.getElementById('lG');lg.innerHTML='';
+  rr.flatMap(r=>r.loserFiles).forEach(f=>{const i=document.createElement('img');i.src=f;lg.appendChild(i);});
+  const ts={};
+  rr.forEach(r=>{r.winnerTags.forEach(t=>{ts[t]=(ts[t]||0)+1;});r.loserTags.forEach(t=>{ts[t]=(ts[t]||0)-0.5;});});
+  const sorted=Object.entries(ts).sort((a,b)=>b[1]-a[1]);
   const top=sorted.filter(([,v])=>v>0).slice(0,15);
-  const bottom=sorted.filter(([,v])=>v<0).slice(-10);
-  let s=`${dept.name} · ${board.name} · ${ratingResults.length} ratings (${totalNow}/200 total)\n\n`;
-  s+='🏆 TOP:\n';
-  top.forEach(([t,v])=>{s+=`  ${t}: ${'█'.repeat(Math.round(v*2))} (${v.toFixed(1)})\n`;});
-  s+='\n🚫 REJECTED:\n';
-  bottom.forEach(([t,v])=>{s+=`  ${t}: (${v.toFixed(1)})\n`;});
-  document.getElementById('resultsData').textContent=s;
-  window.__styleCuratorResults={
-    department:currentDept,deptName:dept.name,board:currentBoard,boardId:board.boardId,boardName:board.name,
-    sessionRatings:ratingResults.length,totalRatings:totalNow,results:ratingResults,tagScores:Object.fromEntries(sorted),summary:s
-  };
+  const bot=sorted.filter(([,v])=>v<0).slice(-10);
+  let s=`${dept.name} · ${board.name} · ${rr.length} ratings (${tot}/200 total)\n\n`;
+  s+='TOP:\n';top.forEach(([t,v])=>{s+=`  ${t}: ${'█'.repeat(Math.round(v*2))} (${v.toFixed(1)})\n`;});
+  s+='\nREJECTED:\n';bot.forEach(([t,v])=>{s+=`  ${t}: (${v.toFixed(1)})\n`;});
+  document.getElementById('resData').textContent=s;
+  window.__r={department:cD,deptName:dept.name,board:cB,boardId:board.boardId,boardName:board.name,sessionRatings:rr.length,totalRatings:tot,results:rr,tagScores:Object.fromEntries(sorted),summary:s};
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-results').classList.add('active');
-  const autoPayload={...window.__styleCuratorResults,timestamp:new Date().toISOString(),submitted:false};
-  localStorage.setItem(`sc_${currentDept}_${currentBoard}_latest`,JSON.stringify(autoPayload));
+  document.getElementById('doneW').innerHTML='<button onclick="submitToLux()">Done — Send to Lux</button>';
+  document.getElementById('saveStatus').innerHTML='';
+  const ap={...window.__r,timestamp:new Date().toISOString(),submitted:false};
+  localStorage.setItem(`sc_${cD}_${cB}_latest`,JSON.stringify(ap));
   const all=JSON.parse(localStorage.getItem('sc_history')||'[]');
-  all.unshift(autoPayload);
-  localStorage.setItem('sc_history',JSON.stringify(all.slice(0,50)));
+  all.unshift(ap);localStorage.setItem('sc_history',JSON.stringify(all.slice(0,50)));
 }
 
 async function submitToLux(){
-  const el=document.getElementById('saveStatus');
-  const btn=document.getElementById('doneWrap');
-  el.innerHTML='<div class="save-status save-pending">⏳ Sending to Lux...</div>';
-  btn.innerHTML='<div style="color:#555;font-size:13px;">Sending...</div>';
-  const payload={...window.__styleCuratorResults,timestamp:new Date().toISOString(),submitted:true};
-  localStorage.setItem(`sc_${currentDept}_${currentBoard}_latest`,JSON.stringify(payload));
+  const el=document.getElementById('saveStatus'),btn=document.getElementById('doneW');
+  el.innerHTML='<div class="save-msg save-pending">Sending to Lux...</div>';
+  btn.innerHTML='<div style="color:var(--text-3);font-size:14px;">Sending...</div>';
+  const p={...window.__r,timestamp:new Date().toISOString(),submitted:true};
+  localStorage.setItem(`sc_${cD}_${cB}_latest`,JSON.stringify(p));
   let binId=null;
-  try{const r=await fetch('https://api.jsonbin.io/v3/b',{method:'POST',headers:{'Content-Type':'application/json','X-Bin-Private':'false'},body:JSON.stringify(payload)});if(r.ok){const d=await r.json();binId=d.metadata.id;}}catch(e){}
+  try{const r=await fetch('https://api.jsonbin.io/v3/b',{method:'POST',headers:{'Content-Type':'application/json','X-Bin-Private':'false'},body:JSON.stringify(p)});if(r.ok){const d=await r.json();binId=d.metadata.id;}}catch(e){}
   const inbox=JSON.parse(localStorage.getItem('sc_inbox')||'[]');
-  inbox.unshift({binId,department:currentDept,board:currentBoard,timestamp:payload.timestamp});
+  inbox.unshift({binId,department:cD,board:cB,timestamp:p.timestamp});
   localStorage.setItem('sc_inbox',JSON.stringify(inbox.slice(0,20)));
-  el.innerHTML='<div class="save-status save-ok">✅ Lux notified — analysis incoming</div>';
-  btn.innerHTML='<div style="color:#4ade80;font-size:14px;font-weight:600;">✅ Submitted</div>';
+  el.innerHTML='<div class="save-msg save-ok">✓ Sent to Lux — analysis incoming</div>';
+  btn.innerHTML='<div style="color:var(--green);font-size:15px;font-weight:600;">✓ Submitted</div>';
 }
+function copyRes(){navigator.clipboard.writeText(JSON.stringify(window.__r,null,2)).then(()=>{});}
 
-function copyResults(){
-  navigator.clipboard.writeText(JSON.stringify(window.__styleCuratorResults,null,2)).then(()=>{
-    const b=event.target;b.textContent='✅ Copied!';setTimeout(()=>b.textContent='📋 Copy',2000);
-  });
-}
-
-function buildHistory(){
-  const list=document.getElementById('historyList');
+function buildHist(){
+  const l=document.getElementById('hList');
   const all=JSON.parse(localStorage.getItem('sc_history')||'[]');
-  if(!all.length){list.innerHTML='<div class="history-empty">No ratings yet. Go rate some boards!</div>';return;}
-  list.innerHTML='';
+  if(!all.length){l.innerHTML='<div class="history-empty">No ratings yet.</div>';return;}
+  l.innerHTML='';
   all.forEach(h=>{
     const d=new Date(h.timestamp);
-    const total=h.totalRatings||'?';
-    const item=document.createElement('div');
-    item.className='history-item';
-    item.innerHTML=`<h4>${h.deptName||''} · ${h.boardName||''}</h4><p>${d.toLocaleDateString()} ${d.toLocaleTimeString()} · ${h.sessionRatings||h.results?.length||0} ratings · ${total}/200 total</p>`;
-    list.appendChild(item);
+    l.innerHTML+=`<div class="history-card"><h4>${h.deptName||''} · ${h.boardName||''}</h4><p>${d.toLocaleDateString()} ${d.toLocaleTimeString()} · ${h.sessionRatings||0} ratings · ${h.totalRatings||'?'}/200</p></div>`;
   });
 }
 
-// ===== INIT =====
-buildFilterRow();
-filterLibrary();
-updateStats();
+// INIT
+buildFilters();render();updStats();
 </script>
 </body>
 </html>
