@@ -43,18 +43,34 @@ function updStats(){document.getElementById('sN').textContent=S.length;const t=n
 // === CREATOR PROFILES ===
 function renderCreators(){
   const el=document.getElementById('creators');if(!el||!C||!C.length)return;
-  el.innerHTML=C.map(c=>`
-    <div class="creator-card">
-      <div class="creator-header">
-        <img class="creator-avatar" src="${c.avatar}" alt="${c.name}">
-        <div class="creator-info">
-          <div class="creator-name">${c.name}</div>
-          <a class="creator-handle" href="${c.url}" target="_blank">${c.handle}</a>
-        </div>
-        <a class="creator-follow" href="${c.url}" target="_blank">View ↗</a>
+  el.innerHTML=`
+    <div class="creators-label">Creators</div>
+    <div class="creators-row">${C.map(c=>`
+      <div class="creator-chip" onclick="openCreator('${c.id}')">
+        <img class="chip-avatar" src="${c.avatar}" alt="${c.name}">
+        <span class="chip-name">${c.name}</span>
       </div>
-      <div class="creator-bio">${c.bio}</div>
-      <div class="creator-gallery">${c.images.map(i=>`<img src="${i}" loading="lazy">`).join('')}</div>
+    `).join('')}</div>
+  `;
+}
+function openCreator(id){
+  const c=C.find(x=>x.id===id);if(!c)return;
+  document.getElementById('mGallery').innerHTML=c.images.map(i=>`<img src="${i}" loading="lazy">`).join('');
+  document.getElementById('mContent').innerHTML=`
+    <div class="creator-modal-header">
+      <img class="creator-modal-avatar" src="${c.avatar}" alt="${c.name}">
+      <div>
+        <h2 style="margin-bottom:4px">${c.name}</h2>
+        <a href="${c.url}" target="_blank" style="color:var(--accent);font-size:14px;text-decoration:none;font-weight:500">${c.handle}</a>
+      </div>
     </div>
-  `).join('');
+    <div class="modal-desc">${c.bio}</div>
+    <div class="modal-label">Gallery</div>
+    <div style="font-size:13px;color:var(--text-3);margin-bottom:16px">Latest work from ${c.handle}</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <a href="${c.url}" target="_blank" style="padding:10px 24px;background:var(--accent);color:#fff;border-radius:var(--radius-xs);font-size:14px;font-weight:600;text-decoration:none;transition:all var(--transition)">View on X ↗</a>
+      <button onclick="closeModal();nav('test')" style="padding:10px 24px;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);border-radius:var(--radius-xs);font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font)">Rate their art →</button>
+    </div>
+  `;
+  document.getElementById('overlay').classList.add('active');
 }
