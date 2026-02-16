@@ -47,8 +47,14 @@ function renderCreators(){
     <div class="creators-label">Creators</div>
     <div class="creators-row">${C.map(c=>`
       <div class="creator-chip" onclick="openCreator('${c.id}')">
-        <img class="chip-avatar" src="${c.avatar}" alt="${c.name}">
-        <span class="chip-name">${c.name}</span>
+        <div class="chip-mosaic">${c.images.slice(0,4).map(i=>`<img src="${i}" loading="lazy">`).join('')}</div>
+        <div class="chip-body">
+          <img class="chip-avatar" src="${c.avatar}" alt="${c.name}">
+          <div class="chip-info">
+            <div class="chip-name">${c.name}</div>
+            <div class="chip-handle">${c.handle}</div>
+          </div>
+        </div>
       </div>
     `).join('')}</div>
   `;
