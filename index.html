@@ -37,6 +37,17 @@
   .results-data { background: #151520; border-radius: 12px; padding: 20px; margin-top: 20px; text-align: left; font-size: 13px; line-height: 1.8; white-space: pre-wrap; font-family: monospace; color: #ccc; max-height: 500px; overflow-y: auto; }
   .hidden { display: none; }
   .keyboard-hint { font-size: 12px; color: #555; margin-top: 8px; }
+  .save-status { margin-top: 16px; padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; }
+  .save-ok { background: #1a2a1a; color: #6f6; }
+  .save-err { background: #2a1a1a; color: #f66; }
+  .save-pending { background: #2a2a1a; color: #ff6; }
+  .result-actions { display: flex; gap: 12px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+  .result-actions button { padding: 10px 24px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .result-actions button:hover { opacity: 0.85; transform: scale(1.04); }
+  .btn-copy { background: #222; color: #aaa; }
+  .btn-redo { background: linear-gradient(135deg, #667eea, #5a67d8); color: #fff; }
+  .undo-btn { position: fixed; bottom: 24px; left: 24px; background: rgba(40,40,60,0.9); color: #aaa; border: 1px solid #444; padding: 8px 16px; border-radius: 8px; font-size: 13px; cursor: pointer; backdrop-filter: blur(8px); z-index: 10; transition: all 0.2s; }
+  .undo-btn:hover { color: #fff; border-color: #667eea; }
 </style>
 </head>
 <body>
@@ -57,12 +68,18 @@
   <button class="btn-skip" onclick="pick('skip')">Skip</button>
   <button class="btn-b" onclick="pick('B')">Pick B →</button>
 </div>
-<div class="keyboard-hint">← A · → B · ↑ Both · ↓ Skip</div>
+<div class="keyboard-hint">← A · → B · ↑ Both · ↓ Skip · Z Undo</div>
+<button class="undo-btn hidden" id="undoBtn" onclick="undo()">↩ Undo</button>
 <div class="results" id="results">
   <h2>Your Style DNA — Round 4</h2>
-  <p style="color:#888;margin-bottom:8px;">✅ Picks:</p><div class="winners" id="winnersGrid"></div>
+  <div id="saveStatus"></div>
+  <p style="color:#888;margin-bottom:8px;margin-top:16px;">✅ Picks:</p><div class="winners" id="winnersGrid"></div>
   <p style="color:#555;margin-bottom:8px;margin-top:16px;">❌ Rejected:</p><div class="losers" id="losersGrid"></div>
   <div class="results-data" id="resultsData"></div>
+  <div class="result-actions">
+    <button class="btn-copy" onclick="copyResults()">📋 Copy Results</button>
+    <button class="btn-redo" onclick="location.reload()">🔄 New Round</button>
+  </div>
 </div>
 <script>
 const images = [
@@ -139,9 +156,9 @@ function pick(c){
     loserFiles:c==='A'?[b.file]:c==='B'?[a.file]:c==='both'?[]:[a.file,b.file],
     winnerTypes:c==='A'?[a.type]:c==='B'?[b.type]:c==='both'?[a.type,b.type]:[],
     loserTypes:c==='A'?[b.type]:c==='B'?[a.type]:c==='both'?[]:[a.type,b.type],
-  });currentRound++;loadRound();
+  });currentRound++;document.getElementById('undoBtn').classList.remove('hidden');loadRound();
 }
-document.addEventListener('keydown',e=>{if(currentRound>=totalRounds)return;if(e.key==='ArrowLeft')pick('A');else if(e.key==='ArrowRight')pick('B');else if(e.key==='ArrowUp'){e.preventDefault();pick('both');}else if(e.key==='ArrowDown'){e.preventDefault();pick('skip');}});
+document.addEventListener('keydown',e=>{if(e.key==='z'||e.key==='Z'){undo();return;}if(currentRound>=totalRounds)return;if(e.key==='ArrowLeft')pick('A');else if(e.key==='ArrowRight')pick('B');else if(e.key==='ArrowUp'){e.preventDefault();pick('both');}else if(e.key==='ArrowDown'){e.preventDefault();pick('skip');}});
 function showResults(){
   document.getElementById('arena').classList.add('hidden');document.getElementById('actions').classList.add('hidden');
   document.querySelector('.header').classList.add('hidden');document.querySelector('.keyboard-hint').classList.add('hidden');
@@ -159,6 +176,41 @@ function showResults(){
   s+="\n📊 PICKS:\n";results.forEach(r=>{s+=`  R${r.round}: ${r.choice==='A'?'✅':'❌'} [${r.aType}] ${r.a}  vs  ${r.choice==='B'?'✅':'❌'} [${r.bType}] ${r.b} → ${r.choice}\n`;});
   document.getElementById('resultsData').textContent=s;
   window.__styleCuratorResults={round:4,results,tagScores:Object.fromEntries(sorted),typeScores:Object.fromEntries(typeSorted),summary:s};
+  autoSave();
+}
+function undo(){
+  if(currentRound<=0)return;
+  currentRound--;results.pop();loadRound();
+  if(currentRound===0)document.getElementById('undoBtn').classList.add('hidden');
+}
+function copyResults(){
+  const d=JSON.stringify(window.__styleCuratorResults,null,2);
+  navigator.clipboard.writeText(d).then(()=>{
+    const b=event.target;b.textContent='✅ Copied!';setTimeout(()=>b.textContent='📋 Copy Results',2000);
+  });
+}
+async function autoSave(){
+  const el=document.getElementById('saveStatus');
+  el.innerHTML='<div class="save-status save-pending">⏳ Saving results...</div>';
+  const payload=window.__styleCuratorResults;
+  payload.timestamp=new Date().toISOString();
+  payload.userAgent=navigator.userAgent;
+  // Save to localStorage for Lux to read via browser
+  const key='stylecurator_round4_'+Date.now();
+  localStorage.setItem(key,JSON.stringify(payload));
+  // Also save as latest
+  localStorage.setItem('stylecurator_latest',JSON.stringify(payload));
+  // Try jsonbin.io (free, no auth needed for create)
+  try{
+    const r=await fetch('https://api.jsonbin.io/v3/b',{method:'POST',headers:{'Content-Type':'application/json','X-Bin-Private':'false'},body:JSON.stringify(payload)});
+    if(r.ok){const d=await r.json();const binId=d.metadata.id;
+      localStorage.setItem('stylecurator_binId',binId);
+      el.innerHTML='<div class="save-status save-ok">✅ Results saved — Lux will analyze automatically<br><span style="font-size:11px;color:#888;">Bin: '+binId+'</span></div>';
+    }else throw new Error('jsonbin failed');
+  }catch(e){
+    console.error(e);
+    el.innerHTML='<div class="save-status save-ok">✅ Results saved locally — Lux will pick up on next check</div>';
+  }
 }
 loadRound();
 </script>
