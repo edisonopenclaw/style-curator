@@ -107,19 +107,28 @@ function openCreator(id){
       <a href="${c.url}" target="_blank" style="padding:8px 20px;background:rgba(74,222,128,0.1);border:1px solid var(--accent);color:var(--accent);border-radius:var(--radius-xs);font-size:13px;font-weight:600;text-decoration:none">View on X ↗</a>
       <button onclick="closeModal();nav('test')" style="padding:8px 20px;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);border-radius:var(--radius-xs);font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font)">Rate their art →</button>
     </div>
-    <div class="modal-label">${allImgs.length} Works</div>
-    <div class="creator-works">${allImgs.map((img,i)=>{
-      const sref=img.sref||'';
-      const srefHtml=sref?`<div class="work-sref"><span>${sref}</span><span class="card-copy" onclick="event.stopPropagation();cc('${sref}',this)">Copy</span></div>`:'';
-      return`<div class="work-card">
-        <img src="${img.file}" loading="lazy">
-        <div class="work-info">
-          <div class="work-label">${img.label}</div>
-          ${srefHtml}
-          <div class="work-tags">${img.tags.slice(0,3).map(t=>`<span>${t}</span>`).join('')}</div>
+    ${dept?Object.entries(dept.boards).map(([k,b])=>`
+      <div class="creator-category">
+        <div class="category-header">
+          <span class="category-icon">${b.icon}</span>
+          <span class="category-name">${b.name}</span>
+          <span class="category-count">${b.images.length}</span>
         </div>
-      </div>`;
-    }).join('')}</div>
+        <div class="creator-works">${b.images.map(img=>{
+          const sref=img.sref||'';
+          const srefHtml=sref&&sref!=='unknown'?`<div class="work-sref"><span>${sref}</span><span class="card-copy" onclick="event.stopPropagation();cc('${sref}',this)">Copy</span></div>`
+            :sref==='unknown'?`<div class="work-sref"><span style="opacity:.4">sref unknown</span></div>`:'';
+          return`<div class="work-card">
+            <img src="${img.file}" loading="lazy">
+            <div class="work-info">
+              <div class="work-label">${img.label}</div>
+              ${srefHtml}
+              <div class="work-tags">${img.tags.slice(0,3).map(t=>`<span>${t}</span>`).join('')}</div>
+            </div>
+          </div>`;
+        }).join('')}</div>
+      </div>
+    `).join(''):`<div class="modal-label">${allImgs.length} Works</div><div class="creator-works">${allImgs.map(img=>`<div class="work-card"><img src="${img.file}" loading="lazy"><div class="work-info"><div class="work-label">${img.label}</div><div class="work-tags">${img.tags.slice(0,3).map(t=>`<span>${t}</span>`).join('')}</div></div></div>`).join('')}</div>`}
   `;
   document.getElementById('overlay').classList.add('active');
 }
