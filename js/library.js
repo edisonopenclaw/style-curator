@@ -9,9 +9,23 @@ function buildFilters(){
 function tf(t){if(af.has(t))af.delete(t);else af.add(t);document.querySelectorAll('.pill').forEach(e=>e.classList.toggle('active',af.has(e.dataset.t)));render();}
 function render(){
   const q=document.getElementById('q').value.toLowerCase().trim();
+  const isSearching=!!q||af.size>0;
+  // Hide/show sections based on search state
+  ['trending','creators'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=isSearching?'none':'';});
+  const pills=document.querySelector('.hero-pills');if(pills)pills.style.display=isSearching?'none':'';
+  const cta=document.querySelector('.hero-cta');if(cta)cta.style.display=isSearching?'none':'';
+  const label=document.getElementById('stylesLabel');if(label)label.textContent=isSearching?`Results · `+0:'Styles · '+S.length;
+  // Filter styles
   let f=S;
   if(q)f=f.filter(s=>s.name.toLowerCase().includes(q)||s.desc.toLowerCase().includes(q)||s.sref.includes(q)||s.tags.some(t=>t.includes(q)));
   if(af.size)f=f.filter(s=>[...af].some(x=>s.tags.some(t=>t.includes(x))||s.name.toLowerCase().includes(x)||s.desc.toLowerCase().includes(x)));
+  if(label)label.textContent=isSearching?`Results · ${f.length}`:'Styles · '+S.length;
+  // Filter creators that match search
+  if(isSearching&&q){
+    const ce=document.getElementById('creators');
+    const mc=C.filter(c=>c.name.toLowerCase().includes(q)||c.bio.toLowerCase().includes(q)||(D[c.id]&&Object.values(D[c.id].boards).some(b=>b.images.some(img=>img.tags.some(t=>t.includes(q))))));
+    if(mc.length){ce.style.display='';ce.innerHTML=`<div class="section-label">Matching Creators</div><div class="creators-row">${mc.map(c=>`<div class="creator-chip" onclick="openCreator('${c.id}')"><div class="chip-mosaic">${c.images.slice(0,4).map(i=>`<img src="${i}" loading="lazy">`).join('')}</div><div class="chip-body"><img class="chip-avatar" src="${c.avatar}" alt="${c.name}"><div class="chip-info"><div class="chip-name">${c.name}</div><div class="chip-handle">${c.handle}</div></div></div></div>`).join('')}</div>`;}
+  }
   const g=document.getElementById('grid');
   if(!f.length){g.innerHTML='<div class="empty-state"><span class="big">⌕</span>No styles found.</div>';return;}
   g.innerHTML=f.map(s=>{
