@@ -32,6 +32,13 @@ const C=[
   ]},
 ];
 
+// === TRENDING ===
+const T=[
+  {id:'claude-brutalist',title:'Claude\'s Anti-OpenAI Ad',desc:'Anthropic dropped a brutalist, text-heavy ad directly calling out OpenAI. Minimal design, bold serif type, raw copywriting. The internet lost it.',date:'2026-02-14',tags:['brutalist','typography','brand','viral'],image:'https://pbs.twimg.com/media/HBDGoNEbcAA5SoV?format=jpg&name=medium',source:'@anthropic'},
+  {id:'midjourney-v7',title:'Midjourney V7 Launch',desc:'V7 dropped with insane photorealism and new --personalize flag. The community is flooding Twitter with comparison grids.',date:'2026-02-12',tags:['midjourney','photorealism','ai-art','launch'],image:'https://pbs.twimg.com/media/G_d3MQWXUAAPVGW?format=jpg&name=medium',source:'@midjourney'},
+  {id:'dark-ui-glassmorphism',title:'Dark Glassmorphism Revival',desc:'Frosted glass panels on pure black are back. Driven by Apple Vision Pro and spatial computing UI trends.',date:'2026-02-10',tags:['glassmorphism','dark-ui','spatial','trend'],image:'https://i.pinimg.com/736x/c1/4a/a2/c14aa2a22044644ba4d94f30d0703306.jpg',source:'Dribbble'},
+];
+
 // === STYLE DATA ===
 const S=[
   {id:'noir-cinema',name:'Noir Cinema',sref:'--sref 2847193',desc:'Deep shadows, high contrast, moody film stills. Blade Runner meets classic noir.',tags:['cinematic','dark','noir','shadows','moody','film'],engines:['midjourney','flux'],prompt:'a lone figure walking through rain-soaked streets at night --sref 2847193 --ar 16:9',images:['https://i.pinimg.com/736x/ae/31/59/ae3159f93d0c33dbdddb3e58e6a977b1.jpg','https://i.pinimg.com/736x/9d/ee/1a/9dee1a4d0a68d7c2cc74f573aa45fdce.jpg','https://i.pinimg.com/736x/76/7e/0d/767e0dbb34035007ee569b11337c799e.jpg','https://i.pinimg.com/736x/52/8e/ea/528eeaea0ff139612dc9aeb14cf3ff9b.jpg']},

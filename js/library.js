@@ -40,11 +40,40 @@ function openS(id){
 function closeModal(){document.getElementById('overlay').classList.remove('active');}
 function updStats(){document.getElementById('sN').textContent=S.length;const t=new Set();S.forEach(s=>s.tags.forEach(x=>t.add(x)));document.getElementById('sT').textContent=t.size;}
 
+// === TRENDING ===
+function renderTrending(){
+  const el=document.getElementById('trending');if(!el||!T||!T.length)return;
+  el.innerHTML=`
+    <div class="section-label">Trending Today</div>
+    <div class="trending-row">${T.map(t=>`
+      <div class="trending-card" onclick="openTrending('${t.id}')">
+        <img class="trending-img" src="${t.image}" loading="lazy">
+        <div class="trending-body">
+          <div class="trending-title">${t.title}</div>
+          <div class="trending-meta">${t.source} · ${t.tags.slice(0,2).join(', ')}</div>
+        </div>
+      </div>
+    `).join('')}</div>
+  `;
+}
+function openTrending(id){
+  const t=T.find(x=>x.id===id);if(!t)return;
+  document.getElementById('mGallery').innerHTML=`<img src="${t.image}" style="width:100%;height:280px;object-fit:cover;display:block">`;
+  document.getElementById('mContent').innerHTML=`
+    <h2>${t.title}</h2>
+    <div style="font-size:13px;color:var(--text-3);margin-bottom:16px">${t.source} · ${t.date}</div>
+    <div class="modal-desc">${t.desc}</div>
+    <div class="modal-label">Tags</div>
+    <div class="modal-tags">${t.tags.map(x=>`<span>${x}</span>`).join('')}</div>
+  `;
+  document.getElementById('overlay').classList.add('active');
+}
+
 // === CREATOR PROFILES ===
 function renderCreators(){
   const el=document.getElementById('creators');if(!el||!C||!C.length)return;
   el.innerHTML=`
-    <div class="creators-label">Creators</div>
+    <div class="section-label">Creators</div>
     <div class="creators-row">${C.map(c=>`
       <div class="creator-chip" onclick="openCreator('${c.id}')">
         <div class="chip-mosaic">${c.images.slice(0,4).map(i=>`<img src="${i}" loading="lazy">`).join('')}</div>
