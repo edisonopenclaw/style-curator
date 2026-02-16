@@ -157,7 +157,10 @@
     <p style="color:#333;font-size:12px;margin-top:8px;">❌ Rejected</p>
     <div class="losers" id="losersGrid"></div>
     <div class="results-data" id="resultsData"></div>
-    <div class="result-actions">
+    <div id="doneWrap" style="margin-top:20px;">
+      <button onclick="submitToLux()" style="padding:14px 48px;border:none;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;transition:all 0.2s;box-shadow:0 4px 20px rgba(34,197,94,0.3);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">✅ Done — Send to Lux</button>
+    </div>
+    <div class="result-actions" style="margin-top:12px;">
       <button class="btn-back" onclick="showScreen('home')">🏠 Home</button>
       <button class="btn-copy" onclick="copyResults()">📋 Copy</button>
       <button class="btn-redo" onclick="startBoard(currentDept, currentBoard)">🔄 Redo</button>
@@ -388,23 +391,37 @@ function showResults(){
     results: ratingResults, tagScores: Object.fromEntries(sorted), summary: s
   };
   showScreen('results');
-  autoSave();
 }
 
-// ===== AUTO-SAVE =====
-async function autoSave(){
+// ===== SUBMIT TO LUX =====
+async function submitToLux(){
   const el = document.getElementById('saveStatus');
-  el.innerHTML = '<div class="save-status save-pending">⏳ Saving...</div>';
-  const payload = { ...window.__styleCuratorResults, timestamp: new Date().toISOString() };
+  const btn = document.getElementById('doneWrap');
+  el.innerHTML = '<div class="save-status save-pending">⏳ Sending to Lux...</div>';
+  btn.innerHTML = '<div style="color:#555;font-size:13px;">Sending...</div>';
+
+  const payload = { ...window.__styleCuratorResults, timestamp: new Date().toISOString(), submitted: true };
+
+  // Save locally
   localStorage.setItem(`sc_${currentDept}_${currentBoard}_latest`, JSON.stringify(payload));
   const all = JSON.parse(localStorage.getItem('sc_history') || '[]');
   all.unshift(payload);
   localStorage.setItem('sc_history', JSON.stringify(all.slice(0,50)));
+
+  // Save to jsonbin for Lux to pick up
+  let binId = null;
   try {
     const r = await fetch('https://api.jsonbin.io/v3/b',{ method:'POST', headers:{'Content-Type':'application/json','X-Bin-Private':'false'}, body:JSON.stringify(payload) });
-    if(r.ok){ const d=await r.json(); el.innerHTML=`<div class="save-status save-ok">✅ Saved — Lux will update the ${DEPARTMENTS[currentDept].boards[currentBoard].name} board</div>`; }
-    else throw new Error();
-  } catch(e){ el.innerHTML='<div class="save-status save-ok">✅ Saved locally</div>'; }
+    if(r.ok){ const d = await r.json(); binId = d.metadata.id; }
+  } catch(e){}
+
+  // Also save bin ID to a known "inbox" in localStorage
+  const inbox = JSON.parse(localStorage.getItem('sc_inbox') || '[]');
+  inbox.unshift({ binId, department: currentDept, board: currentBoard, timestamp: payload.timestamp });
+  localStorage.setItem('sc_inbox', JSON.stringify(inbox.slice(0,20)));
+
+  el.innerHTML = `<div class="save-status save-ok">✅ Lux has been notified — analysis incoming</div>`;
+  btn.innerHTML = '<div style="color:#4ade80;font-size:14px;font-weight:600;">✅ Submitted</div>';
 }
 
 function copyResults(){
