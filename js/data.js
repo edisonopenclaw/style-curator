@@ -10,7 +10,7 @@ const C=[
     'https://pbs.twimg.com/media/G_dsvx9bgAEqO87?format=jpg&name=medium',
     'https://pbs.twimg.com/media/G_m-zzkacAA1JAZ?format=jpg&name=medium',
   ]},
-  {id:'ink',name:'INK',handle:'@0xInk_',url:'https://x.com/0xInk_',avatar:'https://pbs.twimg.com/profile_images/2023326554772922368/sGHSZ0_c_200x200.jpg',bio:'AI designer · Co-founder & Curator @algorithm_pres · Gen AI art',images:[
+  {id:'ink',name:'INK',handle:'@0xInk_',url:'https://x.com/0xInk_',avatar:'https://pbs.twimg.com/profile_images/1999369250935562240/FOQMm4s__200x200.jpg',bio:'AI designer · Co-founder & Curator @algorithm_pres · Gen AI art',images:[
     'https://pbs.twimg.com/media/HBQAFIxakAAvR5_?format=jpg&name=medium',
     'https://pbs.twimg.com/media/HBD47qlbgAA8uKA?format=jpg&name=medium',
     'https://pbs.twimg.com/media/HA7aRKGbsAUcVL7?format=jpg&name=medium',
