@@ -2,374 +2,320 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Style Curator ✨</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #0a0a0f; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-  .header { padding: 24px; text-align: center; }
-  .header h1 { font-size: 28px; font-weight: 600; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .header .subtitle { font-size: 13px; color: #666; margin-top: 4px; }
-  .progress { margin-top: 12px; font-size: 14px; color: #888; }
-  .progress-bar { width: 280px; height: 4px; background: #222; border-radius: 2px; margin: 8px auto 0; overflow: hidden; }
+  body { background: #0a0a0f; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; padding-bottom: 72px; }
+
+  /* === NAV BAR === */
+  .navbar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(12,12,20,0.95); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-top: 1px solid #1a1a2a; display: flex; justify-content: center; gap: 0; z-index: 100; padding: 6px 0 env(safe-area-inset-bottom, 6px); }
+  .nav-item { flex: 1; max-width: 120px; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; color: #555; font-size: 10px; font-weight: 600; cursor: pointer; transition: color 0.2s; text-decoration: none; }
+  .nav-item.active, .nav-item:hover { color: #667eea; }
+  .nav-icon { font-size: 22px; }
+
+  /* === SCREENS === */
+  .screen { display: none; flex: 1; flex-direction: column; align-items: center; padding: 20px; animation: fadeIn 0.25s ease; }
+  .screen.active { display: flex; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* === HOME === */
+  .home-hero { text-align: center; padding: 32px 0 24px; }
+  .home-hero h1 { font-size: 32px; font-weight: 700; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .home-hero p { font-size: 14px; color: #555; margin-top: 6px; }
+
+  .dept-card { width: 100%; max-width: 560px; background: #111118; border: 1px solid #1e1e2e; border-radius: 20px; padding: 24px; margin-bottom: 16px; transition: all 0.3s; }
+  .dept-card:hover { border-color: #2a2a4a; }
+  .dept-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+  .dept-icon { font-size: 36px; }
+  .dept-info h3 { font-size: 18px; font-weight: 600; color: #e0e0e0; }
+  .dept-info p { font-size: 12px; color: #555; margin-top: 2px; }
+  .dept-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px; background: #1a1a28; border: 1px solid #252538; border-radius: 12px; font-size: 13px; font-weight: 500; color: #bbb; cursor: pointer; transition: all 0.2s; }
+  .chip:hover { background: #222240; border-color: #667eea; color: #fff; transform: translateY(-2px); box-shadow: 0 4px 16px rgba(102,126,234,0.15); }
+  .chip-icon { font-size: 16px; }
+  .chip-done { position: relative; }
+  .chip-done::after { content: '✓'; position: absolute; top: -4px; right: -4px; background: #22c55e; color: #000; font-size: 9px; font-weight: 800; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+  /* === ARENA === */
+  .arena-header { text-align: center; padding: 16px 0 8px; width: 100%; max-width: 900px; }
+  .arena-header h2 { font-size: 22px; font-weight: 600; color: #e0e0e0; }
+  .arena-header .sub { font-size: 12px; color: #555; margin-top: 4px; }
+  .progress { margin-top: 10px; font-size: 13px; color: #888; }
+  .progress-bar { width: 240px; height: 3px; background: #1a1a2a; border-radius: 2px; margin: 6px auto 0; overflow: hidden; }
   .progress-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); transition: width 0.4s ease; border-radius: 2px; }
 
-  /* Profile Picker */
-  .profiles { max-width: 500px; width: 100%; padding: 20px; }
-  .profiles h2 { text-align: center; font-size: 18px; color: #666; margin-bottom: 24px; font-weight: 400; }
-  .profile-grid { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
-  .profile-card { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 24px 32px; background: #151520; border: 2px solid #222; border-radius: 16px; cursor: pointer; transition: all 0.25s ease; min-width: 160px; }
-  .profile-card:hover { border-color: #667eea; transform: translateY(-4px); box-shadow: 0 8px 30px rgba(102,126,234,0.2); }
-  .profile-avatar { font-size: 48px; }
-  .profile-name { font-size: 18px; font-weight: 600; }
-  .profile-boards { font-size: 12px; color: #555; }
+  .arena { display: flex; gap: 20px; padding: 16px 0; max-width: 900px; width: 100%; justify-content: center; align-items: stretch; }
+  .card { flex: 1; max-width: 400px; border-radius: 16px; overflow: hidden; background: #111118; border: 2px solid #1e1e2e; cursor: pointer; transition: all 0.25s ease; position: relative; }
+  .card:hover { border-color: #667eea; transform: translateY(-4px); box-shadow: 0 12px 40px rgba(102,126,234,0.2); }
+  .card img { width: 100%; height: 340px; object-fit: cover; display: block; background: #0a0a0f; }
+  .card-label { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.7); color: #fff; padding: 5px 14px; border-radius: 20px; font-size: 15px; font-weight: 700; backdrop-filter: blur(8px); }
+  .card-footer { padding: 12px 16px; font-size: 12px; color: #666; text-align: center; }
+  .vs { display: flex; align-items: center; font-size: 18px; font-weight: 800; color: #333; }
 
-  /* Category Picker */
-  .categories { max-width: 600px; width: 100%; padding: 20px; }
-  .categories h2 { text-align: center; font-size: 20px; color: #aaa; margin-bottom: 24px; font-weight: 400; }
-  .cat-grid { display: flex; flex-direction: column; gap: 12px; }
-  .cat-card { display: flex; align-items: center; gap: 16px; padding: 18px 20px; background: #151520; border: 2px solid #222; border-radius: 14px; cursor: pointer; transition: all 0.25s ease; }
-  .cat-card:hover { border-color: #667eea; transform: translateX(4px); box-shadow: 0 4px 20px rgba(102,126,234,0.15); }
-  .cat-icon { font-size: 32px; width: 48px; text-align: center; }
-  .cat-info { flex: 1; }
-  .cat-name { font-size: 17px; font-weight: 600; color: #e0e0e0; }
-  .cat-desc { font-size: 12px; color: #666; margin-top: 2px; }
-  .cat-count { font-size: 12px; color: #555; background: #1a1a2a; padding: 4px 10px; border-radius: 8px; white-space: nowrap; }
-  .breadcrumb { font-size: 13px; color: #555; margin-bottom: 16px; text-align: center; }
-  .breadcrumb a { color: #667eea; text-decoration: none; cursor: pointer; }
-  .breadcrumb a:hover { text-decoration: underline; }
-
-  /* Arena */
-  .arena { display: flex; gap: 24px; padding: 20px; max-width: 900px; width: 100%; justify-content: center; align-items: stretch; }
-  .card { flex: 1; max-width: 400px; border-radius: 16px; overflow: hidden; background: #151520; border: 2px solid transparent; cursor: pointer; transition: all 0.25s ease; position: relative; }
-  .card:hover { border-color: #667eea; transform: translateY(-4px); box-shadow: 0 12px 40px rgba(102, 126, 234, 0.2); }
-  .card img { width: 100%; height: 360px; object-fit: cover; display: block; }
-  .card-label { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.7); color: #fff; padding: 6px 16px; border-radius: 20px; font-size: 16px; font-weight: 700; backdrop-filter: blur(8px); }
-  .card-type { position: absolute; top: 12px; right: 12px; background: rgba(102,126,234,0.3); color: #a0b4ff; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; backdrop-filter: blur(8px); text-transform: uppercase; letter-spacing: 0.5px; }
-  .card-footer { padding: 14px 16px; font-size: 13px; color: #999; text-align: center; }
-  .vs { display: flex; align-items: center; font-size: 20px; font-weight: 800; color: #444; }
-  .actions { display: flex; gap: 16px; padding: 8px 20px 32px; }
-  .actions button { padding: 10px 32px; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .actions { display: flex; gap: 10px; padding: 4px 0 12px; }
+  .actions button { padding: 10px 28px; border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
   .btn-a { background: linear-gradient(135deg, #667eea, #5a67d8); color: #fff; }
   .btn-b { background: linear-gradient(135deg, #764ba2, #6b46a1); color: #fff; }
-  .btn-skip { background: #222; color: #888; }
-  .btn-both { background: #1a2a1a; color: #6f6; }
+  .btn-skip { background: #1a1a28; color: #666; }
+  .btn-both { background: #0f1f0f; color: #4ade80; border: 1px solid #1a3a1a; }
   .actions button:hover { opacity: 0.85; transform: scale(1.04); }
-
-  /* Results */
-  .results { display: none; max-width: 800px; width: 100%; padding: 24px; text-align: center; }
-  .results h2 { font-size: 24px; margin-bottom: 16px; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .winners { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 20px 0; }
-  .winners img { width: 110px; height: 110px; object-fit: cover; border-radius: 10px; border: 2px solid #667eea; }
-  .losers { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 12px 0; }
-  .losers img { width: 55px; height: 55px; object-fit: cover; border-radius: 6px; border: 1px solid #333; opacity: 0.4; }
-  .results-data { background: #151520; border-radius: 12px; padding: 20px; margin-top: 20px; text-align: left; font-size: 13px; line-height: 1.8; white-space: pre-wrap; font-family: monospace; color: #ccc; max-height: 500px; overflow-y: auto; }
-  .hidden { display: none; }
-  .keyboard-hint { font-size: 12px; color: #555; margin-top: 8px; }
-  .save-status { margin-top: 16px; padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; }
-  .save-ok { background: #1a2a1a; color: #6f6; }
-  .save-err { background: #2a1a1a; color: #f66; }
-  .save-pending { background: #2a2a1a; color: #ff6; }
-  .result-actions { display: flex; gap: 12px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
-  .result-actions button { padding: 10px 24px; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-  .result-actions button:hover { opacity: 0.85; transform: scale(1.04); }
-  .btn-copy { background: #222; color: #aaa; }
-  .btn-redo { background: linear-gradient(135deg, #667eea, #5a67d8); color: #fff; }
-  .btn-back { background: #222; color: #aaa; }
-  .undo-btn { position: fixed; bottom: 24px; left: 24px; background: rgba(40,40,60,0.9); color: #aaa; border: 1px solid #444; padding: 8px 16px; border-radius: 8px; font-size: 13px; cursor: pointer; backdrop-filter: blur(8px); z-index: 10; transition: all 0.2s; }
+  .keyboard-hint { font-size: 11px; color: #333; }
+  .undo-btn { position: fixed; bottom: 80px; left: 20px; background: rgba(20,20,30,0.9); color: #666; border: 1px solid #2a2a3a; padding: 7px 14px; border-radius: 8px; font-size: 12px; cursor: pointer; backdrop-filter: blur(8px); z-index: 10; transition: all 0.2s; }
   .undo-btn:hover { color: #fff; border-color: #667eea; }
+
+  /* === RESULTS === */
+  .results-wrap { max-width: 800px; width: 100%; text-align: center; }
+  .results-wrap h2 { font-size: 22px; margin-bottom: 12px; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .winners { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 16px 0; }
+  .winners img { width: 100px; height: 100px; object-fit: cover; border-radius: 10px; border: 2px solid #667eea; }
+  .losers { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; margin: 8px 0; }
+  .losers img { width: 48px; height: 48px; object-fit: cover; border-radius: 6px; border: 1px solid #222; opacity: 0.35; }
+  .results-data { background: #111118; border-radius: 12px; padding: 16px; margin-top: 16px; text-align: left; font-size: 12px; line-height: 1.8; white-space: pre-wrap; font-family: 'SF Mono', Menlo, monospace; color: #999; max-height: 400px; overflow-y: auto; }
+  .save-status { margin-top: 12px; padding: 10px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; }
+  .save-ok { background: #0f1f0f; color: #4ade80; }
+  .save-pending { background: #1f1f0f; color: #facc15; }
+  .result-actions { display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+  .result-actions button { padding: 10px 20px; border: none; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .result-actions button:hover { opacity: 0.85; transform: scale(1.04); }
+  .btn-copy { background: #1a1a28; color: #888; }
+  .btn-redo { background: linear-gradient(135deg, #667eea, #5a67d8); color: #fff; }
+  .btn-back { background: #1a1a28; color: #888; }
+  .hidden { display: none; }
+
+  /* === HISTORY === */
+  .history-list { width: 100%; max-width: 560px; }
+  .history-item { background: #111118; border: 1px solid #1e1e2e; border-radius: 14px; padding: 16px; margin-bottom: 10px; }
+  .history-item h4 { font-size: 14px; color: #ccc; }
+  .history-item p { font-size: 12px; color: #555; margin-top: 4px; }
+  .history-empty { text-align: center; color: #333; font-size: 14px; margin-top: 40px; }
+
   @media(max-width:640px){
-    .arena{flex-direction:column;align-items:center;gap:16px;}
-    .card img{height:240px;}
-    .vs{transform:rotate(90deg);font-size:16px;}
-    .actions{flex-wrap:wrap;justify-content:center;}
-    .actions button{padding:10px 20px;font-size:14px;}
-    .profile-grid{flex-direction:column;align-items:center;}
+    .arena { flex-direction: column; align-items: center; gap: 12px; }
+    .card img { height: 220px; }
+    .vs { transform: rotate(90deg); font-size: 14px; }
+    .actions { flex-wrap: wrap; justify-content: center; }
+    .actions button { padding: 10px 20px; font-size: 13px; }
+    .dept-card { padding: 18px; }
   }
 </style>
 </head>
 <body>
 
-<!-- PROFILE PICKER -->
-<div id="profileScreen">
-  <div class="header">
+<!-- === BOTTOM NAV === -->
+<nav class="navbar">
+  <div class="nav-item active" onclick="showScreen('home')" id="nav-home">
+    <span class="nav-icon">🏠</span>Home
+  </div>
+  <div class="nav-item" onclick="showScreen('history')" id="nav-history">
+    <span class="nav-icon">📊</span>History
+  </div>
+</nav>
+
+<!-- === HOME SCREEN === -->
+<div class="screen active" id="screen-home">
+  <div class="home-hero">
     <h1>✨ Style Curator</h1>
-    <div class="subtitle">Visual taste training for Pinterest boards</div>
+    <p>Train visual taste · Curate Pinterest boards</p>
   </div>
-  <div class="profiles">
-    <h2>Who's rating?</h2>
-    <div class="profile-grid" id="profileGrid"></div>
-  </div>
+  <div id="deptCards"></div>
 </div>
 
-<!-- CATEGORY PICKER -->
-<div id="categoryScreen" class="hidden">
-  <div class="header">
-    <h1 id="catScreenTitle">✨ Style Curator</h1>
-    <div class="subtitle" id="catScreenSub"></div>
-  </div>
-  <div class="categories">
-    <div class="breadcrumb"><a onclick="goProfiles()">← All Profiles</a></div>
-    <h2>Choose a board to rate</h2>
-    <div class="cat-grid" id="catGrid"></div>
-  </div>
-</div>
-
-<!-- RATING ARENA -->
-<div id="arenaScreen" class="hidden">
-  <div class="header">
-    <h1 id="arenaTitle">✨ Style Curator</h1>
-    <div class="subtitle" id="arenaSubtitle"></div>
-    <div class="progress">Round <span id="round">1</span> of <span id="totalRounds">0</span></div>
+<!-- === ARENA SCREEN === -->
+<div class="screen" id="screen-arena">
+  <div class="arena-header">
+    <h2 id="arenaTitle"></h2>
+    <div class="sub" id="arenaSub"></div>
+    <div class="progress">Round <span id="round">1</span> / <span id="totalRounds">0</span></div>
     <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
   </div>
-  <div class="arena" id="arena">
-    <div class="card" id="cardA" onclick="pick('A')"><div class="card-label">A</div><div class="card-type" id="typeA"></div><img id="imgA" src="" alt="A"><div class="card-footer" id="labelA"></div></div>
+  <div class="arena">
+    <div class="card" onclick="pick('A')"><div class="card-label">A</div><img id="imgA" src="" alt="A"><div class="card-footer" id="labelA"></div></div>
     <div class="vs">VS</div>
-    <div class="card" id="cardB" onclick="pick('B')"><div class="card-label">B</div><div class="card-type" id="typeB"></div><img id="imgB" src="" alt="B"><div class="card-footer" id="labelB"></div></div>
+    <div class="card" onclick="pick('B')"><div class="card-label">B</div><img id="imgB" src="" alt="B"><div class="card-footer" id="labelB"></div></div>
   </div>
-  <div class="actions" id="actions">
-    <button class="btn-a" onclick="pick('A')">← Pick A</button>
+  <div class="actions">
+    <button class="btn-a" onclick="pick('A')">← A</button>
     <button class="btn-both" onclick="pick('both')">Both ♥</button>
     <button class="btn-skip" onclick="pick('skip')">Skip</button>
-    <button class="btn-b" onclick="pick('B')">Pick B →</button>
+    <button class="btn-b" onclick="pick('B')">B →</button>
   </div>
   <div class="keyboard-hint">← A · → B · ↑ Both · ↓ Skip · Z Undo</div>
   <button class="undo-btn hidden" id="undoBtn" onclick="undo()">↩ Undo</button>
 </div>
 
-<!-- RESULTS -->
-<div class="results" id="results">
-  <h2 id="resultsTitle">Style DNA</h2>
-  <div id="saveStatus"></div>
-  <p style="color:#888;margin-bottom:8px;margin-top:16px;">✅ Picks:</p><div class="winners" id="winnersGrid"></div>
-  <p style="color:#555;margin-bottom:8px;margin-top:16px;">❌ Rejected:</p><div class="losers" id="losersGrid"></div>
-  <div class="results-data" id="resultsData"></div>
-  <div class="result-actions">
-    <button class="btn-back" onclick="goCategories()">📂 Back to Boards</button>
-    <button class="btn-copy" onclick="copyResults()">📋 Copy Results</button>
-    <button class="btn-redo" onclick="startCategory(currentCategory)">🔄 Redo</button>
+<!-- === RESULTS SCREEN === -->
+<div class="screen" id="screen-results">
+  <div class="results-wrap">
+    <h2 id="resultsTitle">Style DNA</h2>
+    <div id="saveStatus"></div>
+    <p style="color:#555;font-size:12px;margin-top:12px;">✅ Picks</p>
+    <div class="winners" id="winnersGrid"></div>
+    <p style="color:#333;font-size:12px;margin-top:8px;">❌ Rejected</p>
+    <div class="losers" id="losersGrid"></div>
+    <div class="results-data" id="resultsData"></div>
+    <div class="result-actions">
+      <button class="btn-back" onclick="showScreen('home')">🏠 Home</button>
+      <button class="btn-copy" onclick="copyResults()">📋 Copy</button>
+      <button class="btn-redo" onclick="startBoard(currentDept, currentBoard)">🔄 Redo</button>
+    </div>
   </div>
 </div>
 
+<!-- === HISTORY SCREEN === -->
+<div class="screen" id="screen-history">
+  <div class="home-hero">
+    <h1>📊 Rating History</h1>
+    <p>Your past sessions</p>
+  </div>
+  <div class="history-list" id="historyList"></div>
+</div>
+
 <script>
-// ===== PROFILES & BOARDS =====
-const PROFILES = {
+// ===== DATA =====
+const DEPARTMENTS = {
   edward: {
-    name: 'Edward',
-    avatar: '👤',
-    desc: 'Art-first · Cinematic · Dark moody aesthetic',
+    icon: '👤', name: 'Edward', desc: 'Art-first · Cinematic · Dark moody aesthetic',
     boards: {
-      cinematography: {
-        icon: '🎬', name: 'Cinematography', color: '#4a9eff',
-        desc: 'Moody lighting, fog, noir, atmospheric scenes',
-        boardId: '1121607550888730155',
-        images: [
-          { file: "https://i.pinimg.com/736x/ae/31/59/ae3159f93d0c33dbdddb3e58e6a977b1.jpg", tags: ["fog","night","street","atmospheric","dark","urban"], label: "Foggy Night Street" },
-          { file: "https://i.pinimg.com/736x/c8/ec/5d/c8ec5dcd900ef889290b9a6a3d05a268.jpg", tags: ["bridge","fog","silhouette","dark","atmospheric","moody"], label: "Bridge in Fog" },
-          { file: "https://i.pinimg.com/736x/f2/33/7b/f2337b3086acbcd7b2d0c42ea9dbe186.jpg", tags: ["night","eerie","street","dark","quiet","atmospheric"], label: "Eerie Night Street" },
-          { file: "https://i.pinimg.com/736x/42/78/75/42787558e3ce78ff17f6aedfb90e1c79.jpg", tags: ["parking","night","empty","dark","lights","lonely"], label: "Empty Parking Lot" },
-          { file: "https://i.pinimg.com/736x/9d/ee/1a/9dee1a4d0a68d7c2cc74f573aa45fdce.jpg", tags: ["noir","contrast","dark","cinematic","shadow","moody"], label: "Noir Shadow Scene" },
-          { file: "https://i.pinimg.com/736x/76/7e/0d/767e0dbb34035007ee569b11337c799e.jpg", tags: ["fog","figure","backlit","dark","atmospheric","depth"], label: "Backlit Figure in Fog" },
-          { file: "https://i.pinimg.com/736x/52/8e/ea/528eeaea0ff139612dc9aeb14cf3ff9b.jpg", tags: ["rain","night","reflection","dark","urban","neon"], label: "Rain Reflections" },
-          { file: "https://i.pinimg.com/736x/2c/38/ae/2c38ae4c04189ac43f5e9f560e8d7088.jpg", tags: ["dark","moody","interior","shadow","atmospheric","noir"], label: "Moody Dark Interior" },
-        ]
-      },
-      conceptual: {
-        icon: '🎨', name: 'Conceptual Art', color: '#a855f7',
-        desc: 'Surreal scenes, portals, fine art, dreamlike imagery',
-        boardId: '1121607550888730157',
-        images: [
-          { file: "https://i.pinimg.com/736x/21/0d/8d/210d8d2761e6b134a7a0f27fd2569623.jpg", tags: ["surreal","dark","figure","abstract","fine-art","mysterious"], label: "Surreal Dark Figure" },
-          { file: "https://i.pinimg.com/736x/88/a0/bf/88a0bfbd0945888bc181f7ab02e8e641.jpg", tags: ["surreal","dark","dreamlike","fog","ethereal","fine-art"], label: "Dreamlike Dark Scene" },
-          { file: "https://i.pinimg.com/736x/72/2d/41/722d410fd57badf142ae2237338a5530.jpg", tags: ["tunnel","figure","light","dark","dramatic","depth"], label: "Figure in Tunnel" },
-          { file: "https://i.pinimg.com/736x/36/33/b3/3633b3be93191eca00a2363bfd93a5c7.jpg", tags: ["surreal","portal","glowing","dark","otherworldly","scale"], label: "Glowing Portal" },
-          { file: "https://i.pinimg.com/736x/9b/a8/d1/9ba8d1887b5ce0d5ee03aa576bd8a8f4.jpg", tags: ["abstract","dark","movement","fine-art","monochrome","expressive"], label: "Abstract Movement" },
-          { file: "https://i.pinimg.com/736x/28/1a/34/281a34a2e88babdc2e054e8ae7cfdad8.jpg", tags: ["surreal","landscape","dark","vast","solitary","scale"], label: "Vast Dark Landscape" },
-          { file: "https://i.pinimg.com/736x/1d/74/1a/1d741ad5318548b0b1b87eac4e23eb69.jpg", tags: ["portal","surreal","dark","glowing","figure","mystical"], label: "Dark Portal Gateway" },
-          { file: "https://i.pinimg.com/736x/34/df/c5/34dfc5994e366bade1394e9f2338d34a.jpg", tags: ["fog","surreal","landscape","dark","atmospheric","vast"], label: "Surreal Fog Landscape" },
-          { file: "https://i.pinimg.com/736x/d8/16/91/d8169147b98e6c8cbbd74e8062bccfdb.jpg", tags: ["dark","figure","light","contrast","dramatic","mystery"], label: "Figure in Light" },
-          { file: "https://i.pinimg.com/736x/63/b9/ea/63b9ea659e3e0334a64d1863bbda0b61.jpg", tags: ["surreal","underwater","dark","ethereal","dream","blue"], label: "Surreal Underwater" },
-          { file: "https://i.pinimg.com/736x/05/b7/04/05b70401244b8b7a8cb94710e974913a.jpg", tags: ["portal","circle","dark","glowing","cosmic","minimal"], label: "Cosmic Portal" },
-          { file: "https://i.pinimg.com/736x/d2/54/10/d2541072ed091395d57bcfc0d15f5dd2.jpg", tags: ["surreal","dark","abstract","figure","void","fine-art"], label: "Figure in Void" },
-          { file: "https://i.pinimg.com/736x/e5/d0/32/e5d032787216c076db1457b27df857ec.jpg", tags: ["fog","dark","horizon","solitary","atmospheric","vast"], label: "Solitary Fog Horizon" },
-          { file: "https://i.pinimg.com/736x/86/15/6c/86156c3fce80f3c8eac07ebddabf7d1a.jpg", tags: ["surreal","dark","portal","light","otherworldly","scale"], label: "Otherworldly Light" },
-          { file: "https://i.pinimg.com/736x/cf/18/67/cf1867982188b45dfcfad26d85efef5a.jpg", tags: ["dark","silhouette","fog","moody","cinematic","atmospheric"], label: "Silhouette in Fog" },
-          { file: "https://i.pinimg.com/736x/c2/4d/e6/c24de626ed123e5cc90781a68a707141.jpg", tags: ["surreal","cosmic","dark","galaxy","figure","scale"], label: "Cosmic Scale" },
-        ]
-      },
-      uiux: {
-        icon: '🖥️', name: 'UI/UX', color: '#06b6d4',
-        desc: 'Dark interfaces, dashboards, app design',
-        boardId: '1121607550888730159',
-        images: [
-          { file: "https://i.pinimg.com/736x/ad/53/6b/ad536b4e021dd38c5c10f141c4c8e10f.jpg", tags: ["dashboard","dark","data-viz","clean","modern"], label: "Dark Dashboard" },
-          { file: "https://i.pinimg.com/736x/4d/55/84/4d55846c472ceabd1b37ea394b1eeddc.jpg", tags: ["mobile","app","dark","minimal","ui"], label: "Mobile App UI" },
-          { file: "https://i.pinimg.com/736x/ec/f5/fd/ecf5fd28b9a1857012cf31d08fdb65e4.jpg", tags: ["web","interface","dark","modern","gradient"], label: "Web Interface" },
-          { file: "https://i.pinimg.com/736x/9c/f7/38/9cf738c4c2f8c33aa392dc9c32cfb5a2.jpg", tags: ["ui","minimal","dark","clean","typography"], label: "Minimal UI" },
-        ]
-      },
-      poster: {
-        icon: '📐', name: 'Poster Design', color: '#f97316',
-        desc: 'Bold typography, abstract layouts, textured art direction',
-        boardId: '1121607550888730161',
-        images: [
-          { file: "https://i.pinimg.com/736x/d0/10/61/d01061073f51ad72a262c1ade1b4cef3.jpg", tags: ["dark","textured","abstract","lines","blue","design"], label: "Blue Abstract Lines" },
-          { file: "https://i.pinimg.com/736x/90/0d/06/900d06cd57a30dc72cb7ce949cce6344.jpg", tags: ["dark","cosmic","light","dramatic","space","atmospheric"], label: "Cosmic Light Burst" },
-          { file: "https://i.pinimg.com/736x/c4/8c/a1/c48ca116ff069c4f451aa464c2ac2c9d.jpg", tags: ["planets","space","dark","infographic","cosmic","design"], label: "Space Infographic" },
-          { file: "https://i.pinimg.com/736x/eb/fc/42/ebfc42ac15176c8dfaa9563e5658bf5f.jpg", tags: ["neon","colorful","dark","typography","bold","vibrant"], label: "Neon Typography" },
-        ]
-      },
-      motion: {
-        icon: '🌀', name: 'Motion Graphics', color: '#ec4899',
-        desc: 'Abstract animation, fluid motion, particles',
-        boardId: '1121607550888730163',
-        images: [
-          { file: "https://i.pinimg.com/736x/c3/8a/86/c38a867f53cef698117da479bfc21267.jpg", tags: ["abstract","dark","fluid","organic","3d","movement"], label: "Dark Fluid Motion" },
-          { file: "https://i.pinimg.com/736x/7a/ce/ef/7aceefeda4518eeda909cc0c5167d61c.jpg", tags: ["abstract","dark","metallic","chrome","3d","liquid"], label: "Chrome Liquid" },
-          { file: "https://i.pinimg.com/736x/16/08/18/160818fd9f0f3d4647a0fcb1c2a7fb8e.jpg", tags: ["abstract","dark","particles","light","motion","cosmic"], label: "Particle Motion" },
-          { file: "https://i.pinimg.com/736x/82/cd/16/82cd162535b0d7546f8ba20d62292882.jpg", tags: ["abstract","dark","organic","texture","3d","movement"], label: "Organic Dark Texture" },
-        ]
-      }
+      cinematography: { icon: '🎬', name: 'Cinematography', boardId: '1121607550888730155', images: [
+        { file: "https://i.pinimg.com/736x/ae/31/59/ae3159f93d0c33dbdddb3e58e6a977b1.jpg", tags: ["fog","night","street","atmospheric","dark","urban"], label: "Foggy Night Street" },
+        { file: "https://i.pinimg.com/736x/c8/ec/5d/c8ec5dcd900ef889290b9a6a3d05a268.jpg", tags: ["bridge","fog","silhouette","dark","atmospheric","moody"], label: "Bridge in Fog" },
+        { file: "https://i.pinimg.com/736x/f2/33/7b/f2337b3086acbcd7b2d0c42ea9dbe186.jpg", tags: ["night","eerie","street","dark","quiet","atmospheric"], label: "Eerie Night Street" },
+        { file: "https://i.pinimg.com/736x/42/78/75/42787558e3ce78ff17f6aedfb90e1c79.jpg", tags: ["parking","night","empty","dark","lights","lonely"], label: "Empty Parking Lot" },
+        { file: "https://i.pinimg.com/736x/9d/ee/1a/9dee1a4d0a68d7c2cc74f573aa45fdce.jpg", tags: ["noir","contrast","dark","cinematic","shadow","moody"], label: "Noir Shadow Scene" },
+        { file: "https://i.pinimg.com/736x/76/7e/0d/767e0dbb34035007ee569b11337c799e.jpg", tags: ["fog","figure","backlit","dark","atmospheric","depth"], label: "Backlit Figure in Fog" },
+        { file: "https://i.pinimg.com/736x/52/8e/ea/528eeaea0ff139612dc9aeb14cf3ff9b.jpg", tags: ["rain","night","reflection","dark","urban","neon"], label: "Rain Reflections" },
+        { file: "https://i.pinimg.com/736x/2c/38/ae/2c38ae4c04189ac43f5e9f560e8d7088.jpg", tags: ["dark","moody","interior","shadow","atmospheric","noir"], label: "Moody Dark Interior" },
+      ]},
+      conceptual: { icon: '🎨', name: 'Conceptual', boardId: '1121607550888730157', images: [
+        { file: "https://i.pinimg.com/736x/21/0d/8d/210d8d2761e6b134a7a0f27fd2569623.jpg", tags: ["surreal","dark","figure","abstract","fine-art","mysterious"], label: "Surreal Dark Figure" },
+        { file: "https://i.pinimg.com/736x/88/a0/bf/88a0bfbd0945888bc181f7ab02e8e641.jpg", tags: ["surreal","dark","dreamlike","fog","ethereal","fine-art"], label: "Dreamlike Dark Scene" },
+        { file: "https://i.pinimg.com/736x/72/2d/41/722d410fd57badf142ae2237338a5530.jpg", tags: ["tunnel","figure","light","dark","dramatic","depth"], label: "Figure in Tunnel" },
+        { file: "https://i.pinimg.com/736x/36/33/b3/3633b3be93191eca00a2363bfd93a5c7.jpg", tags: ["surreal","portal","glowing","dark","otherworldly","scale"], label: "Glowing Portal" },
+        { file: "https://i.pinimg.com/736x/9b/a8/d1/9ba8d1887b5ce0d5ee03aa576bd8a8f4.jpg", tags: ["abstract","dark","movement","fine-art","monochrome","expressive"], label: "Abstract Movement" },
+        { file: "https://i.pinimg.com/736x/28/1a/34/281a34a2e88babdc2e054e8ae7cfdad8.jpg", tags: ["surreal","landscape","dark","vast","solitary","scale"], label: "Vast Dark Landscape" },
+        { file: "https://i.pinimg.com/736x/1d/74/1a/1d741ad5318548b0b1b87eac4e23eb69.jpg", tags: ["portal","surreal","dark","glowing","figure","mystical"], label: "Dark Portal Gateway" },
+        { file: "https://i.pinimg.com/736x/34/df/c5/34dfc5994e366bade1394e9f2338d34a.jpg", tags: ["fog","surreal","landscape","dark","atmospheric","vast"], label: "Surreal Fog Landscape" },
+        { file: "https://i.pinimg.com/736x/d8/16/91/d8169147b98e6c8cbbd74e8062bccfdb.jpg", tags: ["dark","figure","light","contrast","dramatic","mystery"], label: "Figure in Light" },
+        { file: "https://i.pinimg.com/736x/63/b9/ea/63b9ea659e3e0334a64d1863bbda0b61.jpg", tags: ["surreal","underwater","dark","ethereal","dream","blue"], label: "Surreal Underwater" },
+        { file: "https://i.pinimg.com/736x/05/b7/04/05b70401244b8b7a8cb94710e974913a.jpg", tags: ["portal","circle","dark","glowing","cosmic","minimal"], label: "Cosmic Portal" },
+        { file: "https://i.pinimg.com/736x/d2/54/10/d2541072ed091395d57bcfc0d15f5dd2.jpg", tags: ["surreal","dark","abstract","figure","void","fine-art"], label: "Figure in Void" },
+        { file: "https://i.pinimg.com/736x/e5/d0/32/e5d032787216c076db1457b27df857ec.jpg", tags: ["fog","dark","horizon","solitary","atmospheric","vast"], label: "Solitary Fog Horizon" },
+        { file: "https://i.pinimg.com/736x/86/15/6c/86156c3fce80f3c8eac07ebddabf7d1a.jpg", tags: ["surreal","dark","portal","light","otherworldly","scale"], label: "Otherworldly Light" },
+        { file: "https://i.pinimg.com/736x/cf/18/67/cf1867982188b45dfcfad26d85efef5a.jpg", tags: ["dark","silhouette","fog","moody","cinematic","atmospheric"], label: "Silhouette in Fog" },
+        { file: "https://i.pinimg.com/736x/c2/4d/e6/c24de626ed123e5cc90781a68a707141.jpg", tags: ["surreal","cosmic","dark","galaxy","figure","scale"], label: "Cosmic Scale" },
+      ]},
+      poster: { icon: '📐', name: 'Poster', boardId: '1121607550888730161', images: [
+        { file: "https://i.pinimg.com/736x/d0/10/61/d01061073f51ad72a262c1ade1b4cef3.jpg", tags: ["dark","textured","abstract","lines","blue","design"], label: "Blue Abstract Lines" },
+        { file: "https://i.pinimg.com/736x/90/0d/06/900d06cd57a30dc72cb7ce949cce6344.jpg", tags: ["dark","cosmic","light","dramatic","space","atmospheric"], label: "Cosmic Light Burst" },
+        { file: "https://i.pinimg.com/736x/c4/8c/a1/c48ca116ff069c4f451aa464c2ac2c9d.jpg", tags: ["planets","space","dark","infographic","cosmic","design"], label: "Space Infographic" },
+        { file: "https://i.pinimg.com/736x/eb/fc/42/ebfc42ac15176c8dfaa9563e5658bf5f.jpg", tags: ["neon","colorful","dark","typography","bold","vibrant"], label: "Neon Typography" },
+      ]},
+      motion: { icon: '🌀', name: 'Motion', boardId: '1121607550888730163', images: [
+        { file: "https://i.pinimg.com/736x/c3/8a/86/c38a867f53cef698117da479bfc21267.jpg", tags: ["abstract","dark","fluid","organic","3d","movement"], label: "Dark Fluid Motion" },
+        { file: "https://i.pinimg.com/736x/7a/ce/ef/7aceefeda4518eeda909cc0c5167d61c.jpg", tags: ["abstract","dark","metallic","chrome","3d","liquid"], label: "Chrome Liquid" },
+        { file: "https://i.pinimg.com/736x/16/08/18/160818fd9f0f3d4647a0fcb1c2a7fb8e.jpg", tags: ["abstract","dark","particles","light","motion","cosmic"], label: "Particle Motion" },
+        { file: "https://i.pinimg.com/736x/82/cd/16/82cd162535b0d7546f8ba20d62292882.jpg", tags: ["abstract","dark","organic","texture","3d","movement"], label: "Organic Dark Texture" },
+      ]},
+      uiux: { icon: '🖥️', name: 'UI/UX', boardId: '1121607550888730159', images: [
+        { file: "https://i.pinimg.com/736x/ad/53/6b/ad536b4e021dd38c5c10f141c4c8e10f.jpg", tags: ["dashboard","dark","data-viz","clean","modern"], label: "Dark Dashboard" },
+        { file: "https://i.pinimg.com/736x/4d/55/84/4d55846c472ceabd1b37ea394b1eeddc.jpg", tags: ["mobile","app","dark","minimal","ui"], label: "Mobile App UI" },
+        { file: "https://i.pinimg.com/736x/ec/f5/fd/ecf5fd28b9a1857012cf31d08fdb65e4.jpg", tags: ["web","interface","dark","modern","gradient"], label: "Web Interface" },
+        { file: "https://i.pinimg.com/736x/9c/f7/38/9cf738c4c2f8c33aa392dc9c32cfb5a2.jpg", tags: ["ui","minimal","dark","clean","typography"], label: "Minimal UI" },
+      ]},
     }
   },
-  elise: {
-    name: 'Elise',
-    avatar: '👩',
-    desc: 'VP-001 Collaborative Board',
+  product_ui: {
+    icon: '🖥️', name: 'Product & UI', desc: 'Interfaces, dashboards, SaaS design',
     boards: {
-      vp001: {
-        icon: '🤝', name: 'VP-001', color: '#3b82f6',
-        desc: 'Collaborative board — open theme, emergent aesthetic',
-        boardId: '1121607619606610020',
-        images: [
-          // Elise's taste: dark blue SaaS dashboards, tech UI, data viz
-          { file: "https://i.pinimg.com/736x/ad/53/6b/ad536b4e021dd38c5c10f141c4c8e10f.jpg", tags: ["saas","dashboard","dark","blue","corporate"], label: "SaaS Dashboard" },
-          { file: "https://i.pinimg.com/736x/4d/55/84/4d55846c472ceabd1b37ea394b1eeddc.jpg", tags: ["data-viz","chart","dark","blue","tech"], label: "Data Visualization" },
-          { file: "https://i.pinimg.com/736x/ec/f5/fd/ecf5fd28b9a1857012cf31d08fdb65e4.jpg", tags: ["tech","ui","dark","modern","interface"], label: "Tech Interface" },
-          { file: "https://i.pinimg.com/736x/9c/f7/38/9cf738c4c2f8c33aa392dc9c32cfb5a2.jpg", tags: ["minimal","clean","dark","ui","simple"], label: "Clean Dark UI" },
-        ]
-      }
+      vp001: { icon: '🤝', name: 'VP-001', boardId: '1121607619606610020', images: [
+        { file: "https://i.pinimg.com/736x/ad/53/6b/ad536b4e021dd38c5c10f141c4c8e10f.jpg", tags: ["saas","dashboard","dark","blue","corporate"], label: "SaaS Dashboard" },
+        { file: "https://i.pinimg.com/736x/4d/55/84/4d55846c472ceabd1b37ea394b1eeddc.jpg", tags: ["data-viz","chart","dark","blue","tech"], label: "Data Visualization" },
+        { file: "https://i.pinimg.com/736x/ec/f5/fd/ecf5fd28b9a1857012cf31d08fdb65e4.jpg", tags: ["tech","ui","dark","modern","interface"], label: "Tech Interface" },
+        { file: "https://i.pinimg.com/736x/9c/f7/38/9cf738c4c2f8c33aa392dc9c32cfb5a2.jpg", tags: ["minimal","clean","dark","ui","simple"], label: "Clean Dark UI" },
+      ]},
     }
   }
 };
 
 // ===== STATE =====
-let currentProfile = null;
-let currentCategory = null;
-let pairs = [];
-let currentRound = 0;
-let totalRounds = 0;
-let ratingResults = [];
+let currentDept = null, currentBoard = null;
+let pairs = [], currentRound = 0, totalRounds = 0, ratingResults = [];
 
-// ===== SCREENS =====
-function hideAll(){
-  ['profileScreen','categoryScreen','arenaScreen'].forEach(id => document.getElementById(id).classList.add('hidden'));
-  document.getElementById('results').style.display = 'none';
+function shuffle(a){ const b=[...a]; for(let i=b.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]; } return b; }
+
+// ===== NAVIGATION =====
+function showScreen(name){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(`screen-${name}`).classList.add('active');
+  const nav = document.getElementById(`nav-${name}`);
+  if(nav) nav.classList.add('active');
   document.getElementById('undoBtn').classList.add('hidden');
+  if(name === 'home') buildHome();
+  if(name === 'history') buildHistory();
 }
 
-// ===== PROFILE PICKER =====
-function buildProfiles(){
-  hideAll();
-  document.getElementById('profileScreen').classList.remove('hidden');
-  const grid = document.getElementById('profileGrid');
-  grid.innerHTML = '';
-  Object.entries(PROFILES).forEach(([key, p]) => {
-    const boardCount = Object.keys(p.boards).length;
+// ===== HOME =====
+function buildHome(){
+  const container = document.getElementById('deptCards');
+  container.innerHTML = '';
+  Object.entries(DEPARTMENTS).forEach(([dKey, dept]) => {
     const card = document.createElement('div');
-    card.className = 'profile-card';
-    card.onclick = () => selectProfile(key);
+    card.className = 'dept-card';
+    let chipsHTML = '';
+    Object.entries(dept.boards).forEach(([bKey, board]) => {
+      const done = localStorage.getItem(`sc_${dKey}_${bKey}_latest`);
+      const cls = done ? 'chip chip-done' : 'chip';
+      chipsHTML += `<div class="${cls}" onclick="startBoard('${dKey}','${bKey}')"><span class="chip-icon">${board.icon}</span>${board.name}</div>`;
+    });
     card.innerHTML = `
-      <div class="profile-avatar">${p.avatar}</div>
-      <div class="profile-name">${p.name}</div>
-      <div class="profile-boards">${boardCount} board${boardCount>1?'s':''}</div>
-      <div style="font-size:11px;color:#555;margin-top:2px;">${p.desc}</div>
-    `;
-    grid.appendChild(card);
-  });
-}
-
-function goProfiles(){ buildProfiles(); }
-
-// ===== CATEGORY PICKER =====
-function selectProfile(key){
-  currentProfile = key;
-  const p = PROFILES[key];
-  hideAll();
-  document.getElementById('categoryScreen').classList.remove('hidden');
-  document.getElementById('catScreenTitle').innerHTML = `${p.avatar} ${p.name}'s Boards`;
-  document.getElementById('catScreenSub').textContent = p.desc;
-  const grid = document.getElementById('catGrid');
-  grid.innerHTML = '';
-  Object.entries(p.boards).forEach(([bKey, cat]) => {
-    const count = Math.floor(cat.images.length / 2);
-    const prev = localStorage.getItem(`sc_${key}_${bKey}_latest`);
-    const badge = prev ? ' ✅' : '';
-    const card = document.createElement('div');
-    card.className = 'cat-card';
-    card.onclick = () => startCategory(bKey);
-    card.innerHTML = `
-      <div class="cat-icon">${cat.icon}</div>
-      <div class="cat-info">
-        <div class="cat-name">${cat.name}${badge}</div>
-        <div class="cat-desc">${cat.desc}</div>
+      <div class="dept-header">
+        <div class="dept-icon">${dept.icon}</div>
+        <div class="dept-info"><h3>${dept.name}</h3><p>${dept.desc}</p></div>
       </div>
-      <div class="cat-count">${cat.images.length} images · ${count} rounds</div>
+      <div class="dept-chips">${chipsHTML}</div>
     `;
-    grid.appendChild(card);
+    container.appendChild(card);
   });
 }
 
-function goCategories(){ selectProfile(currentProfile); }
-
-// ===== START CATEGORY =====
-function startCategory(key){
-  currentCategory = key;
-  const cat = PROFILES[currentProfile].boards[key];
-  const shuffled = shuffle(cat.images);
+// ===== START BOARD =====
+function startBoard(dKey, bKey){
+  currentDept = dKey; currentBoard = bKey;
+  const board = DEPARTMENTS[dKey].boards[bKey];
+  const shuffled = shuffle(board.images);
   pairs = [];
-  for(let i = 0; i < shuffled.length - 1; i += 2) pairs.push([shuffled[i], shuffled[i+1]]);
-  totalRounds = pairs.length;
-  currentRound = 0;
-  ratingResults = [];
+  for(let i=0; i<shuffled.length-1; i+=2) pairs.push([shuffled[i], shuffled[i+1]]);
+  totalRounds = pairs.length; currentRound = 0; ratingResults = [];
 
-  hideAll();
-  document.getElementById('arenaScreen').classList.remove('hidden');
-  document.getElementById('arenaTitle').innerHTML = `${cat.icon} ${cat.name}`;
-  document.getElementById('arenaSubtitle').textContent = `${PROFILES[currentProfile].name} · ${cat.desc}`;
+  document.getElementById('arenaTitle').textContent = `${board.icon} ${board.name}`;
+  document.getElementById('arenaSub').textContent = `${DEPARTMENTS[dKey].name} · ${board.name}`;
   document.getElementById('totalRounds').textContent = totalRounds;
-  document.getElementById('arena').classList.remove('hidden');
-  document.getElementById('actions').classList.remove('hidden');
-  document.querySelector('.keyboard-hint').classList.remove('hidden');
+  showScreen('arena');
   loadRound();
 }
-
-// ===== SHUFFLE =====
-function shuffle(a){ const b=[...a]; for(let i=b.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [b[i],b[j]]=[b[j],b[i]]; } return b; }
 
 // ===== ROUND =====
 function loadRound(){
   if(currentRound >= totalRounds){ showResults(); return; }
-  const [a, b] = pairs[currentRound];
+  const [a,b] = pairs[currentRound];
   document.getElementById('imgA').src = a.file;
   document.getElementById('imgB').src = b.file;
   document.getElementById('labelA').textContent = a.label;
   document.getElementById('labelB').textContent = b.label;
-  document.getElementById('typeA').textContent = currentCategory;
-  document.getElementById('typeB').textContent = currentCategory;
   document.getElementById('round').textContent = currentRound + 1;
-  document.getElementById('progressFill').style.width = ((currentRound + 1) / totalRounds * 100) + '%';
+  document.getElementById('progressFill').style.width = ((currentRound+1)/totalRounds*100)+'%';
 }
 
 function pick(c){
-  const [a, b] = pairs[currentRound];
+  const [a,b] = pairs[currentRound];
   ratingResults.push({
-    round: currentRound + 1, a: a.label, b: b.label, choice: c,
-    winnerTags: c==='A' ? a.tags : c==='B' ? b.tags : c==='both' ? [...a.tags,...b.tags] : [],
-    loserTags: c==='A' ? b.tags : c==='B' ? a.tags : [],
-    winnerFiles: c==='A' ? [a.file] : c==='B' ? [b.file] : c==='both' ? [a.file,b.file] : [],
-    loserFiles: c==='A' ? [b.file] : c==='B' ? [a.file] : c==='both' ? [] : [a.file,b.file],
+    round: currentRound+1, a: a.label, b: b.label, choice: c,
+    winnerTags: c==='A'?a.tags:c==='B'?b.tags:c==='both'?[...a.tags,...b.tags]:[],
+    loserTags: c==='A'?b.tags:c==='B'?a.tags:[],
+    winnerFiles: c==='A'?[a.file]:c==='B'?[b.file]:c==='both'?[a.file,b.file]:[],
+    loserFiles: c==='A'?[b.file]:c==='B'?[a.file]:c==='both'?[]:[a.file,b.file],
   });
   currentRound++;
   document.getElementById('undoBtn').classList.remove('hidden');
@@ -377,14 +323,14 @@ function pick(c){
 }
 
 function undo(){
-  if(currentRound <= 0) return;
+  if(currentRound<=0) return;
   currentRound--; ratingResults.pop(); loadRound();
-  if(currentRound === 0) document.getElementById('undoBtn').classList.add('hidden');
+  if(currentRound===0) document.getElementById('undoBtn').classList.add('hidden');
 }
 
 document.addEventListener('keydown', e => {
-  if(e.key==='z' || e.key==='Z'){ undo(); return; }
-  if(!currentCategory || currentRound >= totalRounds) return;
+  if(e.key==='z'||e.key==='Z'){ undo(); return; }
+  if(!currentBoard || currentRound>=totalRounds) return;
   if(e.key==='ArrowLeft') pick('A');
   else if(e.key==='ArrowRight') pick('B');
   else if(e.key==='ArrowUp'){ e.preventDefault(); pick('both'); }
@@ -393,89 +339,81 @@ document.addEventListener('keydown', e => {
 
 // ===== RESULTS =====
 function showResults(){
-  const cat = PROFILES[currentProfile].boards[currentCategory];
-  hideAll();
-  const res = document.getElementById('results');
-  res.style.display = 'block';
-  document.getElementById('resultsTitle').innerHTML = `${cat.icon} ${cat.name} — ${PROFILES[currentProfile].name}'s Style DNA`;
+  const dept = DEPARTMENTS[currentDept];
+  const board = dept.boards[currentBoard];
 
-  const grid = document.getElementById('winnersGrid');
-  grid.innerHTML = '';
-  ratingResults.flatMap(r => r.winnerFiles).forEach(f => { const img = document.createElement('img'); img.src = f; grid.appendChild(img); });
-
-  const lgrid = document.getElementById('losersGrid');
-  lgrid.innerHTML = '';
-  ratingResults.flatMap(r => r.loserFiles).forEach(f => { const img = document.createElement('img'); img.src = f; lgrid.appendChild(img); });
+  document.getElementById('resultsTitle').textContent = `${board.icon} ${board.name} — Style DNA`;
+  const grid = document.getElementById('winnersGrid'); grid.innerHTML = '';
+  ratingResults.flatMap(r=>r.winnerFiles).forEach(f=>{ const img=document.createElement('img'); img.src=f; grid.appendChild(img); });
+  const lgrid = document.getElementById('losersGrid'); lgrid.innerHTML = '';
+  ratingResults.flatMap(r=>r.loserFiles).forEach(f=>{ const img=document.createElement('img'); img.src=f; lgrid.appendChild(img); });
 
   const tagScores = {};
   ratingResults.forEach(r => {
-    r.winnerTags.forEach(t => { tagScores[t] = (tagScores[t]||0) + 1; });
-    r.loserTags.forEach(t => { tagScores[t] = (tagScores[t]||0) - 0.5; });
+    r.winnerTags.forEach(t=>{ tagScores[t]=(tagScores[t]||0)+1; });
+    r.loserTags.forEach(t=>{ tagScores[t]=(tagScores[t]||0)-0.5; });
   });
-  const sorted = Object.entries(tagScores).sort((a,b) => b[1] - a[1]);
-  const top = sorted.filter(([,v]) => v > 0).slice(0, 15);
-  const bottom = sorted.filter(([,v]) => v < 0).slice(-10);
+  const sorted = Object.entries(tagScores).sort((a,b)=>b[1]-a[1]);
+  const top = sorted.filter(([,v])=>v>0).slice(0,15);
+  const bottom = sorted.filter(([,v])=>v<0).slice(-10);
 
-  let s = `👤 ${PROFILES[currentProfile].name} · ${cat.name}\n\n`;
-  s += `🏆 TOP TAGS:\n`;
-  top.forEach(([t,v]) => { s += `  ${t}: ${'█'.repeat(Math.round(v*2))} (${v.toFixed(1)})\n`; });
-  s += `\n🚫 REJECTED:\n`;
-  bottom.forEach(([t,v]) => { s += `  ${t}: (${v.toFixed(1)})\n`; });
-  s += `\n📊 PICKS:\n`;
-  ratingResults.forEach(r => { s += `  R${r.round}: ${r.a} vs ${r.b} → ${r.choice}\n`; });
+  let s = `${dept.name} · ${board.name}\n\n🏆 TOP:\n`;
+  top.forEach(([t,v])=>{ s+=`  ${t}: ${'█'.repeat(Math.round(v*2))} (${v.toFixed(1)})\n`; });
+  s+=`\n🚫 REJECTED:\n`;
+  bottom.forEach(([t,v])=>{ s+=`  ${t}: (${v.toFixed(1)})\n`; });
+  s+=`\n📊 PICKS:\n`;
+  ratingResults.forEach(r=>{ s+=`  R${r.round}: ${r.a} vs ${r.b} → ${r.choice}\n`; });
   document.getElementById('resultsData').textContent = s;
 
   window.__styleCuratorResults = {
-    profile: currentProfile,
-    profileName: PROFILES[currentProfile].name,
-    category: currentCategory,
-    boardId: cat.boardId,
-    boardName: cat.name,
-    results: ratingResults,
-    tagScores: Object.fromEntries(sorted),
-    summary: s
+    department: currentDept, deptName: dept.name,
+    board: currentBoard, boardId: board.boardId, boardName: board.name,
+    results: ratingResults, tagScores: Object.fromEntries(sorted), summary: s
   };
+  showScreen('results');
   autoSave();
 }
 
 // ===== AUTO-SAVE =====
 async function autoSave(){
   const el = document.getElementById('saveStatus');
-  el.innerHTML = '<div class="save-status save-pending">⏳ Saving results...</div>';
+  el.innerHTML = '<div class="save-status save-pending">⏳ Saving...</div>';
   const payload = { ...window.__styleCuratorResults, timestamp: new Date().toISOString() };
-
-  // Save per-profile per-category
-  localStorage.setItem(`sc_${currentProfile}_${currentCategory}_latest`, JSON.stringify(payload));
-  // Append to history
-  const all = JSON.parse(localStorage.getItem('sc_all_results') || '[]');
-  all.push(payload);
-  localStorage.setItem('sc_all_results', JSON.stringify(all));
-
+  localStorage.setItem(`sc_${currentDept}_${currentBoard}_latest`, JSON.stringify(payload));
+  const all = JSON.parse(localStorage.getItem('sc_history') || '[]');
+  all.unshift(payload);
+  localStorage.setItem('sc_history', JSON.stringify(all.slice(0,50)));
   try {
-    const r = await fetch('https://api.jsonbin.io/v3/b', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Bin-Private': 'false' },
-      body: JSON.stringify(payload)
-    });
-    if(r.ok){
-      const d = await r.json();
-      el.innerHTML = `<div class="save-status save-ok">✅ Saved — Lux will update ${PROFILES[currentProfile].name}'s ${CATEGORIES_NAME()} board<br><span style="font-size:11px;color:#888;">ID: ${d.metadata.id}</span></div>`;
-    } else throw new Error('fail');
-  } catch(e) {
-    el.innerHTML = '<div class="save-status save-ok">✅ Results saved locally — Lux will pick up on next check</div>';
-  }
+    const r = await fetch('https://api.jsonbin.io/v3/b',{ method:'POST', headers:{'Content-Type':'application/json','X-Bin-Private':'false'}, body:JSON.stringify(payload) });
+    if(r.ok){ const d=await r.json(); el.innerHTML=`<div class="save-status save-ok">✅ Saved — Lux will update the ${DEPARTMENTS[currentDept].boards[currentBoard].name} board</div>`; }
+    else throw new Error();
+  } catch(e){ el.innerHTML='<div class="save-status save-ok">✅ Saved locally</div>'; }
 }
-function CATEGORIES_NAME(){ return PROFILES[currentProfile]?.boards[currentCategory]?.name || currentCategory; }
 
 function copyResults(){
-  const d = JSON.stringify(window.__styleCuratorResults, null, 2);
-  navigator.clipboard.writeText(d).then(() => {
-    const b = event.target; b.textContent = '✅ Copied!'; setTimeout(() => b.textContent = '📋 Copy Results', 2000);
+  navigator.clipboard.writeText(JSON.stringify(window.__styleCuratorResults,null,2)).then(()=>{
+    const b=event.target; b.textContent='✅ Copied!'; setTimeout(()=>b.textContent='📋 Copy',2000);
+  });
+}
+
+// ===== HISTORY =====
+function buildHistory(){
+  const list = document.getElementById('historyList');
+  const all = JSON.parse(localStorage.getItem('sc_history') || '[]');
+  if(!all.length){ list.innerHTML='<div class="history-empty">No ratings yet. Go rate some boards!</div>'; return; }
+  list.innerHTML = '';
+  all.forEach(h => {
+    const wins = h.results.filter(r=>r.choice==='A'||r.choice==='B'||r.choice==='both').length;
+    const d = new Date(h.timestamp);
+    const item = document.createElement('div');
+    item.className = 'history-item';
+    item.innerHTML = `<h4>${h.deptName} · ${h.boardName}</h4><p>${d.toLocaleDateString()} ${d.toLocaleTimeString()} · ${h.results.length} rounds · ${wins} picks</p>`;
+    list.appendChild(item);
   });
 }
 
 // ===== INIT =====
-buildProfiles();
+buildHome();
 </script>
 </body>
 </html>
