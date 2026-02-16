@@ -165,6 +165,8 @@
   .modal-label { font-size: 12px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
   .modal-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 24px; }
   .modal-tags span { padding: 6px 14px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 100px; font-size: 13px; color: var(--text-2); font-weight: 500; }
+  .modal-link { display: inline-block; margin-top: 16px; padding: 10px 20px; background: var(--accent); color: #fff; border-radius: 100px; font-size: 14px; font-weight: 600; text-decoration: none; transition: opacity .2s; }
+  .modal-link:hover { opacity: .85; }
   .modal-engines { display: flex; gap: 8px; margin-bottom: 24px; }
   .modal-prompt-wrap { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; position: relative; }
   .modal-prompt-wrap pre { font-family: 'SF Mono', monospace; font-size: 13px; color: var(--text-2); line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
