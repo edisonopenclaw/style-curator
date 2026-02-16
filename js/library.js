@@ -2,7 +2,7 @@
 let af=new Set();
 function buildFilters(){
   const f=document.getElementById('filters');
-  ['cinematic','dark','surreal','abstract','minimal','typography','3d','fog','cosmic','neon','ui','noir'].forEach(t=>{
+  ['cinematic','dark','surreal','noir','retro','ethereal','moody','abstract','neon','minimal','illustration','dreamy'].forEach(t=>{
     f.innerHTML+=`<div class="pill" data-t="${t}" onclick="tf('${t}')">${t}</div>`;
   });
 }
@@ -11,7 +11,7 @@ function render(){
   const q=document.getElementById('q').value.toLowerCase().trim();
   let f=S;
   if(q)f=f.filter(s=>s.name.toLowerCase().includes(q)||s.desc.toLowerCase().includes(q)||s.sref.includes(q)||s.tags.some(t=>t.includes(q)));
-  if(af.size)f=f.filter(s=>[...af].some(x=>s.tags.includes(x)));
+  if(af.size)f=f.filter(s=>[...af].some(x=>s.tags.some(t=>t.includes(x))||s.name.toLowerCase().includes(x)||s.desc.toLowerCase().includes(x)));
   const g=document.getElementById('grid');
   if(!f.length){g.innerHTML='<div class="empty-state"><span class="big">⌕</span>No styles found.</div>';return;}
   g.innerHTML=f.map(s=>{
