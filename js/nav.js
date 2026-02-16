@@ -7,7 +7,7 @@ function nav(n){
   document.getElementById('undoBtn').classList.add('hidden');
   if(n==='test')buildDepts();
   if(n==='history')buildHist();
-  if(n==='library'){render();updStats();}
+  if(n==='library'){renderCreators();render();updStats();}
 }
 
 document.addEventListener('keydown',e=>{
@@ -21,4 +21,4 @@ document.addEventListener('keydown',e=>{
 });
 
 // INIT
-buildFilters();render();updStats();
+buildFilters();renderCreators();render();updStats();

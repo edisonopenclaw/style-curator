@@ -39,3 +39,22 @@ function openS(id){
 }
 function closeModal(){document.getElementById('overlay').classList.remove('active');}
 function updStats(){document.getElementById('sN').textContent=S.length;const t=new Set();S.forEach(s=>s.tags.forEach(x=>t.add(x)));document.getElementById('sT').textContent=t.size;}
+
+// === CREATOR PROFILES ===
+function renderCreators(){
+  const el=document.getElementById('creators');if(!el||!C||!C.length)return;
+  el.innerHTML=C.map(c=>`
+    <div class="creator-card">
+      <div class="creator-header">
+        <img class="creator-avatar" src="${c.avatar}" alt="${c.name}">
+        <div class="creator-info">
+          <div class="creator-name">${c.name}</div>
+          <a class="creator-handle" href="${c.url}" target="_blank">${c.handle}</a>
+        </div>
+        <a class="creator-follow" href="${c.url}" target="_blank">View ↗</a>
+      </div>
+      <div class="creator-bio">${c.bio}</div>
+      <div class="creator-gallery">${c.images.map(i=>`<img src="${i}" loading="lazy">`).join('')}</div>
+    </div>
+  `).join('');
+}

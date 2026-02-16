@@ -1,3 +1,17 @@
+// === CREATORS ===
+const C=[
+  {id:'ciguleva',name:'Ciguleva',handle:'@ciguleva',url:'https://x.com/ciguleva',avatar:'https://pbs.twimg.com/profile_images/1869891007351025664/jE6FLbTk_200x200.jpg',bio:'Midjourney specialist · Perplexity ambassador · Surreal, cosmic & pointillist AI art',images:[
+    'https://pbs.twimg.com/media/HBPEg0NboAEpvuy?format=jpg&name=medium',
+    'https://pbs.twimg.com/media/HBIiT9lakAItX52?format=jpg&name=medium',
+    'https://pbs.twimg.com/media/HAqpz0rbAAEw6IT?format=jpg&name=medium',
+    'https://pbs.twimg.com/media/HApvEkIbAAA25jy?format=jpg&name=medium',
+    'https://pbs.twimg.com/media/G_kSBrwaUAAfzFp?format=jpg&name=medium',
+    'https://pbs.twimg.com/media/G_pWv1-WgAAd3ig?format=jpg&name=medium',
+    'https://pbs.twimg.com/media/G_dsvx9bgAEqO87?format=jpg&name=medium',
+    'https://pbs.twimg.com/media/G_m-zzkacAA1JAZ?format=jpg&name=medium',
+  ]},
+];
+
 // === STYLE DATA ===
 const S=[
   {id:'noir-cinema',name:'Noir Cinema',sref:'--sref 2847193',desc:'Deep shadows, high contrast, moody film stills. Blade Runner meets classic noir.',tags:['cinematic','dark','noir','shadows','moody','film'],engines:['midjourney','flux'],prompt:'a lone figure walking through rain-soaked streets at night --sref 2847193 --ar 16:9',images:['https://i.pinimg.com/736x/ae/31/59/ae3159f93d0c33dbdddb3e58e6a977b1.jpg','https://i.pinimg.com/736x/9d/ee/1a/9dee1a4d0a68d7c2cc74f573aa45fdce.jpg','https://i.pinimg.com/736x/76/7e/0d/767e0dbb34035007ee569b11337c799e.jpg','https://i.pinimg.com/736x/52/8e/ea/528eeaea0ff139612dc9aeb14cf3ff9b.jpg']},
